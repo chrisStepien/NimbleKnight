@@ -4,6 +4,7 @@ import pygame
 def import_player_animations(path):
     
     player_animation_list = []
+    print(path)
 
     for imagename in os.listdir(path):
         frame_path = path + '/' + imagename

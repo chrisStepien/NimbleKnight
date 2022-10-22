@@ -35,21 +35,25 @@ class Level:
                     player_sprite = Player((x,y)) 
                     self.player.add(player_sprite)
                # if cell == 'E':        
+    
     # Player Camera
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
         
-        
         if player_x < screen_width / 5 and direction_x < 0:
             
             self.world_shift = 8
             player.speed = 0
+            
         elif player_x > screen_width / 2 and direction_x > 0:
+            
             self.world_shift = -8
             player.speed = 0
+            
         else:
+            
             self.world_shift = 0
             player.speed = 8
     
@@ -62,19 +66,19 @@ class Level:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
-                    player.on_left = True
+                    player.wall_left = True
                     self.current_x = player.rect.left
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
-                    player.on_right = True
+                    player.wall_right = True
                     self.current_x = player.rect.right    
 
         #            
-        if(player.on_left and player.rect.left < self.current_x or player.direction.x >= 0):
-            player.on_left = False 
+        if(player.wall_left and player.rect.left < self.current_x or player.direction.x >= 0):
+            player.wall_left = False 
         #                 
-        if(player.on_right and player.rect.right > self.current_x or player.direction.x <= 0):
-            player.on_right = False
+        if(player.wall_right and player.rect.right > self.current_x or player.direction.x <= 0):
+            player.wall_right = False
         
         
         
@@ -100,16 +104,23 @@ class Level:
         if(player.on_ceiling and player.direction.y > 0):
             player.on_ceiling = False            
                     
-    def run(self):
-
+    def run(self, single_press, key_up):
+        BLUE = (0,0,255)
+        player = self.player.sprite
+        #print(player.rect[0])
+        #print(int(player.rect[1]))
+        #Change to hit_box rect?
+        pygame.draw.rect(self.display_surface, BLUE, (int(player.hit_box[0]), int(player.hit_box[1]), 80, 20))
         # Level tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
         
+        
+        
         # Player 
-        self.player.update()
-        self.horizontal_movement_collision()
+        self.player.update(single_press, key_up)
         self.vertical_movement_collision()
+        self.horizontal_movement_collision()
         self.player.draw(self.display_surface)
         
