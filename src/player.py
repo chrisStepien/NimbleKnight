@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.stamina = 100
         self.gravity = 0.5
-        self.jump_height = -10
+        self.jump_height = -15
 
         # self.player_status['attack_1'] = False self.player_status['attack_combo'] = False self.player_status['attack_crouch'] = False self.player_status['crouch'] = False self.player_status['crouch_walk'] = False self.player_status['death'] = False self.player_status['fall'] = False self.player_status['hurt'] = False self.player_status['idle'] = False self.player_status['jump'] = False self.player_status['roll'] = False self.player_status['run'] = False self.player_status['slide'] = False self.player_status['wall_slide'] = False
 
@@ -378,7 +378,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
             # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
 
-    def input(self, single_press, key_up):
+    def input(self, single_press):
 
         keys = pygame.key.get_pressed()
         # Ordered by priority
@@ -399,7 +399,7 @@ class Player(pygame.sprite.Sprite):
             self.player_status['wall_slide'] = False
             self.roll()
 
-        elif keys[pygame.K_SPACE] and single_press == True and self.on_ground:
+        elif keys[pygame.K_SPACE] and self.player_status['roll'] == False and single_press == True and self.on_ground:
 
             self.player_status['attack_combo'] = True
             self.player_status['attack_1'] = False
@@ -415,7 +415,7 @@ class Player(pygame.sprite.Sprite):
             self.player_status['run'] = False
             self.player_status['wall_slide'] = False
 
-        elif keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+        elif keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d] and self.player_status['roll'] == False:
             # 1
             if keys[pygame.K_s] and keys[pygame.K_d] or keys[pygame.K_s] and keys[pygame.K_a]:
 
@@ -458,7 +458,7 @@ class Player(pygame.sprite.Sprite):
                     self.facing_right = False
             else:
                 if (keys[pygame.K_w] and self.on_ground == True):
-                    print("hello")
+                  
                     self.player_status['jump'] = True
                     self.player_status['attack_1'] = False
                     self.player_status['attack_combo'] = False
@@ -618,7 +618,7 @@ class Player(pygame.sprite.Sprite):
                     self.player_status['run'] = False
                     self.player_status['wall_slide'] = False
 
-        elif(keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN] and single_press == True):
+        elif(keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN] and self.player_status['roll'] == False and single_press == True):
             if keys[pygame.K_LEFT]:
 
                 self.player_status['attack_1'] = True
@@ -672,7 +672,7 @@ class Player(pygame.sprite.Sprite):
                 self.player_status['wall_slide'] = False
 
                 self.direction.x = 0
-        elif(self.on_ground) and single_press == False:
+        elif(self.on_ground) and self.player_status['roll'] == False and single_press == False:
 
             self.player_status['idle'] = True
             self.player_status['attack_1'] = False
@@ -692,16 +692,17 @@ class Player(pygame.sprite.Sprite):
             self.player_status['wall_slide'] = False
             self.gravity = 0.5
 
-        if(self.on_ground == False):
+        if(self.on_ground == True):
 
             self.player_status['jump'] = False
-
-        if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False:
+    
+        
+        if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False and self.player_status['roll'] == False:
 
             self.player_status['idle'] = True
             self.player_status['attack_1'] = False
             self.player_status['attack_combo'] = False
-            self.player_status['attack_crouch'] = True
+            self.player_status['attack_crouch'] = False
             self.player_status['crouch'] = False
             self.player_status['crouch_walk'] = False
             self.player_status['death'] = False
@@ -714,8 +715,10 @@ class Player(pygame.sprite.Sprite):
 
             self.direction.x = 0
 
-        print(self.player_status['attack_1'], self.player_status['attack_combo'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
-              self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['roll'], self.player_status['run'], self.player_status["wall_slide"])
+       
+        
+    #    print(self.player_status['attack_1'], self.player_status['attack_combo'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
+      #        self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['roll'], self.player_status['run'], self.player_status["wall_slide"])
         
 
     def apply_gravity(self):
@@ -760,7 +763,7 @@ class Player(pygame.sprite.Sprite):
                                     
                     if self.player_status[status] != self.player_status['idle'] and self.player_status != self.player_status['roll']:
                         self.player_status[status] = False 
-                          
+        #Maybe take out                  
     def roll(self):
         
         print(self.direction)
@@ -770,12 +773,6 @@ class Player(pygame.sprite.Sprite):
         elif(not self.facing_right):
             self.direction.x -= 1           
                 
-                
-    def wall_slide(self):
-        
-        # check if beside wall and is above the ground and is holding a or d into wall
-        # decrease gravity
-        pass
     
     def player_hitbox(self):
         
@@ -786,15 +783,15 @@ class Player(pygame.sprite.Sprite):
   
         self.direction.y = self.jump_height     
         
-    def update(self, single_press, key_up):
+    def update(self, single_press):
             
         
         self.status()
-        self.input(single_press, key_up)
+        self.input(single_press)
         self.apply_gravity()
         self.animate()  
         
-      #  print(self.direction.y)
+        print(single_press)
        # print(self.on_ground)
-        print(self.wall_right)
+       # print(self.wall_right)
     

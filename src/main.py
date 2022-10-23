@@ -36,6 +36,6 @@ while True:
             
               
     screen.fill('white')
-    level.run(key_pressed, key_up)
+    level.run(key_pressed)
     pygame.display.update()
-    clock.tick(5)        
+    clock.tick(15)        

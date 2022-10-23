@@ -37,6 +37,7 @@ class Level:
                # if cell == 'E':        
     
     # Player Camera
+    #Fix climbing walls
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
@@ -104,7 +105,7 @@ class Level:
         if(player.on_ceiling and player.direction.y > 0):
             player.on_ceiling = False            
                     
-    def run(self, single_press, key_up):
+    def run(self, single_press):
         BLUE = (0,0,255)
         player = self.player.sprite
         #print(player.rect[0])
@@ -119,7 +120,7 @@ class Level:
         
         
         # Player 
-        self.player.update(single_press, key_up)
+        self.player.update(single_press)
         self.vertical_movement_collision()
         self.horizontal_movement_collision()
         self.player.draw(self.display_surface)
