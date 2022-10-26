@@ -11,7 +11,13 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
-        self.hit_box = self.image.get_rect(midbottom=pos)
+        
+        print(self.rect)
+        print(self.rect.height)
+        print(self.rect.width)
+        
+        self.hit_box = self.image.get_rect(bottomleft=pos)
+        #self.hit_box = self.rect.inflate(-20,-10)
         # self.hit_box.midbottom = self.rect.midbottom
 
         # Player statistics

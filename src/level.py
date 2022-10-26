@@ -1,5 +1,5 @@
 import pygame
-from level_settings import tile_size, screen_width
+from level_settings import tile_size, screen_width, screen_height
 from tiles import Tile
 from player import Player
 
@@ -25,17 +25,77 @@ class Level:
                 x = col_index * tile_size
                 y = row_index * tile_size
                 
-                if cell == 'X':
-                    
-                    tile = Tile((x,y), tile_size)
-                    self.tiles.add(tile)
-                
                 if cell == 'P':
                 
                     player_sprite = Player((x,y)) 
                     self.player.add(player_sprite)
+                    
+                if cell == 'X':
+                    
+                    tile = Tile((x,y), tile_size, 'X')
+                    self.tiles.add(tile)
+                
+                
                # if cell == 'E':        
-    
+                if cell == 'D':
+                    
+                    tile = Tile((x,y), tile_size, 'D')
+                    self.tiles.add(tile)
+                
+                if cell == 'C':
+                    
+                    tile = Tile((x,y), tile_size, cell)
+                    self.tiles.add(tile)
+                
+                    
+                if cell == 'F':
+                    
+                    tile = Tile((x,y), tile_size, 'F')
+                    self.tiles.add(tile)
+                    
+                if cell == 'B':
+                
+                    tile = Tile((x,y), tile_size, 'B')
+                    self.tiles.add(tile)
+                
+                if cell == 'S':
+                
+                    tile = Tile((x,y), tile_size, 'S')
+                    self.tiles.add(tile)
+                    
+                if cell == '1':
+                    
+                    tile = Tile((x,y), tile_size, '1')
+                    self.tiles.add(tile)
+                    
+                    
+                if cell == '2':
+                
+                    tile = Tile((x,y), tile_size, '2')
+                    self.tiles.add(tile)
+                
+                if cell == '3':               
+                
+                    tile = Tile((x,y), tile_size, '3')
+                    self.tiles.add(tile)
+                    
+                if cell == '4':               
+
+                    tile = Tile((x,y), tile_size, '4')
+                    self.tiles.add(tile)
+                         
+                if cell == '5':                
+                    tile = Tile((x,y), tile_size, '5')
+                    self.tiles.add(tile)
+                if cell == '6':               
+                    tile = Tile((x,y), tile_size, '6')
+                    self.tiles.add(tile)
+                if cell == '7':               
+                    tile = Tile((x,y), tile_size, '7')
+                    self.tiles.add(tile)
+                                
+                            
+                
     # Player Camera
     #Fix climbing walls
     def scroll_x(self):
@@ -57,6 +117,27 @@ class Level:
             
             self.world_shift = 0
             player.speed = 8
+    
+    def scroll_y(self):
+        player = self.player.sprite
+        player_y = player.rect.centery
+        direction_y = player.direction.y
+        
+        if player_y < screen_height / 5 and direction_y < 0:
+            
+            self.world_shift = 8
+            player.speed = 0
+            
+        elif player_y > screen_height / 2 and direction_y > 0:
+            
+            self.world_shift = -8
+            player.speed = 0
+            
+        else:
+            
+            self.world_shift = 0
+            player.speed = 8
+    
     
     
     def horizontal_movement_collision(self):
@@ -111,12 +192,12 @@ class Level:
         #print(player.rect[0])
         #print(int(player.rect[1]))
         #Change to hit_box rect?
-        pygame.draw.rect(self.display_surface, BLUE, (int(player.hit_box[0]), int(player.hit_box[1]), 80, 20))
+       # pygame.draw.rect(self.display_surface, BLUE, (int(player.hit_box[0]), int(player.hit_box[1]), 80, 20))
         # Level tiles
         self.tiles.update(self.world_shift)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
-        
+        #self.scroll_y()
         
         
         # Player 
