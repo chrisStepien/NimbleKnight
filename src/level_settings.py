@@ -17,10 +17,38 @@
 # S = Stair
 # W = Wall
 # T = Trap
-
+#23 rows
 #Needs lots of tweaks and letter changes
-
+#level_1_layer_3 
 level_map = [
+'                                                                                             ',
+'               RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR      ',
+'              R                                                                              ',
+'             R                                                                               ',
+'RRRRRRRRRRRRR                                                                                ',
+'                                                                                             ',
+'                                                                                             ',
+'                              F                                                              ',
+' P                            F                                                              ',
+'FFFFFFFFFFFFS                 F                                                              ',
+'             S                F                                                              ',
+'              S               F                                                              ',
+'               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               W                             ',
+'                                                               WFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
+'                                                                                             ']
+
+
+
+
+level_map_1 = [
 'RRRRRRRRRRRRRRRRRRR            RRRRRRD',
 'D                  R          R      D',    
 'D                   R        R       D',
@@ -103,5 +131,6 @@ level_map = [
 
 
 tile_size = 32
-screen_width = 800
-screen_height = 600 
+print(len(level_map[0]))
+screen_width = 1280
+screen_height = 720 

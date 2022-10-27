@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.stamina = 100
         self.gravity = 0.5
-        self.jump_height = -15
+        self.jump_height = -8
 
         # self.player_status['attack_1'] = False self.player_status['attack_combo'] = False self.player_status['attack_crouch'] = False self.player_status['crouch'] = False self.player_status['crouch_walk'] = False self.player_status['death'] = False self.player_status['fall'] = False self.player_status['hurt'] = False self.player_status['idle'] = False self.player_status['jump'] = False self.player_status['roll'] = False self.player_status['run'] = False self.player_status['slide'] = False self.player_status['wall_slide'] = False
 
@@ -38,12 +38,12 @@ class Player(pygame.sprite.Sprite):
         self.crouch_frame_speed = 0.1
         self.crouch_walk_frame_speed = 0.2
         self.death_frame_speed = 0.3
-        self.fall_frame_speed = 0.1
+        self.fall_frame_speed = 0.6
         self.hurt_frame_speed = 0.1
-        self.idle_frame_speed = 0.3
-        self.jump_frame_speed = 0.1
+        self.idle_frame_speed = 0.09
+        self.jump_frame_speed = 0.6
         self.roll_frame_speed = 0.5
-        self.run_frame_speed = 0.25
+        self.run_frame_speed = 0.6
         self.slide_frame_speed = 0.3
         self.wall_slide_frame_speed = 0.4
 
@@ -517,7 +517,7 @@ class Player(pygame.sprite.Sprite):
                         self.player_status['wall_slide'] = False
 
                         self.direction.x = -1
-                        self.gravity = 0.
+                        self.gravity = 0.5
                         self.facing_right = False
 
                     else:
@@ -701,7 +701,7 @@ class Player(pygame.sprite.Sprite):
         if(self.on_ground == True):
 
             self.player_status['jump'] = False
-    
+            self.player_status['fall'] = False
         
         if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False and self.player_status['roll'] == False:
 
@@ -723,8 +723,8 @@ class Player(pygame.sprite.Sprite):
 
        
         
-    #    print(self.player_status['attack_1'], self.player_status['attack_combo'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
-      #        self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['roll'], self.player_status['run'], self.player_status["wall_slide"])
+        print(self.player_status['attack_1'], self.player_status['attack_combo'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
+              self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['roll'], self.player_status['run'], self.player_status["wall_slide"])
         
 
     def apply_gravity(self):
@@ -798,6 +798,6 @@ class Player(pygame.sprite.Sprite):
         self.animate()  
         
         print(single_press)
-       # print(self.on_ground)
+        print(self.on_ground)
        # print(self.wall_right)
     

@@ -12,8 +12,9 @@ class Tile(pygame.sprite.Sprite):
     
         
         
-    def update(self,x_shift):
-        self.rect.x += x_shift    
+    def update(self,offset):
+        self.rect.x += offset.x
+        self.rect.y += offset.y    
         
     def import_tile_assets(self):
         self.tiles = {'floor': [], 'blank': [], 'arch1': [], 'arch2': [], 'arch3': [], 'arch4': [], 'arch5': [], 'arch6': [], 'arch7': [], 'brick1': [], 'stairs1': []}
