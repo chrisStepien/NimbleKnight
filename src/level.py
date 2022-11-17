@@ -35,7 +35,7 @@ class Level:
         
         
         #collidable
-        self.tiles = pygame.sprite.Group()
+        self.hard_tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         
         #non collidable
@@ -49,84 +49,82 @@ class Level:
                 y = row_index * tile_size
             
                 #maybe ( and ) but only if decreasing size of rect stairs needs that
-                
+                #Why tile_size exist?
+                #Hard tiles
                 if cell == '-':
                 
                     tile = Tile((x, y), tile_size, '-')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '[':
                 
                     tile = Tile((x, y), tile_size, '[')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                 
                 if cell == ']':
                     
                     tile = Tile((x, y), tile_size, ']')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '_':
                         
                     tile = Tile((x, y), tile_size, '_')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                             
                 if cell == '{':
                     
                     tile = Tile((x, y), tile_size, '{')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '}':    
                     
                     tile = Tile((x, y), tile_size, '}')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '/':
                     
                     tile = Tile((x, y), tile_size, '/')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '|':    
                     
                     tile = Tile((x, y), tile_size, '|')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == ':':
                     
                     tile = Tile((x, y), tile_size, ':')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                 
                 if cell == '<':
                     
                     tile = Tile((x, y), tile_size, '<')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '=':
                     
                     tile = Tile((x, y), tile_size, '=')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == '>':
                     
                     tile = Tile((x, y), tile_size, '>')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                 
                 if cell == 'D':
                     
                     tile = Tile((x, y), tile_size, 'D')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                         
                 if cell == 'U':
                     
                     tile = Tile((x, y), tile_size, 'U')
-                    self.tiles.add(tile)
+                    self.hard_tiles.add(tile)
                     
                 if cell == 'P':
                 
                     player_sprite = Player((x, y))
-                    print("x = ")
-                    print(x)
-                    print("y = ")
-                    print(y)
+                  
                     #print(player_sprite.rect.centerx) 
                     self.player.add(player_sprite)
                 
@@ -135,56 +133,212 @@ class Level:
                 #boss
                 # if cell == 'S':
                 
-                    
-                # if cell == 'X':
-                    
-                #     tile = Tile((x, y), tile_size, 'X')
-                #     self.tiles.add(tile)
+                #Soft tiles
+                if cell == '!':
                 
+                    tile = Tile((x, y), tile_size, '!')
+                    self.soft_tiles.add(tile)
                     
-            #     if cell == 'B':
+                if cell == '#':
                 
-            #         tile = Tile((x, y), tile_size, 'B')
-            #         self.tiles.add(tile)
+                    tile = Tile((x, y), tile_size, '#')
+                    self.soft_tiles.add(tile)
                 
-            #     if cell == 'S':
-                
-            #         tile = Tile((x, y), tile_size, 'S')
-            #         self.tiles.add(tile)
+                if cell == '$':
                     
-                # if cell == '1':
+                    tile = Tile((x, y), tile_size, '$')
+                    self.soft_tiles.add(tile)
                     
-                #     tile = Tile((x, y), tile_size, '1')
-                #     self.tiles.add(tile)
+                if cell == '%':
+                        
+                    tile = Tile((x, y), tile_size, '%')
+                    self.soft_tiles.add(tile)
+                            
+                if cell == '&':
                     
+                    tile = Tile((x, y), tile_size, '&')
+                    self.soft_tiles.add(tile)
                     
-                # if cell == '2':
+                if cell == '(':    
+                    
+                    tile = Tile((x, y), tile_size, '(')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == ')':
+                    
+                    tile = Tile((x, y), tile_size, ')')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '@':    
+                    
+                    tile = Tile((x, y), tile_size, '@')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '^':
+                    
+                    tile = Tile((x, y), tile_size, '^')
+                    self.soft_tiles.add(tile)
                 
-                #     tile = Tile((x, y), tile_size, '2')
-                #     self.tiles.add(tile)
-                
-                # if cell == '3':               
-                
-                #      tile = Tile((x, y), tile_size, '3')
-                #      self.tiles.add(tile)
+                if cell == '~':
                     
-                # if cell == '4':               
-
-                #     tile = Tile((x, y), tile_size, '4')
-                #     self.tiles.add(tile)
-                         
-                # if cell == '5':                
-                #     tile = Tile((x, y), tile_size, '5')
-                #     self.tiles.add(tile)
-                     
-                # if cell == '6':               
-                #     tile = Tile((x, y), tile_size, '6')
-                #     self.tiles.add(tile)
-                     
-                # if cell == '7':               
-                #     tile = Tile((x, y), tile_size, '7')
-                #     self.tiles.add(tile)
-                                
+                    tile = Tile((x, y), tile_size, '~')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '0':
+                    
+                    tile = Tile((x, y), tile_size, '0')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '1':
+                    
+                    tile = Tile((x, y), tile_size, '1')
+                    self.soft_tiles.add(tile)
+                
+                if cell == '2':
+                    
+                    tile = Tile((x, y), tile_size, '2')
+                    self.soft_tiles.add(tile)
+                        
+                if cell == '3':
+                    
+                    tile = Tile((x, y), tile_size, '3')
+                    self.soft_tiles.add(tile)
+                
+                if cell == '4':
+                
+                    tile = Tile((x, y), tile_size, '4')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '5':
+                
+                    tile = Tile((x, y), tile_size, '5')
+                    self.soft_tiles.add(tile)
+                
+                if cell == '6':
+                    
+                    tile = Tile((x, y), tile_size, '6')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '7':
+                        
+                    tile = Tile((x, y), tile_size, '7')
+                    self.soft_tiles.add(tile)
+                            
+                if cell == '8':
+                    
+                    tile = Tile((x, y), tile_size, '8')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == '9':    
+                    
+                    tile = Tile((x, y), tile_size, '9')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'A':
+                    
+                    tile = Tile((x, y), tile_size, 'A')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'B':    
+                    
+                    tile = Tile((x, y), tile_size, 'B')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'C':
+                    
+                    tile = Tile((x, y), tile_size, 'C')
+                    self.soft_tiles.add(tile)
+                
+                if cell == 'F':
+                    
+                    tile = Tile((x, y), tile_size, 'F')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'G':
+                    
+                    tile = Tile((x, y), tile_size, 'G')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'H':
+                    
+                    tile = Tile((x, y), tile_size, 'H')
+                    self.soft_tiles.add(tile)
+                
+                if cell == 'I':
+                    
+                    tile = Tile((x, y), tile_size, 'I')
+                    self.soft_tiles.add(tile)
+                        
+                if cell == 'J':
+                    
+                    tile = Tile((x, y), tile_size, 'J')
+                    self.soft_tiles.add(tile)
+                
+                if cell == 'K':
+                
+                    tile = Tile((x, y), tile_size, 'K')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'L':
+                
+                    tile = Tile((x, y), tile_size, 'L')
+                    self.soft_tiles.add(tile)
+                
+                if cell == 'M':
+                    
+                    tile = Tile((x, y), tile_size, 'M')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'N':
+                        
+                    tile = Tile((x, y), tile_size, 'N')
+                    self.soft_tiles.add(tile)
+                            
+                if cell == 'O':
+                    
+                    tile = Tile((x, y), tile_size, 'O')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'Q':    
+                    
+                    tile = Tile((x, y), tile_size, 'Q')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'R':
+                    
+                    tile = Tile((x, y), tile_size, 'R')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'T':    
+                    
+                    tile = Tile((x, y), tile_size, 'T')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'V':
+                    
+                    tile = Tile((x, y), tile_size, 'V')
+                    self.soft_tiles.add(tile)
+                
+                if cell == 'W':
+                    
+                    tile = Tile((x, y), tile_size, 'W')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'X':
+                    
+                    tile = Tile((x, y), tile_size, 'X')
+                    self.soft_tiles.add(tile)
+                    
+                if cell == 'Y':
+                    
+                    tile = Tile((x, y), tile_size, 'Y')
+                    self.soft_tiles.add(tile)
+                
+                if cell == 'Z':
+                    
+                    tile = Tile((x, y), tile_size, 'Z')
+                    self.soft_tiles.add(tile)
+                                              
     
     def player_camera(self, sprite):
        
