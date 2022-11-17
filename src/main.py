@@ -1,14 +1,15 @@
 import pygame, sys
 from level_settings import *
 from level import Level
-from background import * 
+from background import *
+from player import * 
 
 # General setup
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 Background = Background('./images/background/background1.png', (0,0))
 clock = pygame.time.Clock()
-fps = 5
+fps = 20
 
 level = Level(level_map, screen)
 key_pressed = False
@@ -40,5 +41,7 @@ while True:
     screen.fill('black')
     screen.blit(Background.image, Background.rect)
     level.run(key_pressed)
+
     pygame.display.update()
+    
     clock.tick(fps)        

@@ -12,9 +12,9 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         
-        print(self.rect)
-        print(self.rect.height)
-        print(self.rect.width)
+        #print(self.rect)
+        #print(self.rect.height)
+        #print(self.rect.width)
         
         self.hit_box = self.image.get_rect(bottomleft=pos)
         #self.hit_box = self.rect.inflate(-20,-10)
@@ -384,6 +384,8 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
             # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
 
+        #Change rect size to match what it should be or change the size of the PNGs
+        
     def input(self, single_press):
 
         keys = pygame.key.get_pressed()
@@ -791,13 +793,19 @@ class Player(pygame.sprite.Sprite):
         
     def update(self, single_press):
             
-        
+        print(self.rect.height)
+        print(self.rect.width)
         self.status()
         self.input(single_press)
         self.apply_gravity()
         self.animate()  
         
-        print(single_press)
-        print(self.on_ground)
+        
+        print("playerx:" + str(self.rect.x))
+        print("player:" + str(self.rect.bottomright))
+        
+        
+        #print(single_press)
+        #print(self.on_ground)
        # print(self.wall_right)
     

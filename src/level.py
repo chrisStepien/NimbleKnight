@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from level_settings import tile_size, screen_width, screen_height
 from tiles import Tile
 from player import Player
@@ -64,16 +64,16 @@ class Level:
                     self.tiles.add(tile)
                 
                 
-               # if cell == 'E':        
-                if cell == 'D':
+            #    # if cell == 'E':        
+            #     if cell == 'D':
                     
-                    tile = Tile((x, y), tile_size, 'D')
-                    self.tiles.add(tile)
+            #         tile = Tile((x, y), tile_size, 'D')
+            #         self.tiles.add(tile)
                 
-                if cell == 'C':
+            #     if cell == 'C':
                     
-                    tile = Tile((x, y), tile_size, cell)
-                    self.tiles.add(tile)
+            #         tile = Tile((x, y), tile_size, cell)
+            #         self.tiles.add(tile)
                 
                     
                 if cell == 'F':
@@ -81,15 +81,15 @@ class Level:
                     tile = Tile((x, y), tile_size, 'F')
                     self.tiles.add(tile)
                     
-                if cell == 'B':
+            #     if cell == 'B':
                 
-                    tile = Tile((x, y), tile_size, 'B')
-                    self.tiles.add(tile)
+            #         tile = Tile((x, y), tile_size, 'B')
+            #         self.tiles.add(tile)
                 
-                if cell == 'S':
+            #     if cell == 'S':
                 
-                    tile = Tile((x, y), tile_size, 'S')
-                    self.tiles.add(tile)
+            #         tile = Tile((x, y), tile_size, 'S')
+            #         self.tiles.add(tile)
                     
                 if cell == '1':
                     
@@ -104,8 +104,8 @@ class Level:
                 
                 if cell == '3':               
                 
-                    tile = Tile((x, y), tile_size, '3')
-                    self.tiles.add(tile)
+                     tile = Tile((x, y), tile_size, '3')
+                     self.tiles.add(tile)
                     
                 if cell == '4':               
 
@@ -115,9 +115,11 @@ class Level:
                 if cell == '5':                
                     tile = Tile((x, y), tile_size, '5')
                     self.tiles.add(tile)
+                     
                 if cell == '6':               
                     tile = Tile((x, y), tile_size, '6')
                     self.tiles.add(tile)
+                     
                 if cell == '7':               
                     tile = Tile((x, y), tile_size, '7')
                     self.tiles.add(tile)
@@ -137,12 +139,12 @@ class Level:
         direction_x = player.direction.x
         print("Wall:")
         print(player.wall_right)
-        if player_x < screen_width / 5 and direction_x < 0 and player.wall_right == False:
+        if player_x < tile_size * 1 and direction_x < 0 and player.wall_right == False:
             
             self.offset.x = 8
             player.speed = 0
             
-        elif player_x > screen_width / 2 and direction_x > 0 and player.wall_right == False:
+        elif player_x > tile_size * 21  and direction_x > 0 and player.wall_right == False:
             
             self.offset.x = -8
             player.speed = 0
@@ -180,27 +182,34 @@ class Level:
         
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed          
-    
+        print(player.direction.x)
         for sprite in self.tiles.sprites():
             if sprite.rect.colliderect(player.rect):
-                print('hello')
+                
                 #issue with camera may be caused here
                 if player.direction.x < 0:
+                    print('hello')
                     player.rect.left = sprite.rect.right
                     player.wall_left = True
                     self.current_x = player.rect.left
                 elif player.direction.x > 0:
+                    print('hello')
+                    
                     player.rect.right = sprite.rect.left
                     player.wall_right = True
                     self.current_x = player.rect.right    
-                print("wall right: " + str(player.wall_right))
-        #            
+                    print("wall right: " + str(player.wall_right))
+                    
+                    #           
+         
         if(player.wall_left and player.rect.left < self.current_x or player.direction.x >= 0):
             player.wall_left = False 
         #                 
         if(player.wall_right and player.rect.right > self.current_x or player.direction.x <= 0):
             player.wall_right = False
         
+        #self.player.update(False)
+        print("player wall:" + str(player.wall_right))
         
         
     def vertical_movement_collision(self):
@@ -229,7 +238,7 @@ class Level:
             player.on_ceiling = False            
                     
     def run(self, single_press):
-        BLUE = (0,0,255)
+        
         player = self.player.sprite
         #print(player.rect[0])
         #print(int(player.rect[1]))
@@ -248,6 +257,16 @@ class Level:
         self.player.update(single_press)
         self.vertical_movement_collision()
         self.horizontal_movement_collision()
-        
+        self.scroll_x()
         self.player.draw(self.display_surface)
         
+        #if(player.wall_right == True):
+         #   pygame.quit()
+          #  sys.exit()
+        print("player - right:" + str(player.wall_right))
+        
+    
+        print(self.player.sprite.image)    
+        print("what: " + str(player.rect))
+              
+        return player
