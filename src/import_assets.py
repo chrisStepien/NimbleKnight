@@ -17,3 +17,8 @@ def import_tiles(path):
     frame = pygame.image.load(path).convert_alpha()   
                
     return frame  
+
+
+#import enemies and randomize
+
+#import boss 

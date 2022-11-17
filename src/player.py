@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
 
         for animation in self.animations.keys():
 
-            self.default_path = './images/player/'
+            self.default_path = './assets/player/'
             self.default_path += animation
             self.animations[animation] = import_player_animations(
                 self.default_path)

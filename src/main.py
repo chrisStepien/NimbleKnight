@@ -7,7 +7,7 @@ from player import *
 # General setup
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
-Background = Background('./images/background/background1.png', (0,0))
+Background = Background('./assets/background/background.png', (0,0))
 clock = pygame.time.Clock()
 fps = 20
 

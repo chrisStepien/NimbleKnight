@@ -34,11 +34,12 @@ class Level:
         #Backgound path
         
         
-        
+        #collidable
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         
-        
+        #non collidable
+        self.soft_tiles = pygame.sprite.Group()
         
         
         for row_index, row in enumerate(level_layout):
@@ -47,7 +48,78 @@ class Level:
                 x = col_index * tile_size
                 y = row_index * tile_size
             
+                #maybe ( and ) but only if decreasing size of rect stairs needs that
                 
+                if cell == '-':
+                
+                    tile = Tile((x, y), tile_size, '-')
+                    self.tiles.add(tile)
+                    
+                if cell == '[':
+                
+                    tile = Tile((x, y), tile_size, '[')
+                    self.tiles.add(tile)
+                
+                if cell == ']':
+                    
+                    tile = Tile((x, y), tile_size, ']')
+                    self.tiles.add(tile)
+                    
+                if cell == '_':
+                        
+                    tile = Tile((x, y), tile_size, '_')
+                    self.tiles.add(tile)
+                            
+                if cell == '{':
+                    
+                    tile = Tile((x, y), tile_size, '{')
+                    self.tiles.add(tile)
+                    
+                if cell == '}':    
+                    
+                    tile = Tile((x, y), tile_size, '}')
+                    self.tiles.add(tile)
+                    
+                if cell == '/':
+                    
+                    tile = Tile((x, y), tile_size, '/')
+                    self.tiles.add(tile)
+                    
+                if cell == '|':    
+                    
+                    tile = Tile((x, y), tile_size, '|')
+                    self.tiles.add(tile)
+                    
+                if cell == ':':
+                    
+                    tile = Tile((x, y), tile_size, ':')
+                    self.tiles.add(tile)
+                
+                if cell == '<':
+                    
+                    tile = Tile((x, y), tile_size, '<')
+                    self.tiles.add(tile)
+                    
+                if cell == '=':
+                    
+                    tile = Tile((x, y), tile_size, '=')
+                    self.tiles.add(tile)
+                    
+                if cell == '>':
+                    
+                    tile = Tile((x, y), tile_size, '>')
+                    self.tiles.add(tile)
+                
+                if cell == 'D':
+                    
+                    tile = Tile((x, y), tile_size, 'D')
+                    self.tiles.add(tile)
+                        
+                if cell == 'U':
+                    
+                    tile = Tile((x, y), tile_size, 'U')
+                    self.tiles.add(tile)
+                    
                 if cell == 'P':
                 
                     player_sprite = Player((x, y))
@@ -57,29 +129,18 @@ class Level:
                     print(y)
                     #print(player_sprite.rect.centerx) 
                     self.player.add(player_sprite)
-                    
-                if cell == 'X':
-                    
-                    tile = Tile((x, y), tile_size, 'X')
-                    self.tiles.add(tile)
                 
-                
-            #    # if cell == 'E':        
-            #     if cell == 'D':
-                    
-            #         tile = Tile((x, y), tile_size, 'D')
-            #         self.tiles.add(tile)
-                
-            #     if cell == 'C':
-                    
-            #         tile = Tile((x, y), tile_size, cell)
-            #         self.tiles.add(tile)
+                #enemy
+                # if cell == 'E':
+                #boss
+                # if cell == 'S':
                 
                     
-                if cell == 'F':
+                # if cell == 'X':
                     
-                    tile = Tile((x, y), tile_size, 'F')
-                    self.tiles.add(tile)
+                #     tile = Tile((x, y), tile_size, 'X')
+                #     self.tiles.add(tile)
+                
                     
             #     if cell == 'B':
                 
@@ -91,38 +152,38 @@ class Level:
             #         tile = Tile((x, y), tile_size, 'S')
             #         self.tiles.add(tile)
                     
-                if cell == '1':
+                # if cell == '1':
                     
-                    tile = Tile((x, y), tile_size, '1')
-                    self.tiles.add(tile)
+                #     tile = Tile((x, y), tile_size, '1')
+                #     self.tiles.add(tile)
                     
                     
-                if cell == '2':
+                # if cell == '2':
                 
-                    tile = Tile((x, y), tile_size, '2')
-                    self.tiles.add(tile)
+                #     tile = Tile((x, y), tile_size, '2')
+                #     self.tiles.add(tile)
                 
-                if cell == '3':               
+                # if cell == '3':               
                 
-                     tile = Tile((x, y), tile_size, '3')
-                     self.tiles.add(tile)
+                #      tile = Tile((x, y), tile_size, '3')
+                #      self.tiles.add(tile)
                     
-                if cell == '4':               
+                # if cell == '4':               
 
-                    tile = Tile((x, y), tile_size, '4')
-                    self.tiles.add(tile)
+                #     tile = Tile((x, y), tile_size, '4')
+                #     self.tiles.add(tile)
                          
-                if cell == '5':                
-                    tile = Tile((x, y), tile_size, '5')
-                    self.tiles.add(tile)
+                # if cell == '5':                
+                #     tile = Tile((x, y), tile_size, '5')
+                #     self.tiles.add(tile)
                      
-                if cell == '6':               
-                    tile = Tile((x, y), tile_size, '6')
-                    self.tiles.add(tile)
+                # if cell == '6':               
+                #     tile = Tile((x, y), tile_size, '6')
+                #     self.tiles.add(tile)
                      
-                if cell == '7':               
-                    tile = Tile((x, y), tile_size, '7')
-                    self.tiles.add(tile)
+                # if cell == '7':               
+                #     tile = Tile((x, y), tile_size, '7')
+                #     self.tiles.add(tile)
                                 
     
     def player_camera(self, sprite):
