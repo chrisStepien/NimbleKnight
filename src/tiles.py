@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 from import_assets import import_tiles
 
 class Tile(pygame.sprite.Sprite):
@@ -6,7 +7,7 @@ class Tile(pygame.sprite.Sprite):
         super().__init__()
         self.import_tile_assets()
         self.frame_index = 0
-        self.image = self.tiles['_']
+        self.image = self.hard_tiles['_']
         self.rect = self.image.get_rect(topleft = pos)
         self.generate_tile(tile, pos)
     
@@ -16,11 +17,11 @@ class Tile(pygame.sprite.Sprite):
         
     def import_tile_assets(self):
         #Some are named due to file naming conventions
-        self.hard_tiles = {'-': [], '[': [], ']': [], '_': [], '{': [], '}': [], 'D': [], 'U': [], 'ceiling_corner_L': [], 'ceiling_corner_R': [], 'ceiling_side': [], 'platform_L': [], 'platform_M': [], 'platform_R': []}
-        self.soft_tiles = {'!': [], '#': [], '$': [], '%': [], '&': [], '(': [], ')': [], '@': [], '^': [], '~': [], '0': [], '1': [], '2': [], '3': [], '4': [], '5': [], '6': [], '7': [], '8': [], '9': [], 'A': [], 'B': [], 'C': [], 'F': [], 'G': [], 'H': [], 'I': [], 'J': [], 'K': [], 'L': [], 'M': [], 'N': [], 'O': [], 'Q': [], 'R': [], 'T': [], 'V': [], 'W': [], 'X': [], 'Y': [], 'Z': []}
+        self.hard_tiles = {'-': [], '[': [], ']': [], '_': [], '{': [], '}': [],'8': [], '9': [], 'D': [], 'U': [], 'ceiling_corner_L': [], 'ceiling_corner_R': [], 'ceiling_side': [], 'platform_L': [], 'platform_M': [], 'platform_R': []}
+        self.soft_tiles = {'!': [], '#': [], '$': [], '%': [], '&': [], '(': [], ')': [], '@': [], '^': [], '~': [], '0': [], '1': [], '2': [], '3': [], '4': [], '5': [], '6': [], '7': [], 'A': [], 'B': [], 'C': [], 'F': [], 'G': [], 'H': [], 'I': [], 'J': [], 'K': [], 'L': [], 'M': [], 'N': [], 'O': [], 'Q': [], 'R': [], 'T': [], 'V': [], 'W': [], 'X': [], 'Y': [], 'Z': []}
         
         #Hard tiles import
-        for tile in self.tiles.keys():
+        for tile in self.hard_tiles.keys():
 
             self.default_path = './assets/tiles/hard_tiles/'
             self.default_path += tile
@@ -34,81 +35,116 @@ class Tile(pygame.sprite.Sprite):
             self.default_path += tile
             self.default_path += ".png"
             self.soft_tiles[tile] = import_tiles(self.default_path)
+    
+    #isnt really needed for anything yet
+    # def adjust_rect(self, pos, x, y):
+    
+    #     return np.subtract((pos), (x, y))
+
         
     #Generates level tiles
     def generate_tile(self, tile, pos):
-        
+        print("pos: " + str(pos))
         #Hard tiles
         if(tile == '-'):
+           
             
             self.image = self.hard_tiles['-']
             self.rect = self.image.get_rect(topleft = pos)
-      
+            self.id = '-'
+            
         if(tile == '['):
             
             self.image = self.hard_tiles['[']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '['
+            
             
         if(tile == ']'):
         
             self.image = self.hard_tiles[']']
             self.rect = self.image.get_rect(topleft = pos)
-
+            self.id = ']'
+            
         if(tile == '_'):   
             
             self.image = self.hard_tiles['_']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '_'
             
         if(tile == '{'):
             
             self.image = self.hard_tiles['{']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '{'
+            
             
         if(tile == '}'):
             
             self.image = self.hard_tiles['}']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '}'
             
         if(tile == '/'):
             
             self.image = self.hard_tiles['ceiling_corner_L']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '/'
             
         if(tile == '|'):
             
             self.image = self.hard_tiles['ceiling_corner_R']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '|'            
             
         if(tile == ':'):
             
             self.image = self.hard_tiles['ceiling_side']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = ':'
             
         if(tile == '<'):                    
                     
             self.image = self.hard_tiles['platform_L']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '<'
               
         if(tile == '='):
         
             self.image = self.hard_tiles['platform_M']
             self.rect = self.image.get_rect(topleft = pos)
-        
+            self.id = '='
+
         if(tile == '>'):
         
             self.image = self.hard_tiles['platform_R']
             self.rect = self.image.get_rect(topleft = pos)
+            self.id = '>'
+            
+        if(tile == '8'):
+        
+            self.image = self.hard_tiles['8']
+            self.rect = self.image.get_rect(topleft = pos)
+            self.id = '8'
+
+        if(tile == '9'):                    
+                    
+            self.image = self.hard_tiles['9']
+            self.rect = self.image.get_rect(topleft = pos)
+            self.id = '9'
             
         if(tile == 'D'):
         
             self.image = self.hard_tiles['D']
             self.rect = self.image.get_rect(topleft = pos)
-
+            self.id = 'D'
+            
         if(tile == 'U'):
         
             self.image = self.hard_tiles['U']
             self.rect = self.image.get_rect(topleft = pos)
-        
+            self.id = 'U'
+
         #Soft tiles
         if(tile == '!'):
             
@@ -198,16 +234,6 @@ class Tile(pygame.sprite.Sprite):
         if(tile == '7'):
         
             self.image = self.soft_tiles['7']
-            self.rect = self.image.get_rect(topleft = pos)
-
-        if(tile == '8'):
-        
-            self.image = self.soft_tiles['8']
-            self.rect = self.image.get_rect(topleft = pos)
-        
-        if(tile == '9'):                    
-                    
-            self.image = self.soft_tiles['9']
             self.rect = self.image.get_rect(topleft = pos)
               
         if(tile == 'A'):

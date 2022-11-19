@@ -110,6 +110,16 @@ class Level:
                     
                     tile = Tile((x, y), tile_size, '>')
                     self.hard_tiles.add(tile)
+                             
+                if cell == '8':
+                    
+                    tile = Tile((x, y), tile_size, '8')
+                    self.hard_tiles.add(tile)
+                    
+                if cell == '9':    
+                    
+                    tile = Tile((x, y), tile_size, '9')
+                    self.hard_tiles.add(tile)
                 
                 if cell == 'D':
                     
@@ -223,17 +233,7 @@ class Level:
                         
                     tile = Tile((x, y), tile_size, '7')
                     self.soft_tiles.add(tile)
-                            
-                if cell == '8':
-                    
-                    tile = Tile((x, y), tile_size, '8')
-                    self.soft_tiles.add(tile)
-                    
-                if cell == '9':    
-                    
-                    tile = Tile((x, y), tile_size, '9')
-                    self.soft_tiles.add(tile)
-                    
+               
                 if cell == 'A':
                     
                     tile = Tile((x, y), tile_size, 'A')
@@ -398,7 +398,13 @@ class Level:
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed          
         print(player.direction.x)
-        for sprite in self.tiles.sprites():
+        for sprite in self.hard_tiles.sprites():
+            
+            if sprite.rect.colliderect(player.rect) and sprite.id == 'U':
+                player.player_status['death'] == True
+            #if sprite.rect.colliderect(player.rect) and sprite
+            
+            
             if sprite.rect.colliderect(player.rect):
                 
                 #issue with camera may be caused here
@@ -431,7 +437,9 @@ class Level:
         player = self.player.sprite
         player.apply_gravity()
        
-        for sprite in self.tiles.sprites():
+        for sprite in self.hard_tiles.sprites():
+            if sprite.rect.colliderect(player.rect) and sprite.id == 'U':
+                player.player_status['death'] == True
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
@@ -461,8 +469,8 @@ class Level:
        # pygame.draw.rect(self.display_surface, BLUE, (int(player.hit_box[0]), int(player.hit_box[1]), 80, 20))
         # Level tiles
         #self.player_camera(player)
-        self.tiles.update(self.offset)
-        self.tiles.draw(self.display_surface)
+        self.hard_tiles.update(self.offset)
+        self.hard_tiles.draw(self.display_surface)
         
         #self.display_surface.blit(self.tiles)
         #self.scroll_y()

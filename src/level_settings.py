@@ -27,29 +27,29 @@
     #layer for collidable surfaces
 
 level_map = [
-'                                                               ',
-'               RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR',
-'              R                                                ',
-'             R                                                 ',
-'RRRRRRRRRRRRR                                                  ',
-'D                                                              ',
-'D 123                                                          ',
-'D 4 5                    F                                     ',
-'D 6 7 P                  F                                     ',
-'FFFFFFFFFFFFS            F                                     ',
-'             S           F                                     ',
-'              S          F                                     ',
-'               FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ',
-'                                                               ']                                                                                                                                                                                                                                                           
+'                                                                           ',
+'                      _DDDDDDDDDDDDDDDDDDDDDDD_                            ',
+'                     /                         9                           ',
+'                    /                          |                           ',
+' __________________/                            9                          ',
+':                                               |_____________   __________',
+':                       <==>                                  9 8          ',
+':                                       <==>                  |D/          ',
+':    P                          <=>                                        ',
+' ------------------]                                     [U]       [U]     ',
+'                    ]                                    9 8       9 8     ',
+'                     ]      <==>                       [-   -------   -----',
+'                      ]              <==>       [------                    ',
+'                      8>                      [-                           ',
+'                      8                      <9                            ',
+'                       -UU-----------------UU-                             ',
+'                                                                           ',
+'                                                                           ',
+'                                                                           ',
+'                                                                           ',
+'                                                                           ',
+'                                                                           ',
+'                                                                           ']                                                                                                                                                                                                                                                           
 
 
 level_map_1 = []
@@ -61,7 +61,7 @@ level_map_2 = []
 tile_size = 32
 print(len(level_map[0]))
 screen_width = 852
-screen_height = 480 
+screen_height = 720
 
 
 
