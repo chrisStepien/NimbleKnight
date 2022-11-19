@@ -13,11 +13,19 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         
-        #print(self.rect)
-        #print(self.rect.height)
-        #print(self.rect.width)
+        self.env_rect = self.rect
+    
+        # self.env_rect.left = self.env_rect.left - 4
+        # self.env_rect.right = self.env_rect.right - 4
+        # self.env_rect.top = self.env_rect.top - 4
+        # self.env_rect.bottom = self.env_rect.bottom - 4
         
-        self.hit_box = self.image.get_rect(bottomleft=pos)
+        print(self.env_rect)
+            
+        self.hit_box = self.image.get_rect(bottomleft=pos) 
+        
+        
+        
         #self.hit_box = self.rect.inflate(-20,-10)
         # self.hit_box.midbottom = self.rect.midbottom
 
@@ -207,7 +215,8 @@ class Player(pygame.sprite.Sprite):
                     image = self.animations['wall_slide'][int(self.frame_index)]
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
-                    self.rect = self.image.get_rect(topleft=self.rect.topleft) 
+                    self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                    self.env_rect = self.rect 
             else:
                 # Facing Left
                 if self.player_status['attack_1'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False:
@@ -368,21 +377,31 @@ class Player(pygame.sprite.Sprite):
 
         if (self.on_ground and self.wall_right):
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
+            self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
            # self.hit_box = self.image.get_rect(bottomright = self.hit_box.bottomright)
         elif (self.on_ground and self.wall_left):
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
+            self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
+            
            # self.hit_box = self.image.get_rect(bottomleft = self.hit_box.bottomleft)
         elif (self.on_ground):
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+            self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
+            
            # self.hit_box = self.image.get_rect(midbottom = self.hit_box.midbottom)
         elif (self.on_ceiling and self.wall_right):
             self.rect = self.image.get_rect(topright=self.rect.topright)
+            self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
+            
            # self.hit_box = self.image.get_rect(topright = self.hit_box.topright)
         elif (self.on_ceiling and self.wall_left):
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
+            self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
+            
             # self.hit_box = self.image.get_rect(topleft = self.hit_box.topleft)
         elif (self.on_ceiling):
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
+            self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
             # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
 
         #Change rect size to match what it should be or change the size of the PNGs
@@ -666,18 +685,18 @@ class Player(pygame.sprite.Sprite):
                 self.player_status['wall_slide'] = False
 
                 self.direction.x = 0
-        elif(self.on_ground) and self.player_status['roll'] == False and single_press == False:
+        # elif(self.on_ground) and self.player_status['roll'] == False and single_press == False:
 
-            self.player_status['idle'] = True
-            self.player_status['attack_1'] = False
-            self.player_status['attack_combo'] = False
-            self.player_status['attack_crouch'] = False
-            self.player_status['crouch'] = False
-            self.player_status['fall'] = False
-            self.player_status['jump'] = False
-            self.player_status['run'] = False
+        #     self.player_status['idle'] = True
+        #     self.player_status['attack_1'] = False
+        #     self.player_status['attack_combo'] = False
+        #     self.player_status['attack_crouch'] = False
+        #     self.player_status['crouch'] = False
+        #     self.player_status['fall'] = False
+        #     self.player_status['jump'] = False
+        #     self.player_status['run'] = False
 
-            self.direction.x = 0
+        #     self.direction.x = 0
 
         if self.wall_right == False and self.wall_left == False and self.player_status['idle'] == False and self.player_status['jump'] == False and self.on_ground == False:
 
@@ -718,6 +737,8 @@ class Player(pygame.sprite.Sprite):
 
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
+        self.env_rect.y += self.direction.y
+        
         self.hit_box.y += self.direction.y
 
 
@@ -766,31 +787,37 @@ class Player(pygame.sprite.Sprite):
         elif(not self.facing_right):
             self.direction.x -= 1           
                 
-    
-    def player_hitbox(self):
+    #Collides with enemies
+    def hitbox_rect(self, rect):
+        #if crouching 
+        
+        #else
         
         pass
+    
+    #Collides with tiles aka the environment
+    def environment_rect(self, rect):    
+        
+        self.env_rect = rect
         
         
+        #if crouching 
+        
+        #else
+    
+    
     def jump(self):
   
         self.direction.y = self.jump_height     
         
     def update(self, single_press):
             
-        print(self.rect.height)
-        print(self.rect.width)
+    
         self.status()
         self.input(single_press)
         self.apply_gravity()
         self.animate()  
+        print(self.env_rect)
         
-        
-        print("playerx:" + str(self.rect.x))
-        print("player:" + str(self.rect.bottomright))
-        
-        
-        #print(single_press)
-        #print(self.on_ground)
-       # print(self.wall_right)
+        print("env rect:" + str(self.env_rect))
     

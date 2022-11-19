@@ -16,8 +16,8 @@ class Tile(pygame.sprite.Sprite):
         self.rect.y += offset.y    
         
     def import_tile_assets(self):
-        #Some are named due to file naming conventions
-        self.hard_tiles = {'-': [], '[': [], ']': [], '_': [], '{': [], '}': [],'8': [], '9': [], 'D': [], 'U': [], 'ceiling_corner_L': [], 'ceiling_corner_R': [], 'ceiling_side': [], 'platform_L': [], 'platform_M': [], 'platform_R': []}
+        #Some are named due to file naming conventions '{': [], '}': [],
+        self.hard_tiles = {'-': [], '[': [], ']': [], '_': [], '8': [], '9': [], 'D': [], 'U': [], 'ceiling_corner_L': [], 'ceiling_corner_R': [], 'ceiling_side': [], 'platform_L': [], 'platform_M': [], 'platform_R': []}
         self.soft_tiles = {'!': [], '#': [], '$': [], '%': [], '&': [], '(': [], ')': [], '@': [], '^': [], '~': [], '0': [], '1': [], '2': [], '3': [], '4': [], '5': [], '6': [], '7': [], 'A': [], 'B': [], 'C': [], 'F': [], 'G': [], 'H': [], 'I': [], 'J': [], 'K': [], 'L': [], 'M': [], 'N': [], 'O': [], 'Q': [], 'R': [], 'T': [], 'V': [], 'W': [], 'X': [], 'Y': [], 'Z': []}
         
         #Hard tiles import

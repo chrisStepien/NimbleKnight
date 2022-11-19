@@ -396,37 +396,40 @@ class Level:
     def horizontal_movement_collision(self):
         
         player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed          
+        player.rect.x += player.direction.x * player.speed
+        player.env_rect.x += player.direction.x * player.speed          
         print(player.direction.x)
         for sprite in self.hard_tiles.sprites():
             
-            if sprite.rect.colliderect(player.rect) and sprite.id == 'U':
+            if sprite.rect.colliderect(player.env_rect) and sprite.id == 'U':
                 player.player_status['death'] == True
             #if sprite.rect.colliderect(player.rect) and sprite
             
             
-            if sprite.rect.colliderect(player.rect):
+            if sprite.rect.colliderect(player.env_rect):
                 
                 #issue with camera may be caused here
                 if player.direction.x < 0:
                     print('hello')
-                    player.rect.left = sprite.rect.right
+                    player.env_rect.left = sprite.rect.right
+                    player.rect.left = player.env_rect.left
                     player.wall_left = True
-                    self.current_x = player.rect.left
+                    self.current_x = player.env_rect.left
                 elif player.direction.x > 0:
                     print('hello')
                     
-                    player.rect.right = sprite.rect.left
+                    player.env_rect.right = sprite.rect.left
+                    player.rect.right = player.env_rect.right
                     player.wall_right = True
-                    self.current_x = player.rect.right    
+                    self.current_x = player.env_rect.right    
                     print("wall right: " + str(player.wall_right))
                     
                     #           
          
-        if(player.wall_left and player.rect.left < self.current_x or player.direction.x >= 0):
+        if(player.wall_left and player.env_rect.left < self.current_x or player.direction.x >= 0):
             player.wall_left = False 
         #                 
-        if(player.wall_right and player.rect.right > self.current_x or player.direction.x <= 0):
+        if(player.wall_right and player.env_rect.right > self.current_x or player.direction.x <= 0):
             player.wall_right = False
         
         #self.player.update(False)
@@ -438,19 +441,23 @@ class Level:
         player.apply_gravity()
        
         for sprite in self.hard_tiles.sprites():
-            if sprite.rect.colliderect(player.rect) and sprite.id == 'U':
+            if sprite.rect.colliderect(player.env_rect) and sprite.id == 'U':
                 player.player_status['death'] == True
-            if sprite.rect.colliderect(player.rect):
+            if sprite.rect.colliderect(player.env_rect):
                 if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
+                    player.env_rect.bottom = sprite.rect.top
+                    player.rect.bottom = player.env_rect.bottom + 2
+                    
                     player.direction.y = 0
                     player.on_ground = True
-                    self.current_y = player.rect.top
+                    self.current_y = player.env_rect.top
                 elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom 
+                    player.env_rect.top = sprite.rect.bottom
+                    player.rect.top = player.env_rect.top
+                     
                     player.direction.y = 0
                     player.on_ceiling = True
-                    self.current_y = player.rect.bottom
+                    self.current_y = player.env_rect.bottom
                     
         
         #            
@@ -486,10 +493,5 @@ class Level:
         #if(player.wall_right == True):
          #   pygame.quit()
           #  sys.exit()
-        print("player - right:" + str(player.wall_right))
-        
-    
-        print(self.player.sprite.image)    
-        print("what: " + str(player.rect))
               
         return player
