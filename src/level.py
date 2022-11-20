@@ -352,8 +352,6 @@ class Level:
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
-        print("Wall:")
-        print(player.wall_right)
         if player_x < tile_size * 1 and direction_x < 0 and player.wall_right == False:
             
             self.offset.x = 8
@@ -374,7 +372,7 @@ class Level:
         player_y = player.rect.centery
         direction_y = player.direction.y
         
-        print(direction_y)
+        
         
         if player_y < screen_height / 2 and direction_y < 0 :
             
@@ -398,7 +396,7 @@ class Level:
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
         player.env_rect.x += player.direction.x * player.speed          
-        print(player.direction.x)
+        
         for sprite in self.hard_tiles.sprites():
             
             if sprite.rect.colliderect(player.env_rect) and sprite.id == 'U':
@@ -410,19 +408,19 @@ class Level:
                 
                 #issue with camera may be caused here
                 if player.direction.x < 0:
-                    print('hello')
+                    
                     player.env_rect.left = sprite.rect.right
                     player.rect.left = player.env_rect.left
                     player.wall_left = True
                     self.current_x = player.env_rect.left
                 elif player.direction.x > 0:
-                    print('hello')
+                    
                     
                     player.env_rect.right = sprite.rect.left
                     player.rect.right = player.env_rect.right
                     player.wall_right = True
                     self.current_x = player.env_rect.right    
-                    print("wall right: " + str(player.wall_right))
+                    
                     
                     #           
          
@@ -433,7 +431,7 @@ class Level:
             player.wall_right = False
         
         #self.player.update(False)
-        print("player wall:" + str(player.wall_right))
+       
         
         
     def vertical_movement_collision(self):

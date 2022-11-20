@@ -44,7 +44,6 @@ class Tile(pygame.sprite.Sprite):
         
     #Generates level tiles
     def generate_tile(self, tile, pos):
-        print("pos: " + str(pos))
         #Hard tiles
         if(tile == '-'):
            

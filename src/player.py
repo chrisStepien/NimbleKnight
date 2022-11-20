@@ -13,12 +13,13 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         
-        self.env_rect = self.rect
-    
+        self.env_rect = self.rect.inflate(-4, -2)
+        
         # self.env_rect.left = self.env_rect.left - 4
         # self.env_rect.right = self.env_rect.right - 4
         # self.env_rect.top = self.env_rect.top - 4
         # self.env_rect.bottom = self.env_rect.bottom - 4
+        print(self.rect)
         
         print(self.env_rect)
             
@@ -216,7 +217,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)
-                    self.env_rect = self.rect 
+                    self.env_rect = self.rect.inflate(-4, -2) 
             else:
                 # Facing Left
                 if self.player_status['attack_1'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False:
@@ -376,30 +377,42 @@ class Player(pygame.sprite.Sprite):
                         self.frame_index)]
 
         if (self.on_ground and self.wall_right):
+            print(1)
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
             self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
            # self.hit_box = self.image.get_rect(bottomright = self.hit_box.bottomright)
         elif (self.on_ground and self.wall_left):
+            print(2)
+            
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
             self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
             
            # self.hit_box = self.image.get_rect(bottomleft = self.hit_box.bottomleft)
         elif (self.on_ground):
+            print(3)
+            
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
-            self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
+            self.env_rect = self.rect.inflate(-4, -2)
+            #self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
             
            # self.hit_box = self.image.get_rect(midbottom = self.hit_box.midbottom)
         elif (self.on_ceiling and self.wall_right):
+            print(4)
+            
             self.rect = self.image.get_rect(topright=self.rect.topright)
             self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
             
            # self.hit_box = self.image.get_rect(topright = self.hit_box.topright)
         elif (self.on_ceiling and self.wall_left):
+            print(5)
+            
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
             self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
             
             # self.hit_box = self.image.get_rect(topleft = self.hit_box.topleft)
         elif (self.on_ceiling):
+            print(6)
+            
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
             self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
             # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
@@ -780,7 +793,7 @@ class Player(pygame.sprite.Sprite):
         #Maybe take out                  
     def roll(self):
         
-        print(self.direction)
+        
         if(self.facing_right):
             self.direction.x += 1           
                 
@@ -817,7 +830,22 @@ class Player(pygame.sprite.Sprite):
         self.input(single_press)
         self.apply_gravity()
         self.animate()  
-        print(self.env_rect)
-        
+
+        print("rect:" + str(self.rect))
         print("env rect:" + str(self.env_rect))
-    
+        
+        
+        print("rect height:" + str(self.rect.height))
+        print("env rect height:" + str(self.env_rect.height))
+        print("rect width:" + str(self.rect.width))
+        print("env rect width:" + str(self.env_rect.width))
+        print("rect right:" + str(self.rect.right))
+        print("env rect right:" + str(self.env_rect.right))
+        print("rect left:" + str(self.rect.left))
+        print("env rect left:" + str(self.env_rect.left))
+        print("rect x" + str(self.rect.x))
+        print("env rect x:" + str(self.env_rect.x))
+        print("rect y:" + str(self.rect.y))
+        print("env rect y:" + str(self.env_rect.y))
+        print("rect bottom:" + str(self.rect.bottom))
+        print("env rect bottom:" + str(self.env_rect.bottom))

@@ -1,5 +1,5 @@
 import pygame
-
+#Add screen_height and screen_width in here
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, pos):
         pygame.sprite.Sprite.__init__(self)
