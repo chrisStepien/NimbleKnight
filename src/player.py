@@ -11,19 +11,19 @@ class Player(pygame.sprite.Sprite):
         self.import_player_assets()
         self.frame_index = 0
         self.image = self.animations['idle'][self.frame_index]
+        
         self.rect = self.image.get_rect(topleft=pos)
-        
         self.env_rect = self.rect.inflate(-4, -2)
-        
+        self.hit_box = self.rect.inflate(-8, -1)
         # self.env_rect.left = self.env_rect.left - 4
         # self.env_rect.right = self.env_rect.right - 4
         # self.env_rect.top = self.env_rect.top - 4
         # self.env_rect.bottom = self.env_rect.bottom - 4
         print(self.rect)
-        
+
         print(self.env_rect)
             
-        self.hit_box = self.image.get_rect(bottomleft=pos) 
+        
         
         
         
@@ -32,18 +32,16 @@ class Player(pygame.sprite.Sprite):
 
         # Player statistics
         self.direction = pygame.math.Vector2(0, 0)
-        self.player_status = {'attack_1': False, 'attack_combo': False, 'attack_crouch': False, 'crouch': False, 'crouch_walk': False,
-            'death': False, 'fall': False, 'hurt': False, 'idle': True, 'jump': False, 'roll': False, 'run': False, 'wall_slide': False}
-        self.health = 100
-        self.stamina = 100
+        self.player_status = {'attack_1': False, 'attack_crouch': False, 'crouch': False, 'crouch_walk': False,
+            'death': False, 'fall': False, 'hurt': False, 'idle': True, 'jump': False, 'run': False, 'wall_slide': False}
+        self.health = 1000
         self.gravity = 0.5
-        self.jump_height = -8
+        self.jump_height = -9
 
         # self.player_status['attack_1'] = False self.player_status['attack_combo'] = False self.player_status['attack_crouch'] = False self.player_status['crouch'] = False self.player_status['crouch_walk'] = False self.player_status['death'] = False self.player_status['fall'] = False self.player_status['hurt'] = False self.player_status['idle'] = False self.player_status['jump'] = False self.player_status['roll'] = False self.player_status['run'] = False self.player_status['slide'] = False self.player_status['wall_slide'] = False
 
         # Frame speeds
         self.attack_1_frame_speed = 0.4
-        self.attack_combo_frame_speed = 0.5
         self.attack_crouch_frame_speed = 0.4
         self.crouch_frame_speed = 0.1
         self.crouch_walk_frame_speed = 0.2
@@ -52,9 +50,7 @@ class Player(pygame.sprite.Sprite):
         self.hurt_frame_speed = 0.1
         self.idle_frame_speed = 0.09
         self.jump_frame_speed = 0.6
-        self.roll_frame_speed = 0.5
         self.run_frame_speed = 0.6
-        self.slide_frame_speed = 0.3
         self.wall_slide_frame_speed = 0.4
 
         # Checks
@@ -66,8 +62,8 @@ class Player(pygame.sprite.Sprite):
 
     # import
     def import_player_assets(self):
-        self.animations = {'attack_1': [], 'attack_combo': [], 'attack_crouch': [], 'crouch': [], 'crouch_walk': [
-            ], 'death': [], 'fall': [], 'hurt': [], 'idle': [], 'jump': [], 'roll': [], 'run': [], 'wall_slide': []}
+        self.animations = {'attack_1': [], 'attack_crouch': [], 'crouch': [], 'crouch_walk': [
+            ], 'death': [], 'fall': [], 'hurt': [], 'idle': [], 'jump': [], 'run': [], 'wall_slide': []}
 
         for animation in self.animations.keys():
 
@@ -90,7 +86,7 @@ class Player(pygame.sprite.Sprite):
         else:            
             if(self.facing_right == True):
                 # Facing Right
-                if self.player_status['attack_1'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False:
+                if self.player_status['attack_1'] == True and self.player_status['jump'] == False and self.player_status['fall'] == False and self.player_status['idle'] == False and self.player_status['run'] == False:
 
                     self.frame_index += self.attack_1_frame_speed
 
@@ -100,18 +96,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['attack_1'][int(self.frame_index)]
 
-                if self.player_status['attack_combo'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False:
-
-                    self.frame_index += self.attack_combo_frame_speed
-
-                    if int(self.frame_index) > len(self.animations['attack_combo']) - 1:
-
-                        self.frame_index = 0
-
-                    self.image = self.animations['attack_combo'][int(
-                        self.frame_index)]
-
-                if self.player_status['attack_crouch'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False and self.on_ground:
+                if self.player_status['attack_crouch'] == True and self.player_status['idle'] == False and self.player_status['run'] == False and self.on_ground:
 
                     self.frame_index += self.attack_crouch_frame_speed
 
@@ -122,7 +107,7 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.animations['attack_crouch'][int(
                         self.frame_index)]
 
-                if self.player_status['crouch'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['crouch'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.frame_index += self.crouch_frame_speed
 
@@ -132,7 +117,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['crouch'][int(self.frame_index)]
 
-                if self.player_status['crouch_walk'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['crouch_walk'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.frame_index += self.crouch_walk_frame_speed
 
@@ -143,7 +128,7 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.animations['crouch_walk'][int(
                         self.frame_index)]
 
-                if self.player_status['fall'] == True and self.player_status['roll'] == False:
+                if self.player_status['fall'] == True and self.player_status['jump'] == False:
 
                     self.frame_index += self.fall_frame_speed
 
@@ -153,7 +138,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['fall'][int(self.frame_index)]
 
-                if self.player_status['hurt'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False:
+                if self.player_status['hurt'] == True and self.player_status['idle'] == False:
 
                     self.frame_index += self.hurt_frame_speed
 
@@ -163,7 +148,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['hurt'][int(self.frame_index)]
 
-                if self.player_status['idle'] == True and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['idle'] == True and self.on_ground:
 
                     self.frame_index += self.idle_frame_speed
 
@@ -173,7 +158,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['idle'][int(self.frame_index)]
 
-                if self.player_status['jump'] == True and self.player_status['roll'] == False:
+                if self.player_status['jump'] == True:
 
                     self.frame_index += self.jump_frame_speed
 
@@ -183,19 +168,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['jump'][int(self.frame_index)]
 
-                if self.player_status['roll'] == True and self.player_status['idle'] == False and self.on_ground:
-
-                    self.frame_index += self.roll_frame_speed
-
-                    if int(self.frame_index) > len(self.animations['roll']) - 1:
-
-                        self.frame_index = 0
-                        self.player_status['roll'] = False
-                        self.direction.x = 0
-
-                    self.image = self.animations['roll'][int(self.frame_index)]
-
-                if self.player_status['run'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['run'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.frame_index += self.run_frame_speed
 
@@ -205,7 +178,7 @@ class Player(pygame.sprite.Sprite):
 
                     self.image = self.animations['run'][int(self.frame_index)]
 
-                if self.player_status['wall_slide'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and not self.on_ground:
+                if self.player_status['wall_slide'] == True and self.player_status['fall'] == True and self.player_status['idle'] == False and not self.on_ground:
 
                     self.frame_index += self.wall_slide_frame_speed
 
@@ -217,10 +190,12 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)
-                    self.env_rect = self.rect.inflate(-4, -2) 
+                    self.env_rect = self.rect.inflate(-4, -2)
+                    self.hit_box = self.rect.inflate(-8, -1)
+                     
             else:
                 # Facing Left
-                if self.player_status['attack_1'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False:
+                if self.player_status['attack_1'] == True and self.player_status['jump'] == False and self.player_status['fall'] == False and self.player_status['idle'] == False and self.player_status['run'] == False:
 
                     self.frame_index += self.attack_1_frame_speed
 
@@ -232,19 +207,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['attack_combo'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False:
-
-                    self.frame_index += self.attack_combo_frame_speed
-
-                    if int(self.frame_index) > len(self.animations['attack_combo']) - 1:
-
-                        self.frame_index = 0
-
-                    image = self.animations['attack_combo'][int(self.frame_index)]
-                    flipped_image = pygame.transform.flip(image, True, False)
-                    self.image = flipped_image
-
-                if self.player_status['attack_crouch'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.player_status['run'] == False and self.on_ground:
+                if self.player_status['attack_crouch'] == True and self.player_status['idle'] == False and self.player_status['run'] == False and self.on_ground:
 
                     self.frame_index += self.attack_crouch_frame_speed
 
@@ -256,7 +219,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['crouch'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['crouch'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.frame_index += self.crouch_frame_speed
 
@@ -268,7 +231,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['crouch_walk'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['crouch_walk'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.frame_index += self.crouch_walk_frame_speed
 
@@ -280,19 +243,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                # if self.player_status['death'] == True:
-
-                #     self.frame_index += self.death_frame_speed
-
-                #     if int(self.frame_index) > len(self.animations['death']) - 1:
-
-                #         self.frame_index = 0
-
-                #     image = self.animations['death'][int(self.frame_index)]
-                #     flipped_image = pygame.transform.flip(image, True, False)
-                #     self.image = flipped_image
-
-                if self.player_status['fall'] == True and self.player_status['roll'] == False:
+                if self.player_status['fall'] == True and self.player_status['wall_slide'] == False:
 
                     self.frame_index += self.fall_frame_speed
 
@@ -304,7 +255,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['hurt'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False:
+                if self.player_status['hurt'] == True and self.player_status['idle'] == False:
 
                     self.frame_index += self.hurt_frame_speed
 
@@ -316,7 +267,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['idle'] == True and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['idle'] == True and self.on_ground:
 
                     self.frame_index += self.idle_frame_speed
 
@@ -328,7 +279,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['jump'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False:
+                if self.player_status['jump'] == True and self.player_status['fall'] == False and self.player_status['idle'] == False:
 
                     self.frame_index += self.jump_frame_speed
 
@@ -340,20 +291,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['roll'] == True and self.player_status['idle'] == False and self.on_ground:
-
-                    self.frame_index += self.roll_frame_speed
-
-                    if int(self.frame_index) > len(self.animations['roll']) - 1:
-
-                        self.frame_index = 0
-                        self.player_status['roll'] = False
-
-                    image = self.animations['roll'][int(self.frame_index)]
-                    flipped_image = pygame.transform.flip(image, True, False)
-                    self.image = flipped_image
-
-                if self.player_status['run'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False and self.on_ground:
+                if self.player_status['run'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.frame_index += self.run_frame_speed
 
@@ -365,7 +303,7 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
-                if self.player_status['wall_slide'] == True and self.player_status['idle'] == False and self.player_status['roll'] == False:
+                if self.player_status['wall_slide'] == True and self.player_status['idle'] == False:
 
                     self.frame_index += self.wall_slide_frame_speed
 
@@ -379,13 +317,22 @@ class Player(pygame.sprite.Sprite):
         if (self.on_ground and self.wall_right):
             print(1)
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
-            self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
+            self.env_rect = self.rect.inflate(-4, -2)
+            self.hit_box = self.rect.inflate(-8, -1)
+            
+            
+            # self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
+            
            # self.hit_box = self.image.get_rect(bottomright = self.hit_box.bottomright)
         elif (self.on_ground and self.wall_left):
             print(2)
             
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
-            self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
+            self.env_rect = self.rect.inflate(-4, -2)
+            self.hit_box = self.rect.inflate(-8, -1)
+            
+            
+            #self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
             
            # self.hit_box = self.image.get_rect(bottomleft = self.hit_box.bottomleft)
         elif (self.on_ground):
@@ -393,6 +340,8 @@ class Player(pygame.sprite.Sprite):
             
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.env_rect = self.rect.inflate(-4, -2)
+            self.hit_box = self.rect.inflate(-8, -1)
+            
             #self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
             
            # self.hit_box = self.image.get_rect(midbottom = self.hit_box.midbottom)
@@ -400,21 +349,33 @@ class Player(pygame.sprite.Sprite):
             print(4)
             
             self.rect = self.image.get_rect(topright=self.rect.topright)
-            self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
+            self.env_rect = self.rect.inflate(-4, -2)
+            self.hit_box = self.rect.inflate(-8, -1)
+            
+            
+            #self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
             
            # self.hit_box = self.image.get_rect(topright = self.hit_box.topright)
         elif (self.on_ceiling and self.wall_left):
             print(5)
             
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
-            self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
+            self.env_rect = self.rect.inflate(-4, -2)
+            self.hit_box = self.rect.inflate(-8, -1)
+            
+            
+            #self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
             
             # self.hit_box = self.image.get_rect(topleft = self.hit_box.topleft)
         elif (self.on_ceiling):
             print(6)
             
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
-            self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
+            self.env_rect = self.rect.inflate(-4, -2)
+            self.hit_box = self.rect.inflate(-8, -1)
+            
+            
+            #self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
             # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
 
         #Change rect size to match what it should be or change the size of the PNGs
@@ -423,38 +384,8 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
         # Ordered by priority
-        if keys[pygame.K_e] and single_press == True and self.on_ground:
-
-            self.player_status['roll'] = True
-            self.player_status['attack_1'] = False
-            self.player_status['attack_combo'] = False
-            self.player_status['attack_crouch'] = False
-            self.player_status['crouch'] = False
-            self.player_status['crouch_walk'] = False
-            self.player_status['fall'] = False
-            self.player_status['hurt'] = False
-            self.player_status['idle'] = False
-            self.player_status['jump'] = False
-            self.player_status['run'] = False
-            self.player_status['wall_slide'] = False
-            self.roll()
-
-        elif keys[pygame.K_SPACE] and self.player_status['roll'] == False and single_press == True and self.on_ground:
-
-            self.player_status['attack_combo'] = True
-            self.player_status['attack_1'] = False
-            self.player_status['attack_crouch'] = False
-            self.player_status['crouch'] = False
-            self.player_status['crouch_walk'] = False
-            self.player_status['fall'] = False
-            self.player_status['hurt'] = False
-            self.player_status['idle'] = False
-            self.player_status['jump'] = False
-            self.player_status['roll'] = False
-            self.player_status['run'] = False
-            self.player_status['wall_slide'] = False
-
-        elif keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d] and self.player_status['roll'] == False:
+        
+        if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
             # 1
             if keys[pygame.K_s] and keys[pygame.K_d] or keys[pygame.K_s] and keys[pygame.K_a]:
 
@@ -462,14 +393,12 @@ class Player(pygame.sprite.Sprite):
 
                     self.player_status['crouch_walk'] = True
                     self.player_status['attack_1'] = False
-                    self.player_status['attack_combo'] = False
                     self.player_status['attack_crouch'] = False
                     self.player_status['crouch'] = False
                     self.player_status['fall'] = False
                     self.player_status['hurt'] = False
                     self.player_status['idle'] = False
                     self.player_status['jump'] = False
-                    self.player_status['roll'] = False
                     self.player_status['run'] = False
                     self.player_status['wall_slide'] = False
 
@@ -480,14 +409,12 @@ class Player(pygame.sprite.Sprite):
 
                     self.player_status['crouch_walk'] = True
                     self.player_status['attack_1'] = False
-                    self.player_status['attack_combo'] = False
                     self.player_status['attack_crouch'] = False
                     self.player_status['crouch'] = False
                     self.player_status['fall'] = False
                     self.player_status['hurt'] = False
                     self.player_status['idle'] = False
                     self.player_status['jump'] = False
-                    self.player_status['roll'] = False
                     self.player_status['run'] = False
                     self.player_status['wall_slide'] = False
 
@@ -497,17 +424,13 @@ class Player(pygame.sprite.Sprite):
                 if (keys[pygame.K_w] and self.on_ground == True):
                   
                     self.player_status['jump'] = True
-                    self.player_status['attack_1'] = False
-                    self.player_status['attack_combo'] = False
                     self.player_status['attack_crouch'] = False
                     self.player_status['crouch'] = False
                     self.player_status['crouch_walk'] = False
                     self.player_status['fall'] = False
                     self.player_status['hurt'] = False
                     self.player_status['idle'] = False
-                    self.player_status['roll'] = False
                     self.player_status['run'] = False
-                    self.player_status['wall_slide'] = False
                     self.gravity = 0.5
                     self.jump()
 
@@ -517,48 +440,42 @@ class Player(pygame.sprite.Sprite):
 
                         self.player_status['wall_slide'] = True
                         self.player_status['attack_1'] = False
-                        self.player_status['attack_combo'] = False
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
-                        self.player_status['fall'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
-                        self.player_status['roll'] = False
                         self.player_status['run'] = False
 
                         self.gravity = 0.05
+                        
                         self.facing_right = False
 
-                    elif self.on_ground == False and self.player_status['fall'] == True and self.player_status['jump'] == False and self.wall_left == False:
+                    elif self.on_ground == False and self.player_status['jump'] == False and self.wall_left == False:
 
                         self.player_status['fall'] = True
-                        self.player_status['attack_1'] = False
-                        self.player_status['attack_combo'] = False
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
-                        self.player_status['roll'] = False
                         self.player_status['run'] = False
                         self.player_status['wall_slide'] = False
 
                         self.direction.x = -1
                         self.gravity = 0.5
+                    
                         self.facing_right = False
 
                     else:
                         self.player_status['run'] = True
                         self.player_status['attack_1'] = False
-                        self.player_status['attack_combo'] = False
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
                         self.player_status['fall'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
-                        self.player_status['roll'] = False
                         self.player_status['wall_slide'] = False
 
                         if(self.wall_left):
@@ -574,14 +491,11 @@ class Player(pygame.sprite.Sprite):
 
                         self.player_status['wall_slide'] = True
                         self.player_status['attack_1'] = False
-                        self.player_status['attack_combo'] = False
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
-                        self.player_status['fall'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
-                        self.player_status['roll'] = False
                         self.player_status['run'] = False
 
                         self.gravity = 0.05
@@ -591,13 +505,11 @@ class Player(pygame.sprite.Sprite):
 
                         self.player_status['fall'] = True
                         self.player_status['attack_1'] = False
-                        self.player_status['attack_combo'] = False
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
-                        self.player_status['roll'] = False
                         self.player_status['run'] = False
                         self.player_status['wall_slide'] = False
 
@@ -609,14 +521,12 @@ class Player(pygame.sprite.Sprite):
 
                         self.player_status['run'] = True
                         self.player_status['attack_1'] = False
-                        self.player_status['attack_combo'] = False
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
                         self.player_status['fall'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
-                        self.player_status['roll'] = False
                         self.player_status['wall_slide'] = False
                         # CHANGE FOR ALL
                         if(self.wall_right):
@@ -626,32 +536,29 @@ class Player(pygame.sprite.Sprite):
 
                         self.facing_right = True
 
-                else:
+                # else:
 
-                    self.player_status['idle'] = True
+                #     self.player_status['idle'] = True
 
-                    self.direction.x = 0
+                #     self.direction.x = 0
 
                 if keys[pygame.K_s]:
 
                     self.player_status['crouch'] = True
                     self.player_status['attack_1'] = False
-                    self.player_status['attack_combo'] = False
                     self.player_status['attack_crouch'] = False
                     self.player_status['crouch_walk'] = False
                     self.player_status['fall'] = False
                     self.player_status['hurt'] = False
                     self.player_status['idle'] = False
                     self.player_status['jump'] = False
-                    self.player_status['roll'] = False
                     self.player_status['run'] = False
                     self.player_status['wall_slide'] = False
 
-        elif(keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN] and self.player_status['roll'] == False and single_press == True):
+        elif(keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN]):
             if keys[pygame.K_LEFT]:
 
                 self.player_status['attack_1'] = True
-                self.player_status['attack_combo'] = False
                 self.player_status['attack_crouch'] = False
                 self.player_status['crouch'] = False
                 self.player_status['crouch_walk'] = False
@@ -659,7 +566,6 @@ class Player(pygame.sprite.Sprite):
                 self.player_status['hurt'] = False
                 self.player_status['idle'] = False
                 self.player_status['jump'] = False
-                self.player_status['roll'] = False
                 self.player_status['run'] = False
                 self.player_status['wall_slide'] = False
 
@@ -668,7 +574,6 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_RIGHT]:
 
                 self.player_status['attack_1'] = True
-                self.player_status['attack_combo'] = False
                 self.player_status['attack_crouch'] = False
                 self.player_status['crouch'] = False
                 self.player_status['crouch_walk'] = False
@@ -676,16 +581,14 @@ class Player(pygame.sprite.Sprite):
                 self.player_status['hurt'] = False
                 self.player_status['idle'] = False
                 self.player_status['jump'] = False
-                self.player_status['roll'] = False
                 self.player_status['run'] = False
                 self.player_status['wall_slide'] = False
 
                 self.facing_right = True
 
-            if keys[pygame.K_DOWN] and self.on_ground:
+            if keys[pygame.K_DOWN] and self.player_status['run'] == False and self.on_ground:
 
                 self.player_status['attack_crouch'] = True
-                self.player_status['attack_1'] = False
                 self.player_status['attack_combo'] = False
                 self.player_status['crouch'] = False
                 self.player_status['crouch_walk'] = False
@@ -693,7 +596,6 @@ class Player(pygame.sprite.Sprite):
                 self.player_status['hurt'] = False
                 self.player_status['idle'] = False
                 self.player_status['jump'] = False
-                self.player_status['roll'] = False
                 self.player_status['run'] = False
                 self.player_status['wall_slide'] = False
 
@@ -711,7 +613,7 @@ class Player(pygame.sprite.Sprite):
 
         #     self.direction.x = 0
 
-        if self.wall_right == False and self.wall_left == False and self.player_status['idle'] == False and self.player_status['jump'] == False and self.on_ground == False:
+        if self.wall_right == False and self.wall_left == False and self.player_status['idle'] == False and self.player_status['jump'] == False and self.direction.y > 1 and self.on_ground == False:
 
             self.player_status['fall'] = True
             self.player_status['run'] = False
@@ -723,18 +625,16 @@ class Player(pygame.sprite.Sprite):
             self.player_status['jump'] = False
             self.player_status['fall'] = False
         
-        if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False and self.player_status['roll'] == False:
+        if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False:
 
             self.player_status['idle'] = True
             self.player_status['attack_1'] = False
-            self.player_status['attack_combo'] = False
             self.player_status['attack_crouch'] = False
             self.player_status['crouch'] = False
             self.player_status['crouch_walk'] = False
             self.player_status['fall'] = False
             self.player_status['hurt'] = False
             self.player_status['jump'] = False
-            self.player_status['roll'] = False
             self.player_status['run'] = False
             self.player_status['wall_slide'] = False
 
@@ -742,82 +642,54 @@ class Player(pygame.sprite.Sprite):
 
        
         
-        print(self.player_status['attack_1'], self.player_status['attack_combo'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
-              self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['roll'], self.player_status['run'], self.player_status["wall_slide"])
+        print(self.player_status['attack_1'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
+              self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['run'], self.player_status["wall_slide"])
         
 
     def apply_gravity(self):
-
+        print("gravity")
+        print(self.gravity)
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
         self.env_rect.y += self.direction.y
-        
         self.hit_box.y += self.direction.y
 
 
     def status(self):
 
             # Jumping
-            if(self.direction.y < 0 and self.player_status['roll'] == False):
+            if(self.direction.y < 0):
 
                 for status in self.player_status:
                     self.player_status['jump'] = True
                 
-                    if self.player_status != self.player_status['jump'] and self.player_status != self.player_status['roll']:
+                    if self.player_status != self.player_status['jump']:
                         self.player_status[status] = False
-                        # Falling
-            elif(self.direction.y > 1 and self.player_status['roll'] == False):
+            # Falling
+            elif(self.direction.y > 1):
 
                 for status in self.player_status:
                     self.player_status['fall'] = True
 
-                    if self.player_status != self.player_status['fall'] and self.player_status != self.player_status['roll']:
+                    if self.player_status != self.player_status['fall']:
                         self.player_status[status] = False
-            elif(self.player_status['roll'] == False):
-                # Running
-                if(self.direction.x != 0):
-                    for status in self.player_status:
-                        self.player_status['run'] = True 
+            # Running
+            # Maybe take out
+            if(self.direction.x != 0 and self.direction.y == 0):
+                for status in self.player_status:
+                    self.player_status['run'] = True 
                         
-                        if self.player_status != self.player_status['run'] and self.player_status != self.player_status['roll']:
-                            self.player_status[status] = False
+                    if self.player_status != self.player_status['run']:
+                        self.player_status[status] = False
                             # Idling
     
-            else:
+            elif(self.direction.x == 0 and self.direction.y == 0):
                                 
                 for status in self.player_status:
                     self.player_status['idle'] = True
                                     
-                    if self.player_status[status] != self.player_status['idle'] and self.player_status != self.player_status['roll']:
-                        self.player_status[status] = False 
-        #Maybe take out                  
-    def roll(self):
-        
-        
-        if(self.facing_right):
-            self.direction.x += 1           
-                
-        elif(not self.facing_right):
-            self.direction.x -= 1           
-                
-    #Collides with enemies
-    def hitbox_rect(self, rect):
-        #if crouching 
-        
-        #else
-        
-        pass
-    
-    #Collides with tiles aka the environment
-    def environment_rect(self, rect):    
-        
-        self.env_rect = rect
-        
-        
-        #if crouching 
-        
-        #else
-    
+                    if self.player_status[status] != self.player_status['idle']:
+                        self.player_status[status] = False           
     
     def jump(self):
   
@@ -835,16 +707,16 @@ class Player(pygame.sprite.Sprite):
         print("env rect:" + str(self.env_rect))
         
         
-        print("rect height:" + str(self.rect.height))
-        print("env rect height:" + str(self.env_rect.height))
-        print("rect width:" + str(self.rect.width))
-        print("env rect width:" + str(self.env_rect.width))
-        print("rect right:" + str(self.rect.right))
-        print("env rect right:" + str(self.env_rect.right))
-        print("rect left:" + str(self.rect.left))
-        print("env rect left:" + str(self.env_rect.left))
-        print("rect x" + str(self.rect.x))
-        print("env rect x:" + str(self.env_rect.x))
+       # print("rect height:" + str(self.rect.height))
+       # print("env rect height:" + str(self.env_rect.height))
+       # print("rect width:" + str(self.rect.width))
+       # print("env rect width:" + str(self.env_rect.width))
+       # print("rect right:" + str(self.rect.right))
+       # print("env rect right:" + str(self.env_rect.right))
+       # print("rect left:" + str(self.rect.left))
+       # print("env rect left:" + str(self.env_rect.left))
+       # print("rect x" + str(self.rect.x))
+       # print("env rect x:" + str(self.env_rect.x))
         print("rect y:" + str(self.rect.y))
         print("env rect y:" + str(self.env_rect.y))
         print("rect bottom:" + str(self.rect.bottom))

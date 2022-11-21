@@ -410,14 +410,14 @@ class Level:
                 if player.direction.x < 0:
                     
                     player.env_rect.left = sprite.rect.right
-                    player.rect.left = player.env_rect.left
+                    player.rect.left = player.env_rect.left - 2
                     player.wall_left = True
                     self.current_x = player.env_rect.left
                 elif player.direction.x > 0:
                     
                     
                     player.env_rect.right = sprite.rect.left
-                    player.rect.right = player.env_rect.right
+                    player.rect.right = player.env_rect.right + 2
                     player.wall_right = True
                     self.current_x = player.env_rect.right    
                     
