@@ -2,6 +2,9 @@ import pygame, sys
 from level_settings import tile_size, screen_width, screen_height
 from tiles import Tile
 from player import Player
+from npc import NPC
+from enemy_1 import Enemy_1
+from enemy_2 import Enemy_2
 
 # iterate through level_map 
 
@@ -37,9 +40,14 @@ class Level:
         #collidable
         self.hard_tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.necromancer = pygame.sprite.GroupSingle()
+        self.skeletons = pygame.sprite.Group()
+        #Figure out how to use this
+        self.summoned_skeletons = pygame.sprite.Group()
         
         #non collidable
         self.soft_tiles = pygame.sprite.Group()
+        self.npc = pygame.sprite.GroupSingle()
         
         
         for row_index, row in enumerate(level_layout):
@@ -137,10 +145,21 @@ class Level:
                   
                     #print(player_sprite.rect.centerx) 
                     self.player.add(player_sprite)
+                  
+                #NECROMANCER
+                if cell == '*':
+                    
+                    necromancer = Enemy_2((x, y))
+                    self.necromancer.add(necromancer)
+                    
+                #SKELETON
                 
-                #enemy
-                # if cell == 'E':
-                #boss
+                if cell == 'E':
+                    
+                    skeleton = Enemy_1((x, y))
+                    self.skeletons.add(skeleton)
+                
+                #SLIME BOSS
                 # if cell == 'S':
                 
                 #Soft tiles
@@ -168,7 +187,7 @@ class Level:
                     
                     tile = Tile((x, y), tile_size, '&')
                     self.soft_tiles.add(tile)
-                    
+              
                 if cell == '(':    
                     
                     tile = Tile((x, y), tile_size, '(')
@@ -338,7 +357,12 @@ class Level:
                     
                     tile = Tile((x, y), tile_size, 'Z')
                     self.soft_tiles.add(tile)
-                                              
+
+                #NPC
+                if cell == '?':
+                    
+                    npc_sprite = NPC((x, y))
+                    self.npc.add(npc_sprite)                                                
     
     def player_camera(self, sprite):
        
@@ -352,6 +376,7 @@ class Level:
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
+        
         if player_x < tile_size * 1 and direction_x < 0 and player.wall_right == False:
             
             self.offset.x = 8
@@ -371,8 +396,6 @@ class Level:
         player = self.player.sprite
         player_y = player.rect.centery
         direction_y = player.direction.y
-        
-        
         
         if player_y < screen_height / 2 and direction_y < 0 :
             
@@ -396,6 +419,7 @@ class Level:
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
         player.env_rect.x += player.direction.x * player.speed          
+        print("CHECK 1")
         
         for sprite in self.hard_tiles.sprites():
             
@@ -457,7 +481,6 @@ class Level:
                     player.on_ceiling = True
                     self.current_y = player.env_rect.bottom
                     
-        
         #            
         if(player.on_ground and player.direction.y < 0 or player.direction.y > 1):
             player.on_ground = False
@@ -468,12 +491,12 @@ class Level:
     def run(self, single_press):
         
         player = self.player.sprite
-        #print(player.rect[0])
-        #print(int(player.rect[1]))
-        #Change to hit_box rect?
-       # pygame.draw.rect(self.display_surface, BLUE, (int(player.hit_box[0]), int(player.hit_box[1]), 80, 20))
+        npc = self.npc.sprite
+        skeletons = self.skeletons.sprites
+        summoned_skeletons = self.summoned_skeletons.sprites
+        necromancer = self.necromancer.sprite
+        
         # Level tiles
-        #self.player_camera(player)
         self.hard_tiles.update(self.offset)
         self.hard_tiles.draw(self.display_surface)
         
@@ -488,8 +511,18 @@ class Level:
         self.scroll_x()
         self.player.draw(self.display_surface)
         
-        #if(player.wall_right == True):
-         #   pygame.quit()
-          #  sys.exit()
+        #NPC
+        self.npc.update()
+        self.npc.draw(self.display_surface)
+        
+        #Skeletons
+        #MIGHT SCREW UP STUFF
+        self.skeletons.update(player)
+        self.skeletons.draw(self.display_surface)
+        
+        #SummonedSkeletons?
+        
+        #Necromancer
+        
               
-        return player
+        return player, npc, skeletons, summoned_skeletons, necromancer
