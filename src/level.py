@@ -512,7 +512,7 @@ class Level:
         self.player.draw(self.display_surface)
         
         #NPC
-        self.npc.update()
+        self.npc.update(self.offset)
         self.npc.draw(self.display_surface)
         
         #Skeletons

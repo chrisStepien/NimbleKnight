@@ -45,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         # self.player_status['attack_1'] = False self.player_status['attack_combo'] = False self.player_status['attack_crouch'] = False self.player_status['crouch'] = False self.player_status['crouch_walk'] = False self.player_status['death'] = False self.player_status['fall'] = False self.player_status['hurt'] = False self.player_status['idle'] = False self.player_status['jump'] = False self.player_status['roll'] = False self.player_status['run'] = False self.player_status['slide'] = False self.player_status['wall_slide'] = False
 
         # Frame speeds
-        self.attack_1_frame_speed = 0.4
+        self.attack_1_frame_speed = 0.8
         self.attack_crouch_frame_speed = 0.4
         self.crouch_frame_speed = 0.1
         self.crouch_walk_frame_speed = 0.2
@@ -196,9 +196,9 @@ class Player(pygame.sprite.Sprite):
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)
                     self.env_rect = self.rect.inflate(-4, -2)
                     self.hit_box = self.rect.inflate(-8, -1)
-                     
+            # Facing Left        
             else:
-                # Facing Left
+                
                 if self.player_status['attack_1'] == True and self.player_status['jump'] == False and self.player_status['fall'] == False and self.player_status['idle'] == False and self.player_status['run'] == False:
 
                     self.att_frame_index += self.attack_1_frame_speed

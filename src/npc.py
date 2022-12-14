@@ -38,6 +38,6 @@ class NPC(pygame.sprite.Sprite):
     #PLEASE SAVE THIS CASTLE FROM THE DEMON LORD
     
     
-    def update(self):
-        
+    def update(self, offset):
+        self.rect.x += offset.x
         self.animate()             
