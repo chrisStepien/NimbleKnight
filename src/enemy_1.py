@@ -33,9 +33,18 @@ class Enemy_1(pygame.sprite.Sprite):
         
         self.facing_right = True
         
+        
+        #health or just one hit
+        self.direction = pygame.math.Vector2(0, 0)
+        self.gravity = 0.5
+        
+        self.start_time = 0
+        
         self.image = self.animations['idle'][self.idle_frame_index]
         self.rect = self.image.get_rect(topleft=pos)        
     
+        print("skele" + str(self.rect))
+        
     def import_enemy_1_assets(self):
         
         self.animations = {'attack': [], 'death': [], 'hurt': [], 'idle': [], 'react': [], 'walk': []}    
@@ -45,6 +54,10 @@ class Enemy_1(pygame.sprite.Sprite):
             self.default_path = './assets/enemies/skeleton/'
             self.default_path += animation
             self.animations[animation] = import_enemy_1(self.default_path)
+    def apply_gravity(self):
+        
+        self.direction.y += self.gravity
+        self.rect.y += self.direction.y
     
     def calculate_distance(self, player): 
     
@@ -66,7 +79,9 @@ class Enemy_1(pygame.sprite.Sprite):
         if loc_x_diff < 400 and loc_x_diff > -400:
             self.isAnimating = True
         else:
-            self.isAnimating = False   
+            self.isAnimating = False
+            self.start_time = 0
+               
         #Check for player aggro    
         if (loc_x_diff < 200 and loc_x_diff > -200) and (loc_y_diff < 100 and loc_y_diff > -100) and self.isAggro:
             self.isAggro = True
@@ -84,21 +99,37 @@ class Enemy_1(pygame.sprite.Sprite):
         self.enemy_logic(loc_x_diff, loc_y_diff)
     
     def randomize_movement(self):
-        
-        result = random.randint(1,)
-    
-        #idle - even
-       
-        #walk - odd
-       
-        #turn right and walk
-        
-        #turn right and idle
-        
-        #turn left and walk
-        
-        #turn left and idle 
-
+        time = pygame.time.get_ticks() - self.start_time
+        random_time = random.randint(4000, 8000)
+        print("time" + str(time))
+        print("ticks" + str(pygame.time.get_ticks()))
+        print("start" + str(self.start_time))
+        if(time > random_time):
+            result = random.randint(1, 4)
+            self.start_time = pygame.time.get_ticks()
+            print("result: " + str(result))
+            print(self.start_time)
+            #turn right and walk
+            if(result == 1):
+                self.facing_right = True
+                self.isWalking = True
+                
+            #turn left and walk
+            elif(result == 2):
+                self.facing_right = False
+                self.isWalking = True
+            
+            #turn right and idle
+            elif(result == 3):
+                self.facing_right = True
+                self.isWalking = False
+                self.isIdle = True
+                
+            #turn left and idle 
+            elif(result == 4):
+                self.isWalking = False
+                self.isIdle = True
+                self.facing_right = False
 
     def enemy_logic(self, x_diff, y_diff):
         
@@ -107,9 +138,19 @@ class Enemy_1(pygame.sprite.Sprite):
         elif x_diff < 0 and self.isAggro and not self.isAttacking:    
             self.facing_right = True
             
-        if not self.isAggro:
-            return
-        
+        if not self.isAggro and self.isAnimating:
+              
+            self.randomize_movement()
+            
+            if self.isWalking:
+                if self.facing_right:
+                    self.walk_frame_speed = 0.3
+                    self.rect.x += 2
+                else:
+                    self.rect.x -= 2
+                    self.walk_frame_speed = 0.3
+                    
+                    
         elif self.isReact:
             if x_diff > 0:
                 self.isWalking = False
@@ -117,22 +158,28 @@ class Enemy_1(pygame.sprite.Sprite):
             if x_diff < 0:    
                 self.isWalking = False
         else:    
-            if self.isAggro:    
+            if self.isAggro:
+                if x_diff <= 10 and x_diff >= -10 and not self.isAttacking:
+
+                    self.isWalking = False
+                    self.isIdle = True
+                    
                 if x_diff > 10 and not self.isAttacking:
-                    self.isAttacking = False
                     self.isWalking = True
-                    self.rect.x -= 3
+                    self.walk_frame_speed = 0.6
+                    self.rect.x -= 4
                     
                 if x_diff < -10 and not self.isAttacking:
-                    self.isAttacking = False
-                    self.isWalking = True    
-                    self.rect.x += 3
+                    self.isWalking = True
+                    self.walk_frame_speed = 0.6    
+                    self.rect.x += 4
                     
                 if (x_diff < 20 and x_diff > -20) and  (y_diff < 20 and y_diff > -20) or self.isAttacking:
                     self.isAttacking = True    
                     self.isWalking = False 
             else:
                 #Maybe take out when adding random movement
+                #add to put everything top false maybe
                 self.isWalking = False
                 
         #Add another boolean to check for react and set false if true and check to activate if both true    
@@ -290,5 +337,7 @@ class Enemy_1(pygame.sprite.Sprite):
                 
     def update(self, player):
         
+        
         self.calculate_distance(player)
+        self.apply_gravity()
         self.animate()    
