@@ -18,6 +18,7 @@ def import_player_animations(path):
                
     return player_animations      
 
+# Skeleton
 def import_enemy_1(path):
     
     enemy_1_animations = []
@@ -28,7 +29,8 @@ def import_enemy_1(path):
         enemy_1_animations.append(frame)    
                
     return enemy_1_animations
-    
+
+# Necromancer (Coming soon!)    
 def import_enemy_2(path):
     
     enemy_2_animations = []
@@ -40,6 +42,7 @@ def import_enemy_2(path):
                
     return enemy_2_animations 
 
+# Mage
 def import_npc(path):
     
     npc_animation = []
@@ -50,7 +53,16 @@ def import_npc(path):
         npc_animation.append(frame)    
                
     return npc_animation
-            
-#import enemies and randomize
 
-#import boss 
+# Demon Slime
+
+def import_boss(path):
+    
+    boss_animations = []
+    
+    for assetname in os.listdir(path):
+        frame_path = path + '/' + assetname
+        frame = pygame.image.load(frame_path).convert_alpha()
+        boss_animations.append(frame)
+    
+    return boss_animations     

@@ -11,9 +11,8 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.generate_tile(tile, pos)
     
-    def update(self,offset):
+    def update(self, offset):
         self.rect.x += offset.x
-        self.rect.y += offset.y    
         
     def import_tile_assets(self):
         #Some are named due to file naming conventions '{': [], '}': [],

@@ -32,8 +32,10 @@ class Enemy_1(pygame.sprite.Sprite):
         self.isReact = False
         
         self.facing_right = True
+        self.wall_right = False
+        self.wall_left = False
         
-        
+        self.speed = 2
         #health or just one hit
         self.direction = pygame.math.Vector2(0, 0)
         self.gravity = 0.5
@@ -54,6 +56,7 @@ class Enemy_1(pygame.sprite.Sprite):
             self.default_path = './assets/enemies/skeleton/'
             self.default_path += animation
             self.animations[animation] = import_enemy_1(self.default_path)
+    
     def apply_gravity(self):
         
         self.direction.y += self.gravity
@@ -107,8 +110,6 @@ class Enemy_1(pygame.sprite.Sprite):
         if(time > random_time):
             result = random.randint(1, 4)
             self.start_time = pygame.time.get_ticks()
-            print("result: " + str(result))
-            print(self.start_time)
             #turn right and walk
             if(result == 1):
                 self.facing_right = True
@@ -132,25 +133,36 @@ class Enemy_1(pygame.sprite.Sprite):
                 self.facing_right = False
 
     def enemy_logic(self, x_diff, y_diff):
-        
+        # Get direction
         if x_diff > 0 and self.isAggro and not self.isAttacking:
             self.facing_right = False
         elif x_diff < 0 and self.isAggro and not self.isAttacking:    
             self.facing_right = True
-            
+        
+        #Collision
+        if (self.wall_left and not self.facing_right):
+            self.isWalking = False
+            self.isIdle = True  
+        elif(self.wall_right and self.facing_right):
+            self.isWalking = False
+            self.isIdle = True  
+    
+        #Movement logic    
         if not self.isAggro and self.isAnimating:
               
             self.randomize_movement()
             
             if self.isWalking:
-                if self.facing_right:
+                if self.facing_right and not self.wall_right:
                     self.walk_frame_speed = 0.3
-                    self.rect.x += 2
+                    self.speed = 2
+                    self.rect.x += self.speed
+                elif not self.facing_right and not self.wall_left:
+                    self.speed = 2
+                    self.rect.x -= self.speed
+                    self.walk_frame_speed = 0.3     
                 else:
-                    self.rect.x -= 2
-                    self.walk_frame_speed = 0.3
-                    
-                    
+                    self.isWalking = False    
         elif self.isReact:
             if x_diff > 0:
                 self.isWalking = False
@@ -164,15 +176,17 @@ class Enemy_1(pygame.sprite.Sprite):
                     self.isWalking = False
                     self.isIdle = True
                     
-                if x_diff > 10 and not self.isAttacking:
+                if x_diff > 10 and not self.isAttacking and not self.wall_left:
                     self.isWalking = True
                     self.walk_frame_speed = 0.6
-                    self.rect.x -= 4
+                    self.speed = 4
+                    self.rect.x -= self.speed
                     
-                if x_diff < -10 and not self.isAttacking:
+                if x_diff < -10 and not self.isAttacking and not self.wall_right:
                     self.isWalking = True
-                    self.walk_frame_speed = 0.6    
-                    self.rect.x += 4
+                    self.walk_frame_speed = 0.6   
+                    self.speed = 4 
+                    self.rect.x += self.speed
                     
                 if (x_diff < 20 and x_diff > -20) and  (y_diff < 20 and y_diff > -20) or self.isAttacking:
                     self.isAttacking = True    
@@ -181,7 +195,11 @@ class Enemy_1(pygame.sprite.Sprite):
                 #Maybe take out when adding random movement
                 #add to put everything top false maybe
                 self.isWalking = False
-                
+        
+        
+        
+        print("Walking: " + str(self.isWalking))
+        print("facing right: " + str(self.facing_right))             
         #Add another boolean to check for react and set false if true and check to activate if both true    
             
     def animate(self):
@@ -334,10 +352,13 @@ class Enemy_1(pygame.sprite.Sprite):
                     self.image = flipped_image
                     self.rect = self.image.get_rect(topleft=self.rect.topleft) 
                 
+    def set_offset(self, offset):
+        
+        self.rect.x += offset.x
                 
-    def update(self, player):
+    def update(self, offset, player):
         
-        
+        self.set_offset(offset)
         self.calculate_distance(player)
         self.apply_gravity()
         self.animate()    

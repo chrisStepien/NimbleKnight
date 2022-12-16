@@ -5,6 +5,7 @@ from player import Player
 from npc import NPC
 from enemy_1 import Enemy_1
 from enemy_2 import Enemy_2
+from boss import Boss
 
 # iterate through level_map
 
@@ -45,6 +46,7 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.necromancer = pygame.sprite.GroupSingle()
         self.skeletons = pygame.sprite.Group()
+        self.boss = pygame.sprite.GroupSingle()
         #Figure out how to use this
         self.summoned_skeletons = pygame.sprite.Group()
 
@@ -163,7 +165,10 @@ class Level:
                     self.skeletons.add(skeleton)
 
                 #SLIME BOSS
-                # if cell == 'S':
+                if cell == 'S':
+                    
+                    boss_sprite = Boss((x, y))
+                    self.boss.add(boss_sprite)
 
                 #Soft tiles
                 if cell == '!':
@@ -423,7 +428,6 @@ class Level:
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
         player.env_rect.x += player.direction.x * player.speed
-        print("CHECK 1")
 
         for sprite in self.hard_tiles.sprites():
 
@@ -494,12 +498,12 @@ class Level:
 
 
     def enemy_horizontal_collision(self):
-
+        
         for skeleton in self.skeletons.sprites():
+            skeleton.rect.x += skeleton.direction.x * skeleton.speed
 
             # skeleton.rect.x += skeleton.direction.x * skeleton.speed
         # player.env_rect.x += player.direction.x * player.speed
-            print("CHECK 1")
 
             for sprite in self.hard_tiles.sprites():
 
@@ -511,13 +515,13 @@ class Level:
 
                         skeleton.rect.left = sprite.rect.right
                         skeleton.wall_left = True
-                        self.current_x = skeleton.rect.left
+                        self.enemy_current_x = skeleton.rect.left
                     elif skeleton.direction.x > 0:
 
 
                         skeleton.rect.right = sprite.rect.left
                         skeleton.wall_right = True
-                        self.current_x = skeleton.rect.right
+                        self.enemy_current_x = skeleton.rect.right
 
 
                         #
@@ -538,18 +542,30 @@ class Level:
         #check for specific tile (the cliff one to turn before falling)
             for sprite in self.hard_tiles.sprites():
                 if sprite.rect.colliderect(skeleton.rect):
+                    if sprite.id == ']' or sprite.id == '>':
+                        print("RIGHT")
+                        skeleton.wall_right = True
+                        skeleton.speed = 0
+                    elif sprite.id == '[' or sprite.id == '<':
+                        print("LEFT")
+                        skeleton.wall_left = True
+                        skeleton.speed = 0    
+                    else:
+                        skeleton.wall_left = False
+                        skeleton.wall_right = False
+                    
                     if skeleton.direction.y > 0:
                         skeleton.rect.bottom = sprite.rect.top
 
                         skeleton.direction.y = 0
                         # skeleton.on_ground = True
-                        self.current_y = skeleton.rect.top
-                    elif skeleton.direction.y < 0:
-                        skeleton.rect.top = sprite.rect.bottom
+                        self.enemy_current_y = skeleton.rect.top
+                    # elif skeleton.direction.y < 0:
+                    #     skeleton.rect.top = sprite.rect.bottom
 
-                        skeleton.direction.y = 0
-                        # skeleton.on_ceiling = True
-                        self.current_y = skeleton.rect.bottom
+                    #     skeleton.direction.y = 0
+                    #     # skeleton.on_ceiling = True
+                    #     self.enemy_current_y = skeleton.rect.bottom
 
             #
             # if(player.on_ground and player.direction.y < 0 or player.direction.y > 1):
@@ -596,10 +612,14 @@ class Level:
 
         #Skeletons
         #MIGHT SCREW UP STUFF
-        self.skeletons.update(player)
+        self.skeletons.update(self.offset, player)
         self.enemy_vertical_collision()
         self.enemy_horizontal_collision()
         self.skeletons.draw(self.display_surface)
+
+
+        self.boss.update(player)
+        self.boss.draw(self.display_surface)
 
         #SummonedSkeletons?
 
