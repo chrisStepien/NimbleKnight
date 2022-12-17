@@ -55,7 +55,6 @@ def import_npc(path):
     return npc_animation
 
 # Demon Slime
-
 def import_boss(path):
     
     boss_animations = []
@@ -65,4 +64,16 @@ def import_boss(path):
         frame = pygame.image.load(frame_path).convert_alpha()
         boss_animations.append(frame)
     
-    return boss_animations     
+    return boss_animations
+
+# Additional attacks for Boss
+def import_additional_attacks(path):
+    
+    attack_animations = []
+    
+    for assetname in os.listdir(path):
+        frame_path = path + '/' + assetname
+        frame = pygame.image.load(frame_path).convert_alpha()
+        attack_animations.append(frame)
+    
+    return attack_animations         
