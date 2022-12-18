@@ -63,6 +63,8 @@ class Player(pygame.sprite.Sprite):
         self.on_ceiling = False
         self.wall_right = False
         self.wall_left = False
+        
+        self.speed = 5
 
     # import
     def import_player_assets(self):
@@ -422,6 +424,8 @@ class Player(pygame.sprite.Sprite):
             else:
                 if (keys[pygame.K_w] and self.on_ground == True):
                   
+                    print(self.on_ceiling)
+                    
                     self.player_status['jump'] = True
                     self.player_status['attack_crouch'] = False
                     self.player_status['crouch'] = False
@@ -647,8 +651,8 @@ class Player(pygame.sprite.Sprite):
 
        
         
-        print(self.player_status['attack_1'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
-              self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['run'], self.player_status["wall_slide"])
+        # print(self.player_status['attack_1'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
+        #       self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['run'], self.player_status["wall_slide"])
         
 
     def apply_gravity(self):

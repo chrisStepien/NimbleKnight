@@ -7,9 +7,9 @@ from player import *
 # General setup
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
-Background = Background('./assets/background/background.png', (0,0))
+Background = Background('./assets/background/background.png', (0,0), (screen_width, screen_height))
 clock = pygame.time.Clock()
-fps = 10
+fps = 20
 
 level = Level(level_map, screen)
 key_pressed = False

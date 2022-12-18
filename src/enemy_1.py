@@ -45,7 +45,6 @@ class Enemy_1(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.idle_frame_index]
         self.rect = self.image.get_rect(topleft=pos)        
     
-        print("skele" + str(self.rect))
         
     def import_enemy_1_assets(self):
         
@@ -74,10 +73,6 @@ class Enemy_1(pygame.sprite.Sprite):
         loc_y_diff = skeleton_y - player_y
         
         
-        print("Skel:" + str(skeleton_x))
-        print("player:" + str(player_x))
-        print("diff:" + str(loc_x_diff))
-        
         #Check for animation and movement
         if loc_x_diff < 400 and loc_x_diff > -400:
             self.isAnimating = True
@@ -104,9 +99,6 @@ class Enemy_1(pygame.sprite.Sprite):
     def randomize_movement(self):
         time = pygame.time.get_ticks() - self.start_time
         random_time = random.randint(4000, 8000)
-        print("time" + str(time))
-        print("ticks" + str(pygame.time.get_ticks()))
-        print("start" + str(self.start_time))
         if(time > random_time):
             result = random.randint(1, 4)
             self.start_time = pygame.time.get_ticks()
@@ -153,6 +145,7 @@ class Enemy_1(pygame.sprite.Sprite):
             self.randomize_movement()
             
             if self.isWalking:
+                
                 if self.facing_right and not self.wall_right:
                     self.walk_frame_speed = 0.3
                     self.speed = 2
@@ -195,11 +188,7 @@ class Enemy_1(pygame.sprite.Sprite):
                 #Maybe take out when adding random movement
                 #add to put everything top false maybe
                 self.isWalking = False
-        
-        
-        
-        print("Walking: " + str(self.isWalking))
-        print("facing right: " + str(self.facing_right))             
+                    
         #Add another boolean to check for react and set false if true and check to activate if both true    
             
     def animate(self):

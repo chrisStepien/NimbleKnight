@@ -10,15 +10,15 @@ class NPC(pygame.sprite.Sprite):
         self.frame_index = 0
         self.frame_speed = 0.2
         
-        self.image = self.animations['idle'][self.frame_index]
+        self.image = self.animations['npc'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
 
     def import_npc_assets(self):
-        self.animations = {'idle': []}
+        self.animations = {'npc': []}
         
         for animation in self.animations.keys():
             
-            self.default_path = './assets/npc/'
+            self.default_path = './assets/'
             self.default_path += animation
             self.animations[animation] = import_npc(self.default_path)    
     
@@ -27,11 +27,11 @@ class NPC(pygame.sprite.Sprite):
         
         self.frame_index += self.frame_speed 
         
-        if self.frame_index > len(self.animations['idle']) - 1:
+        if self.frame_index > len(self.animations['npc']) - 1:
             
             self.frame_index = 0
         
-        self.image = self.animations['idle'][int(self.frame_index)]
+        self.image = self.animations['npc'][int(self.frame_index)]
         self.rect = self.image.get_rect(topleft=self.rect.topleft)
     
     #PRINT WORDING ABOVE HEAD OR SOMETHING

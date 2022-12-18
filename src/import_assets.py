@@ -67,13 +67,25 @@ def import_boss(path):
     return boss_animations
 
 # Additional attacks for Boss
-def import_additional_attacks(path):
+def import_fire_column(path):
     
-    attack_animations = []
+    column_animations = []
     
     for assetname in os.listdir(path):
         frame_path = path + '/' + assetname
         frame = pygame.image.load(frame_path).convert_alpha()
-        attack_animations.append(frame)
+        column_animations.append(frame)
     
-    return attack_animations         
+    return column_animations         
+
+# Additional attacks for Boss
+def import_fire_ball(path):
+    
+    ball_animations = []
+    
+    for assetname in os.listdir(path):
+        frame_path = path + '/' + assetname
+        frame = pygame.image.load(frame_path).convert_alpha()
+        ball_animations.append(frame)
+    
+    return ball_animations  

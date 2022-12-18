@@ -16,7 +16,7 @@ class Tile(pygame.sprite.Sprite):
         
     def import_tile_assets(self):
         #Some are named due to file naming conventions '{': [], '}': [],
-        self.hard_tiles = {'-': [], '[': [], ']': [], '_': [], '8': [], '9': [], 'D': [], 'U': [], 'ceiling_corner_L': [], 'ceiling_corner_R': [], 'ceiling_side': [], 'platform_L': [], 'platform_M': [], 'platform_R': []}
+        self.hard_tiles = {'-': [], '[': [], ']': [], '_': [], '8': [], '9': [], 'D': [], 'U': [], 'ceiling_corner_L': [], 'ceiling_corner_R': [], 'ceiling_corner_left': [], 'ceiling_corner_right': [], 'platform_L': [], 'platform_M': [], 'platform_R': []}
         self.soft_tiles = {'!': [], '#': [], '$': [], '%': [], '&': [], '(': [], ')': [], '@': [], '^': [], '~': [], '0': [], '1': [], '2': [], '3': [], '4': [], '5': [], '6': [], '7': [], 'A': [], 'B': [], 'C': [], 'F': [], 'G': [], 'H': [], 'I': [], 'J': [], 'K': [], 'L': [], 'M': [], 'N': [], 'O': [], 'Q': [], 'R': [], 'T': [], 'V': [], 'W': [], 'X': [], 'Y': [], 'Z': []}
         
         #Hard tiles import
@@ -51,290 +51,296 @@ class Tile(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '-'
             
-        if(tile == '['):
+        elif(tile == '['):
             
             self.image = self.hard_tiles['[']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '['
             
             
-        if(tile == ']'):
+        elif(tile == ']'):
         
             self.image = self.hard_tiles[']']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = ']'
             
-        if(tile == '_'):   
+        elif(tile == '_'):   
             
             self.image = self.hard_tiles['_']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '_'
             
-        if(tile == '{'):
+        elif(tile == '{'):
             
             self.image = self.hard_tiles['{']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '{'
             
             
-        if(tile == '}'):
+        elif(tile == '}'):
             
             self.image = self.hard_tiles['}']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '}'
             
-        if(tile == '/'):
+        elif(tile == '/'):
             
             self.image = self.hard_tiles['ceiling_corner_L']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '/'
             
-        if(tile == '|'):
+        elif(tile == '|'):
             
             self.image = self.hard_tiles['ceiling_corner_R']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '|'            
+        
+        elif(tile == ';'):
             
-        if(tile == ':'):
+            self.image = self.hard_tiles['ceiling_corner_left']
+            self.rect = self.image.get_rect(topleft = pos)
+            self.id = ';'
             
-            self.image = self.hard_tiles['ceiling_side']
+        elif(tile == ':'):
+            
+            self.image = self.hard_tiles['ceiling_corner_right']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = ':'
             
-        if(tile == '<'):                    
+        elif(tile == '<'):                    
                     
             self.image = self.hard_tiles['platform_L']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '<'
               
-        if(tile == '='):
+        elif(tile == '='):
         
             self.image = self.hard_tiles['platform_M']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '='
 
-        if(tile == '>'):
+        elif(tile == '>'):
         
             self.image = self.hard_tiles['platform_R']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '>'
             
-        if(tile == '8'):
+        elif(tile == '8'):
         
             self.image = self.hard_tiles['8']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '8'
 
-        if(tile == '9'):                    
+        elif(tile == '9'):                    
                     
             self.image = self.hard_tiles['9']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '9'
             
-        if(tile == 'D'):
+        elif(tile == 'D'):
         
             self.image = self.hard_tiles['D']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = 'D'
             
-        if(tile == 'U'):
+        elif(tile == 'U'):
         
             self.image = self.hard_tiles['U']
             self.rect = self.image.get_rect(topleft = pos)
             self.id = 'U'
 
         #Soft tiles
-        if(tile == '!'):
+        elif(tile == '!'):
             
             self.image = self.soft_tiles['!']
             self.rect = self.image.get_rect(topleft = pos)
       
-        if(tile == '#'):
+        elif(tile == '#'):
             
             self.image = self.soft_tiles['#']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '$'):
+        elif(tile == '$'):
         
             self.image = self.soft_tiles['$']
             self.rect = self.image.get_rect(topleft = pos)
 
-        if(tile == '%'):   
+        elif(tile == '%'):   
             
             self.image = self.soft_tiles['%']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '&'):
+        elif(tile == '&'):
             
             self.image = self.soft_tiles['&']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '('):
+        elif(tile == '('):
             
             self.image = self.soft_tiles['(']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == ')'):
+        elif(tile == ')'):
             
             self.image = self.soft_tiles[')']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '@'):
+        elif(tile == '@'):
             
             self.image = self.soft_tiles['@']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '^'):
+        elif(tile == '^'):
             
             self.image = self.soft_tiles['^']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '~'):                    
+        elif(tile == '~'):                    
                     
             self.image = self.soft_tiles['~']
             self.rect = self.image.get_rect(topleft = pos)
               
-        if(tile == '0'):
+        elif(tile == '0'):
         
             self.image = self.soft_tiles['0']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == '1'):
+        elif(tile == '1'):
         
             self.image = self.soft_tiles['1']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '2'):
+        elif(tile == '2'):
         
             self.image = self.soft_tiles['2']
             self.rect = self.image.get_rect(topleft = pos)
 
-        if(tile == '3'):
+        elif(tile == '3'):
         
             self.image = self.soft_tiles['3']
             self.rect = self.image.get_rect(topleft = pos)    
         
-        if(tile == '4'):                    
+        elif(tile == '4'):                    
                     
             self.image = self.soft_tiles['4']
             self.rect = self.image.get_rect(topleft = pos)
               
-        if(tile == '5'):
+        elif(tile == '5'):
         
             self.image = self.soft_tiles['5']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == '6'):
+        elif(tile == '6'):
         
             self.image = self.soft_tiles['6']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == '7'):
+        elif(tile == '7'):
         
             self.image = self.soft_tiles['7']
             self.rect = self.image.get_rect(topleft = pos)
               
-        if(tile == 'A'):
+        elif(tile == 'A'):
         
             self.image = self.soft_tiles['A']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'B'):
+        elif(tile == 'B'):
         
             self.image = self.soft_tiles['B']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == 'C'):
+        elif(tile == 'C'):
         
             self.image = self.soft_tiles['C']
             self.rect = self.image.get_rect(topleft = pos)
 
-        if(tile == 'F'):
+        elif(tile == 'F'):
         
             self.image = self.soft_tiles['F']
             self.rect = self.image.get_rect(topleft = pos)              
         
-        if(tile == 'G'):
+        elif(tile == 'G'):
         
             self.image = self.soft_tiles['G']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'H'):                    
+        elif(tile == 'H'):                    
                     
             self.image = self.soft_tiles['H']
             self.rect = self.image.get_rect(topleft = pos)
               
-        if(tile == 'I'):
+        elif(tile == 'I'):
         
             self.image = self.soft_tiles['I']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'J'):
+        elif(tile == 'J'):
         
             self.image = self.soft_tiles['J']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == 'K'):
+        elif(tile == 'K'):
         
             self.image = self.soft_tiles['K']
             self.rect = self.image.get_rect(topleft = pos)
 
-        if(tile == 'L'):
+        elif(tile == 'L'):
         
             self.image = self.soft_tiles['L']
             self.rect = self.image.get_rect(topleft = pos)       
         
-        if(tile == 'M'):
+        elif(tile == 'M'):
         
             self.image = self.soft_tiles['M']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'N'):                    
+        elif(tile == 'N'):                    
                     
             self.image = self.soft_tiles['N']
             self.rect = self.image.get_rect(topleft = pos)
               
-        if(tile == 'O'):
+        elif(tile == 'O'):
         
             self.image = self.soft_tiles['O']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'Q'):
+        elif(tile == 'Q'):
         
             self.image = self.soft_tiles['Q']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == 'R'):
+        elif(tile == 'R'):
         
             self.image = self.soft_tiles['R']
             self.rect = self.image.get_rect(topleft = pos)
 
-        if(tile == 'T'):
+        elif(tile == 'T'):
         
             self.image = self.soft_tiles['T']
             self.rect = self.image.get_rect(topleft = pos)       
         
-        if(tile == 'V'):
+        elif(tile == 'V'):
         
             self.image = self.soft_tiles['V']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'W'):                    
+        elif(tile == 'W'):                    
                     
             self.image = self.soft_tiles['W']
             self.rect = self.image.get_rect(topleft = pos)
               
-        if(tile == 'X'):
+        elif(tile == 'X'):
         
             self.image = self.soft_tiles['X']
             self.rect = self.image.get_rect(topleft = pos)
         
-        if(tile == 'Y'):
+        elif(tile == 'Y'):
         
             self.image = self.soft_tiles['Y']
             self.rect = self.image.get_rect(topleft = pos)
             
-        if(tile == 'Z'):
+        elif(tile == 'Z'):
         
             self.image = self.soft_tiles['Z']
             self.rect = self.image.get_rect(topleft = pos)     
