@@ -35,7 +35,8 @@ class Level:
         #similar to below
         #self.x_shift = 0
         #self.y_shift = 0
-
+        self.xScroll_on = False
+        self.yScroll_on = False
     # def spawn_fire(self, spawn_locations):
     #     #Seperate attacks
     #     self.fire_column = pygame.sprite.Group()
@@ -80,90 +81,99 @@ class Level:
                     x = col_index * tile_size
                     y = row_index * tile_size
 
-                    #maybe ( and ) but only if decreasing size of rect stairs needs that
-                    #Why tile_size exist?
+                    #Most Common
+                    if cell == 'B':
+
+                        tile = Tile((x, y), tile_size, 'B')
+                        self.soft_tiles.add(tile) 
+                    
+                    elif cell == 'X':
+
+                        tile = Tile((x, y), tile_size, 'X')
+                        self.soft_tiles.add(tile)     
+                    
                     #Hard tiles
-                    if cell == '-':
+                    elif cell == '-':
 
                         tile = Tile((x, y), tile_size, '-')
                         self.hard_tiles.add(tile)
 
-                    if cell == '[':
+                    elif cell == '[':
 
                         tile = Tile((x, y), tile_size, '[')
                         self.hard_tiles.add(tile)
 
-                    if cell == ']':
+                    elif cell == ']':
 
                         tile = Tile((x, y), tile_size, ']')
                         self.hard_tiles.add(tile)
 
-                    if cell == '_':
+                    elif cell == '_':
 
                         tile = Tile((x, y), tile_size, '_')
                         self.hard_tiles.add(tile)
 
-                    if cell == '{':
+                    elif cell == '{':
 
                         tile = Tile((x, y), tile_size, '{')
                         self.hard_tiles.add(tile)
 
-                    if cell == '}':
+                    elif cell == '}':
 
                         tile = Tile((x, y), tile_size, '}')
                         self.hard_tiles.add(tile)
 
-                    if cell == '/':
+                    elif cell == '/':
 
                         tile = Tile((x, y), tile_size, '/')
                         self.hard_tiles.add(tile)
 
-                    if cell == '|':
+                    elif cell == '|':
 
                         tile = Tile((x, y), tile_size, '|')
                         self.hard_tiles.add(tile)
 
-                    if cell == ':':
+                    elif cell == ':':
 
                         tile = Tile((x, y), tile_size, ':')
                         self.hard_tiles.add(tile)
 
-                    if cell == '<':
+                    elif cell == '<':
 
                         tile = Tile((x, y), tile_size, '<')
                         self.hard_tiles.add(tile)
 
-                    if cell == '=':
+                    elif cell == '=':
 
                         tile = Tile((x, y), tile_size, '=')
                         self.hard_tiles.add(tile)
 
-                    if cell == '>':
+                    elif cell == '>':
 
                         tile = Tile((x, y), tile_size, '>')
                         self.hard_tiles.add(tile)
 
-                    if cell == '8':
+                    elif cell == '8':
 
                         tile = Tile((x, y), tile_size, '8')
                         self.hard_tiles.add(tile)
 
-                    if cell == '9':
+                    elif cell == '9':
 
                         tile = Tile((x, y), tile_size, '9')
                         self.hard_tiles.add(tile)
 
-                    if cell == 'D':
+                    elif cell == 'D':
 
                         tile = Tile((x, y), tile_size, 'D')
                         self.hard_tiles.add(tile)
 
-                    if cell == 'U':
+                    elif cell == 'U':
 
                         tile = Tile((x, y), tile_size, 'U')
                         self.hard_tiles.add(tile)
 
-                    if cell == 'P':
+                    elif cell == 'P':
 
                         player_sprite = Player((x, y))
 
@@ -171,232 +181,215 @@ class Level:
                         self.player.add(player_sprite)
 
                     #NECROMANCER
-                    if cell == '*':
+                    elif cell == '*':
 
                         necromancer = Enemy_2((x, y))
                         self.necromancer.add(necromancer)
 
                     #SKELETON
 
-                    if cell == 'E':
+                    elif cell == 'E':
 
                         skeleton = Enemy_1((x, y))
                         self.skeletons.add(skeleton)
 
                     #SLIME BOSS
-                    if cell == 'S':
+                    elif cell == 'S':
                         
                         boss_sprite = Boss((x, y))
                         self.boss.add(boss_sprite)
 
                     #Soft tiles
-                    if cell == '!':
+                    elif cell == '!':
 
                         tile = Tile((x, y), tile_size, '!')
                         self.soft_tiles.add(tile)
 
-                    if cell == '#':
+                    elif cell == '#':
 
                         tile = Tile((x, y), tile_size, '#')
                         self.soft_tiles.add(tile)
 
-                    if cell == '$':
+                    elif cell == '$':
 
                         tile = Tile((x, y), tile_size, '$')
                         self.soft_tiles.add(tile)
 
-                    if cell == '%':
+                    elif cell == '%':
 
                         tile = Tile((x, y), tile_size, '%')
                         self.soft_tiles.add(tile)
 
-                    if cell == '&':
+                    elif cell == '&':
 
                         tile = Tile((x, y), tile_size, '&')
                         self.soft_tiles.add(tile)
 
-                    if cell == '(':
+                    elif cell == '(':
 
                         tile = Tile((x, y), tile_size, '(')
                         self.soft_tiles.add(tile)
 
-                    if cell == ')':
+                    elif cell == ')':
 
                         tile = Tile((x, y), tile_size, ')')
                         self.soft_tiles.add(tile)
 
-                    if cell == '@':
+                    elif cell == '@':
 
                         tile = Tile((x, y), tile_size, '@')
                         self.soft_tiles.add(tile)
 
-                    if cell == '^':
+                    elif cell == '^':
 
                         tile = Tile((x, y), tile_size, '^')
                         self.soft_tiles.add(tile)
 
-                    if cell == '~':
+                    elif cell == '~':
 
                         tile = Tile((x, y), tile_size, '~')
                         self.soft_tiles.add(tile)
 
-                    if cell == '0':
+                    elif cell == '0':
 
                         tile = Tile((x, y), tile_size, '0')
                         self.soft_tiles.add(tile)
 
-                    if cell == '1':
+                    elif cell == '1':
 
                         tile = Tile((x, y), tile_size, '1')
                         self.soft_tiles.add(tile)
 
-                    if cell == '2':
+                    elif cell == '2':
 
                         tile = Tile((x, y), tile_size, '2')
                         self.soft_tiles.add(tile)
 
-                    if cell == '3':
+                    elif cell == '3':
 
                         tile = Tile((x, y), tile_size, '3')
                         self.soft_tiles.add(tile)
 
-                    if cell == '4':
+                    elif cell == '4':
 
                         tile = Tile((x, y), tile_size, '4')
                         self.soft_tiles.add(tile)
 
-                    if cell == '5':
+                    elif cell == '5':
 
                         tile = Tile((x, y), tile_size, '5')
                         self.soft_tiles.add(tile)
 
-                    if cell == '6':
+                    elif cell == '6':
 
                         tile = Tile((x, y), tile_size, '6')
                         self.soft_tiles.add(tile)
 
-                    if cell == '7':
+                    elif cell == '7':
 
                         tile = Tile((x, y), tile_size, '7')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'A':
+                    elif cell == 'A':
 
                         tile = Tile((x, y), tile_size, 'A')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'B':
-
-                        tile = Tile((x, y), tile_size, 'B')
-                        self.soft_tiles.add(tile)
-
-                    if cell == 'C':
+                    elif cell == 'C':
 
                         tile = Tile((x, y), tile_size, 'C')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'F':
+                    elif cell == 'F':
 
                         tile = Tile((x, y), tile_size, 'F')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'G':
+                    elif cell == 'G':
 
                         tile = Tile((x, y), tile_size, 'G')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'H':
+                    elif cell == 'H':
 
                         tile = Tile((x, y), tile_size, 'H')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'I':
+                    elif cell == 'I':
 
                         tile = Tile((x, y), tile_size, 'I')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'J':
+                    elif cell == 'J':
 
                         tile = Tile((x, y), tile_size, 'J')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'K':
+                    elif cell == 'K':
 
                         tile = Tile((x, y), tile_size, 'K')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'L':
+                    elif cell == 'L':
 
                         tile = Tile((x, y), tile_size, 'L')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'M':
+                    elif cell == 'M':
 
                         tile = Tile((x, y), tile_size, 'M')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'N':
+                    elif cell == 'N':
 
                         tile = Tile((x, y), tile_size, 'N')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'O':
+                    elif cell == 'O':
 
                         tile = Tile((x, y), tile_size, 'O')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'Q':
+                    elif cell == 'Q':
 
                         tile = Tile((x, y), tile_size, 'Q')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'R':
+                    elif cell == 'R':
 
                         tile = Tile((x, y), tile_size, 'R')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'T':
+                    elif cell == 'T':
 
                         tile = Tile((x, y), tile_size, 'T')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'V':
+                    elif cell == 'V':
 
                         tile = Tile((x, y), tile_size, 'V')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'W':
+                    elif cell == 'W':
 
                         tile = Tile((x, y), tile_size, 'W')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'X':
-
-                        tile = Tile((x, y), tile_size, 'X')
-                        self.soft_tiles.add(tile)
-
-                    if cell == 'Y':
+                    elif cell == 'Y':
 
                         tile = Tile((x, y), tile_size, 'Y')
                         self.soft_tiles.add(tile)
 
-                    if cell == 'Z':
+                    elif cell == 'Z':
 
                         tile = Tile((x, y), tile_size, 'Z')
                         self.soft_tiles.add(tile)
 
                     #NPC
-                    if cell == '?':
+                    elif cell == '?':
 
                         npc_sprite = NPC((x, y))
                         self.npc.add(npc_sprite)
-
-    #takeout?
-    def player_camera(self, sprite):
-
-       self.offset.x += sprite.rect.centerx - self.half_width
-       self.offset.y += sprite.rect.centery - self.half_height
-
 
     # Player Camera
     #Fix climbing walls
@@ -406,15 +399,18 @@ class Level:
         direction_x = player.direction.x
         self.offset.x = -8
         self.p_offset.x = -3 
+        boss = self.boss.sprite
         # if player_x < tile_size * 1 and direction_x < 0:
         #     self.offset.x = 8
         #     player.speed = 0
             
-        print(player.direction.x)
         # elif (player_x > tile_size * 21)  and direction_x > 0:
 
         #     self.offset.x = -8
         #     player.speed = 0
+        
+        
+        
         if player.direction.x == 0:
             self.p_offset.x = -8       
         # else:
@@ -441,27 +437,40 @@ class Level:
                     player.direction.x = 0
                     self.p_offset.x = -8       
         
+        if (boss.rect.x - player.rect.x) <= 500:
+            self.yScroll_on = True
+        
+        if boss.rect.x <= (screen_width / 2):
+            self.p_offset.x = 0
+            self.offset.x = 0
+            self.xScroll_on = False
+   
     def scroll_y(self):
         player = self.player.sprite
         player_y = player.rect.centery
         direction_y = player.direction.y
+        boss = self.boss.sprite
+        # if player_y < screen_height / 2 and direction_y < 0 :
 
-        if player_y < screen_height / 2 and direction_y < 0 :
+        #     self.offset.y += 0.5
+        #     player.gravity = 0
 
-            self.y_shift += 0.5
-            player.speed = 0
+        if player_y > screen_height / 2 and direction_y > 0:
 
-        elif player_y > screen_height / 2 and direction_y < 0:
-
-            self.y_shift += -0.5
-            player.speed = 0
+            self.offset.y += -2
+            player.gravity = 0
 
         else:
 
-            self.y_shift = 0
-            player.speed = 0.5
-
-
+            self.offset.y = 0
+            player.gravity = 0.5
+        
+        if (boss.rect.y - player.rect.y) <= 100:
+            self.yScroll_on = False
+            self.offset.y = 0
+            player.gravity = 0.5
+        # if player.rect.centery >= screen_height / 2:
+        #     self.yScroll_on = False
 
     def player_horizontal_collision(self):
 
@@ -488,8 +497,6 @@ class Level:
                     
                     # player.isXScrolling = False
                 elif player.direction.x > 0:
-                    print(sprite.rect.left)
-                    print(player.env_rect.right)
                     player.env_rect.right = sprite.rect.left - 1
                     player.rect.right = player.env_rect.right + 2
                     player.wall_right = True
@@ -683,6 +690,9 @@ class Level:
                 if sprite.id == 'U' or sprite.id == 'D':
                     player.player_status['death'] = True
 
+        if player.rect.x < 0 or player.rect.y < 0 or player.rect.y > screen_height:
+            player.player_status['death'] = True
+            
 
 
 
@@ -703,8 +713,11 @@ class Level:
         self.hard_tiles.update(self.offset)
         self.hard_tiles.draw(self.display_surface)
         
-        self.scroll_x()
+        if self.xScroll_on == True:
+            self.scroll_x()
         
+        if self.yScroll_on == True:
+            self.scroll_y()
 
         #self.display_surface.blit(self.tiles)
         #self.scroll_y()
@@ -729,7 +742,7 @@ class Level:
         self.skeletons.draw(self.display_surface)
 
 
-        self.boss.update(player)
+        self.boss.update(self.offset, player)
         if self.boss:
             self.boss_vertical_collision()
             self.boss_horizontal_collision()

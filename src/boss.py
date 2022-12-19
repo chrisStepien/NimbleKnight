@@ -100,6 +100,11 @@ class Boss(pygame.sprite.Sprite):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
     
+    def set_offset(self, offset):
+
+        self.rect.x += offset.x
+        self.rect.y += offset.y
+            
     
     def calculate_distance(self, player):
         
@@ -112,7 +117,7 @@ class Boss(pygame.sprite.Sprite):
         loc_x_diff = boss_x - player_x
         loc_y_diff = boss_y - player_y
         
-        if loc_x_diff < 400 and loc_x_diff > -400:
+        if loc_x_diff < 400 and loc_x_diff > -400 and loc_y_diff < 400 and loc_y_diff > -400:
             self.isAnimating = True
         else:
             self.isAnimating = False
@@ -551,8 +556,9 @@ class Boss(pygame.sprite.Sprite):
                         self.rect = self.image.get_rect(topleft=self.rect.topleft) 
         
         
-    def update(self, player):        
+    def update(self, offset, player):        
         
+        self.set_offset(offset)
         self.calculate_distance(player)
         self.apply_gravity()
         self.animate()

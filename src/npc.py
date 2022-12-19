@@ -40,4 +40,5 @@ class NPC(pygame.sprite.Sprite):
     
     def update(self, offset):
         self.rect.x += offset.x
+        self.rect.y += offset.y
         self.animate()             

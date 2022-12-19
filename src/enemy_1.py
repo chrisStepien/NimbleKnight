@@ -344,6 +344,8 @@ class Enemy_1(pygame.sprite.Sprite):
     def set_offset(self, offset):
         
         self.rect.x += offset.x
+        self.rect.y += offset.y
+        
                 
     def update(self, offset, player):
         

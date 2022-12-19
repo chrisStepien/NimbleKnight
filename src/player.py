@@ -332,58 +332,114 @@ class Player(pygame.sprite.Sprite):
                         self.mov_frame_index)]
 
         if (self.on_ground and self.wall_right):
-            self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
-            self.env_rect = self.rect.inflate(-4, -2)
-            self.hit_box = self.rect.inflate(-8, -1)
+            
+            if self.player_status['attack_1'] == True:
+                self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
+                print(self.rect.bottomright)
+                self.rect = self.rect.inflate(-52, -2)
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
+            else:
+                self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
+                print(self.rect.bottomright)
+                
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
+            
                 
                 
                 # self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
                 
             # self.hit_box = self.image.get_rect(bottomright = self.hit_box.bottomright)
         elif (self.on_ground and self.wall_left):
+            if self.player_status['attack_1'] == True:
+                self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
+                print(self.rect.bottomleft)
                 
-            self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
-            self.env_rect = self.rect.inflate(-4, -2)
-            self.hit_box = self.rect.inflate(-8, -1)
+                self.rect = self.rect.inflate(-52, -2)
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)    
+            else:    
+                self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
+                print(self.rect.bottomleft)
+                
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
                 
                 
                 #self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
                 
             # self.hit_box = self.image.get_rect(bottomleft = self.hit_box.bottomleft)
         elif (self.on_ground):
+            if self.player_status['attack_1'] == True:
+                self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+                print(self.rect.midbottom)
                 
-            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
-            self.env_rect = self.rect.inflate(-4, -2)
-            self.hit_box = self.rect.inflate(-8, -1)
+                self.rect = self.rect.inflate(-52, -2)
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)    
+            else:    
+                self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+                print(self.rect.midbottom)
+                
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
                 
                 #self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
                 
             # self.hit_box = self.image.get_rect(midbottom = self.hit_box.midbottom)
         elif (self.on_ceiling and self.wall_right):
+            if self.player_status['attack_1'] == True:
+                self.rect = self.image.get_rect(topright=self.rect.topright)
+                print(self.rect.topright)
                 
-            self.rect = self.image.get_rect(topright=self.rect.topright)
-            self.env_rect = self.rect.inflate(-4, -2)
-            self.hit_box = self.rect.inflate(-8, -1)
+                self.rect = self.rect.inflate(-52, -2)
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)   
+            else:    
+                self.rect = self.image.get_rect(topright=self.rect.topright)
+                print(self.rect.topright)
+                
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
                 
                 
                 #self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
                 
             # self.hit_box = self.image.get_rect(topright = self.hit_box.topright)
         elif (self.on_ceiling and self.wall_left):
+            if self.player_status['attack_1'] == True:
+                self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                print(self.rect.topleft)
                 
-            self.rect = self.image.get_rect(topleft=self.rect.topleft)
-            self.env_rect = self.rect.inflate(-4, -2)
-            self.hit_box = self.rect.inflate(-8, -1)
+                self.rect = self.rect.inflate(-52, -2)
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)    
+            else:
+                self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                print(self.rect.topleft)
+                
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
                 
                 
                 #self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
                 
                 # self.hit_box = self.image.get_rect(topleft = self.hit_box.topleft)
         elif (self.on_ceiling):
+            if self.player_status['attack_1'] == True:
+                self.rect = self.image.get_rect(midtop=self.rect.midtop)
+                print(self.rect.midtop)
                 
-            self.rect = self.image.get_rect(midtop=self.rect.midtop)
-            self.env_rect = self.rect.inflate(-4, -2)
-            self.hit_box = self.rect.inflate(-8, -1)
+                self.rect = self.rect.inflate(-52, -2)
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
+            else:        
+                self.rect = self.image.get_rect(midtop=self.rect.midtop)
+                print(self.rect.midtop)
+                
+                self.env_rect = self.rect.inflate(-4, -2)
+                self.hit_box = self.rect.inflate(-8, -1)
                 
                 
                 #self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
@@ -392,7 +448,11 @@ class Player(pygame.sprite.Sprite):
             #Change rect size to match what it should be or change the size of the PNGs
         
         print(self.rect)
+        print(self.rect.x)
+        print(self.rect.y)
         print(self.env_rect)
+        print(self.env_rect.x)
+        print(self.env_rect.y)
         print(self.hit_box)
         print(self.image)
         
@@ -421,7 +481,6 @@ class Player(pygame.sprite.Sprite):
                         self.player_status['wall_slide'] = False
 
                         self.direction.x = 0.5
-                        self.gravity = 0.5
                         self.facing_right = True
 
                     else:
@@ -438,7 +497,6 @@ class Player(pygame.sprite.Sprite):
                         self.player_status['wall_slide'] = False
 
                         self.direction.x = -0.5
-                        self.gravity = 0.5
                         self.facing_right = False
                 else:
                     if (keys[pygame.K_w] and self.on_ground == True):
@@ -452,7 +510,6 @@ class Player(pygame.sprite.Sprite):
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
                         self.player_status['run'] = False
-                        self.gravity = 0.5
                         self.direction.x = 0
                     
                         self.jump()
@@ -470,7 +527,6 @@ class Player(pygame.sprite.Sprite):
                             self.player_status['idle'] = False
                             self.player_status['run'] = False
 
-                            self.gravity = 0.05
                             
                             self.facing_right = False
 
@@ -486,7 +542,6 @@ class Player(pygame.sprite.Sprite):
                             self.player_status['wall_slide'] = False
 
                             self.direction.x = -1
-                            self.gravity = 0.5
                         
                             self.facing_right = False
 
@@ -503,7 +558,6 @@ class Player(pygame.sprite.Sprite):
 
                                                         
                             self.direction.x = -1
-                            self.gravity = 0.5
                             self.facing_right = False
 
                     elif keys[pygame.K_d] and self.stop == False:
@@ -519,7 +573,6 @@ class Player(pygame.sprite.Sprite):
                             self.player_status['idle'] = False
                             self.player_status['run'] = False
 
-                            self.gravity = 0.05
                             self.facing_right = True
 
                         elif self.on_ground == False and self.player_status['wall_slide'] == False and self.player_status['jump'] == False and self.wall_right == False:
@@ -535,7 +588,6 @@ class Player(pygame.sprite.Sprite):
                             self.player_status['wall_slide'] = False
 
                             self.direction.x = 1
-                            self.gravity = 0.5
                             self.facing_right = True
 
                         elif not self.wall_right:
@@ -551,7 +603,6 @@ class Player(pygame.sprite.Sprite):
                             # CHANGE FOR ALL
                             
                             self.direction.x = 1
-                            self.gravity = 0.5
                             self.facing_right = True
 
                     # else:
@@ -641,7 +692,6 @@ class Player(pygame.sprite.Sprite):
                 self.player_status['fall'] = True
                 self.player_status['run'] = False
                 self.player_status['wall_slide'] = False
-                self.gravity = 0.5
 
             if(self.on_ground == True):
 
@@ -670,11 +720,11 @@ class Player(pygame.sprite.Sprite):
         
 
     def apply_gravity(self):
-        if not self.player_status['death']:
-            self.direction.y += self.gravity
-            self.rect.y += self.direction.y
-            self.env_rect.y += self.direction.y
-            self.hit_box.y += self.direction.y
+       
+        self.direction.y += self.gravity
+        self.rect.y += self.direction.y
+        self.env_rect.y += self.direction.y
+        self.hit_box.y += self.direction.y
 
 
     def status(self):

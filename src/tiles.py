@@ -13,6 +13,7 @@ class Tile(pygame.sprite.Sprite):
     
     def update(self, offset):
         self.rect.x += offset.x
+        self.rect.y += offset.y
         
     def import_tile_assets(self):
         #Some are named due to file naming conventions '{': [], '}': [],
