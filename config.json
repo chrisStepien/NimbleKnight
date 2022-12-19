@@ -1,0 +1,40 @@
+{
+
+    "difficulty": {
+
+        "1": {
+
+            "offset.x":  ,
+            "p_offset.x": ,
+            "skeleton_health": ,
+            "boss_health":
+        },
+
+        "2": {
+            
+            "offset.x" : ,
+            "p_offset.x": ,
+            "skeleton_health": ,
+            "boss_health":
+
+
+        },
+
+        "3": {
+
+            "offset.x" : ,
+            "p_offset.x": ,
+            "skeleton_health": ,
+            "boss_health":
+
+
+        }
+
+    },
+
+    "high_score" : {
+
+        "fastest_time": ,
+        "highest_score": 
+    }
+}
