@@ -17,7 +17,7 @@ class Level:
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
-
+        self.p_offset = pygame.math.Vector2()
         #player = self.player.sprite
         self.current_x = 0
         self.current_y = 0
@@ -32,7 +32,6 @@ class Level:
 
         self.setup_level(level_layout)
         #self.scroll_x()
-
         #similar to below
         #self.x_shift = 0
         #self.y_shift = 0
@@ -405,22 +404,43 @@ class Level:
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
+        self.offset.x = -8
+        self.p_offset.x = -3 
+        # if player_x < tile_size * 1 and direction_x < 0:
+        #     self.offset.x = 8
+        #     player.speed = 0
+            
+        print(player.direction.x)
+        # elif (player_x > tile_size * 21)  and direction_x > 0:
 
-        if player_x < tile_size * 1 and direction_x < 0 and player.wall_right == False:
+        #     self.offset.x = -8
+        #     player.speed = 0
+        if player.direction.x == 0:
+            self.p_offset.x = -8       
+        # else:
+        #     self.offset.x = 0
+        #     player.speed = 8
+        for sprite in self.hard_tiles.sprites():
+            #if sprite.rect.colliderect(player.rect) and sprite
 
-            self.offset.x = 8
-            player.speed = 0
-
-        elif player_x > tile_size * 21  and direction_x > 0 and player.wall_right == False:
-
-            self.offset.x = -8
-            player.speed = 0
-
-        else:
-
-            self.offset.x = 0
-            player.speed = 8
-
+            # if sprite.rect.colliderect(player.rect):
+            #     if sprite.id == 'U' or sprite.id == 'D':
+            #         player.player_status['death'] = True
+            #         print(player.player_status['death'] ) 
+                    
+            if sprite.rect.colliderect(player.env_rect):
+                #issue with camera may be caused here
+                
+                if player.direction.x > 0:
+                    
+                    player.env_rect.right = sprite.rect.left - 1
+                    player.rect.right = player.env_rect.right + 2
+                    player.wall_right = True
+                    self.current_x = player.env_rect.right
+                    player.stop = True
+                    player.direction.x = 0
+                    self.p_offset.x = -8       
+        
     def scroll_y(self):
         player = self.player.sprite
         player_y = player.rect.centery
@@ -446,18 +466,18 @@ class Level:
     def player_horizontal_collision(self):
 
         player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed
-        player.env_rect.x += player.direction.x * player.speed
-
+        player.rect.x += (player.direction.x * player.speed) + self.p_offset.x
+        player.env_rect.x += (player.direction.x * player.speed) + self.p_offset.x
+            
         for sprite in self.hard_tiles.sprites():
-
-            if sprite.rect.colliderect(player.env_rect) and sprite.id == 'U':
-                player.player_status['death'] == True
             #if sprite.rect.colliderect(player.rect) and sprite
 
-
+            # if sprite.rect.colliderect(player.rect):
+            #     if sprite.id == 'U' or sprite.id == 'D':
+            #         player.player_status['death'] = True
+            #         print(player.player_status['death'] ) 
+                    
             if sprite.rect.colliderect(player.env_rect):
-
                 #issue with camera may be caused here
                 if player.direction.x < 0:
 
@@ -465,22 +485,28 @@ class Level:
                     player.rect.left = player.env_rect.left - 2
                     player.wall_left = True
                     self.current_x = player.env_rect.left
+                    
+                    # player.isXScrolling = False
                 elif player.direction.x > 0:
-
-
-                    player.env_rect.right = sprite.rect.left
+                    print(sprite.rect.left)
+                    print(player.env_rect.right)
+                    player.env_rect.right = sprite.rect.left - 1
                     player.rect.right = player.env_rect.right + 2
                     player.wall_right = True
-                    self.current_x = player.env_rect.right
+                    self.current_x = player.env_rect.right + 1
+                    # player.isXScrolling = False
 
-
-                    #
-
-        if(player.wall_left and player.env_rect.left < self.current_x or player.direction.x >= 0):
+            
+        
+                 #
+        
+        if player.wall_left and (player.env_rect.left < self.current_x or player.direction.x >= 0):
             player.wall_left = False
-        #
-        if(player.wall_right and player.env_rect.right > self.current_x or player.direction.x <= 0):
+            
+    # #
+        if player.wall_right and (player.env_rect.right > self.current_x or player.direction.x <= 0):
             player.wall_right = False
+            player.stop = False
 
         #self.player.update(False)
 
@@ -491,8 +517,6 @@ class Level:
         player.apply_gravity()
 
         for sprite in self.hard_tiles.sprites():
-            if sprite.rect.colliderect(player.env_rect) and sprite.id == 'U':
-                player.player_status['death'] == True
             if sprite.rect.colliderect(player.env_rect):
                 if player.direction.y > 0:
                     player.env_rect.bottom = sprite.rect.top
@@ -536,6 +560,7 @@ class Level:
                         skeleton.rect.left = sprite.rect.right
                         skeleton.wall_left = True
                         self.enemy_current_x = skeleton.rect.left
+                        
                     elif skeleton.direction.x > 0:
 
 
@@ -649,14 +674,21 @@ class Level:
         #    boss.on_ceiling = False
 
 
+    def check_player(self):
+        
+        player = self.player.sprite
+
+        for sprite in self.hard_tiles.sprites():
+            if sprite.rect.colliderect(player.rect):
+                if sprite.id == 'U' or sprite.id == 'D':
+                    player.player_status['death'] = True
 
 
 
 
 
 
-
-    def run(self, single_press):
+    def run(self):
 
         player = self.player.sprite
         npc = self.npc.sprite
@@ -671,6 +703,7 @@ class Level:
         self.hard_tiles.update(self.offset)
         self.hard_tiles.draw(self.display_surface)
         
+        self.scroll_x()
         
 
         #self.display_surface.blit(self.tiles)
@@ -679,10 +712,10 @@ class Level:
         self.npc.update(self.offset)
         self.npc.draw(self.display_surface)
         # Player
-        self.player.update(single_press)
-        if self.player:
-            self.player_vertical_collision()
-            self.player_horizontal_collision()
+        self.check_player()
+        self.player.update()
+        self.player_vertical_collision()
+        self.player_horizontal_collision()
         
         self.player.draw(self.display_surface)
 
@@ -702,8 +735,12 @@ class Level:
             self.boss_horizontal_collision()
         self.boss.draw(self.display_surface)
         
-        if self.player:
-            self.scroll_x()
+        #if self.player:
+        # if player.isXScrolling:    
+        # else:
+            # self.offset.x = 0
+            # player.speed = 0
+                
         #SummonedSkeletons?
 
         #Necromancer

@@ -12,35 +12,16 @@ clock = pygame.time.Clock()
 fps = 20
 
 level = Level(level_map, screen)
-key_pressed = False
-key_up = False
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            #add all attacks to this
-            #Fix roll that makes it go far
-            if event.key == pygame.K_e:
-                key_pressed = True
-            
-            elif event.key == pygame.K_w:
-                
-                key_pressed = True
-            else:
-                key_pressed = False
-            
-            key_up = False
-                    
-        if event.type == pygame.KEYUP:
-            
-            key_up = True
-            
+            sys.exit()  
               
     screen.fill('black')
     screen.blit(Background.image, Background.rect)
-    level.run(key_pressed)
+    level.run()
 
     pygame.display.update()
     

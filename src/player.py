@@ -64,8 +64,9 @@ class Player(pygame.sprite.Sprite):
         self.wall_right = False
         self.wall_left = False
         
-        self.speed = 5
+        self.speed = 8
 
+        self.stop = False
     # import
     def import_player_assets(self):
         self.animations = {'attack_1': [], 'attack_crouch': [], 'crouch': [], 'crouch_walk': [
@@ -82,13 +83,23 @@ class Player(pygame.sprite.Sprite):
     def animate(self):
         if self.player_status['death'] == True:
 
-                self.death_frame_index += self.death_frame_speed
+                if int(self.death_frame_index) < len(self.animations['death']) - 1:
+                    self.death_frame_index += self.death_frame_speed
 
-                if int(self.death_frame_index) > len(self.animations['death']) - 1:
+                # if int(self.death_frame_index) > len(self.animations['death']) - 1:
 
-                    self.death_frame_index = 0
+                #     self.death_frame_index = 0
 
                 self.image = self.animations['death'][int(self.death_frame_index)]
+                self.direction.x = 0
+                self.speed = 0
+                # self.rect = self.image.get_rect(midtop=self.env_rect.topleft)
+                # self.rect = self.rect.inflate(-118, -78)
+                # print(self.rect)
+                # print(self.env_rect)
+                
+                # self.env_rect = self.rect.inflate(-118, -78)
+                
         else:            
             if(self.facing_right == True):
                 # Facing Right
@@ -324,233 +335,252 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
             self.env_rect = self.rect.inflate(-4, -2)
             self.hit_box = self.rect.inflate(-8, -1)
-            
-            
-            # self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
-            
-           # self.hit_box = self.image.get_rect(bottomright = self.hit_box.bottomright)
+                
+                
+                # self.env_rect = self.image.get_rect(bottomright=self.env_rect.bottomright)
+                
+            # self.hit_box = self.image.get_rect(bottomright = self.hit_box.bottomright)
         elif (self.on_ground and self.wall_left):
-            
+                
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
             self.env_rect = self.rect.inflate(-4, -2)
             self.hit_box = self.rect.inflate(-8, -1)
-            
-            
-            #self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
-            
-           # self.hit_box = self.image.get_rect(bottomleft = self.hit_box.bottomleft)
+                
+                
+                #self.env_rect = self.image.get_rect(bottomleft=self.env_rect.bottomleft)
+                
+            # self.hit_box = self.image.get_rect(bottomleft = self.hit_box.bottomleft)
         elif (self.on_ground):
-            
+                
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
             self.env_rect = self.rect.inflate(-4, -2)
             self.hit_box = self.rect.inflate(-8, -1)
-            
-            #self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
-            
-           # self.hit_box = self.image.get_rect(midbottom = self.hit_box.midbottom)
+                
+                #self.env_rect = self.image.get_rect(midbottom=self.env_rect.midbottom)
+                
+            # self.hit_box = self.image.get_rect(midbottom = self.hit_box.midbottom)
         elif (self.on_ceiling and self.wall_right):
-            
+                
             self.rect = self.image.get_rect(topright=self.rect.topright)
             self.env_rect = self.rect.inflate(-4, -2)
             self.hit_box = self.rect.inflate(-8, -1)
-            
-            
-            #self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
-            
-           # self.hit_box = self.image.get_rect(topright = self.hit_box.topright)
+                
+                
+                #self.env_rect = self.image.get_rect(topright=self.env_rect.topright)
+                
+            # self.hit_box = self.image.get_rect(topright = self.hit_box.topright)
         elif (self.on_ceiling and self.wall_left):
-            
+                
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
             self.env_rect = self.rect.inflate(-4, -2)
             self.hit_box = self.rect.inflate(-8, -1)
-            
-            
-            #self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
-            
-            # self.hit_box = self.image.get_rect(topleft = self.hit_box.topleft)
+                
+                
+                #self.env_rect = self.image.get_rect(topleft=self.env_rect.topleft)
+                
+                # self.hit_box = self.image.get_rect(topleft = self.hit_box.topleft)
         elif (self.on_ceiling):
-            
+                
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
             self.env_rect = self.rect.inflate(-4, -2)
             self.hit_box = self.rect.inflate(-8, -1)
-            
-            
-            #self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
-            # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
-
-        #Change rect size to match what it should be or change the size of the PNGs
-        
-    def input(self, single_press):
-
-        keys = pygame.key.get_pressed()
-        # Ordered by priority
-        
-        if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
-            # 1
-            if keys[pygame.K_s] and keys[pygame.K_d] or keys[pygame.K_s] and keys[pygame.K_a]:
                 
+                
+                #self.env_rect = self.image.get_rect(midtop=self.env_rect.midtop)
+                # self.hit_box = self.image.get_rect(midtop = self.hit_box.midtop)
 
-                if keys[pygame.K_s] and keys[pygame.K_d]:
+            #Change rect size to match what it should be or change the size of the PNGs
+        
+        print(self.rect)
+        print(self.env_rect)
+        print(self.hit_box)
+        print(self.image)
+        
+    def input(self):
 
-                    self.player_status['crouch_walk'] = True
-                    self.player_status['attack_1'] = False
-                    self.player_status['attack_crouch'] = False
-                    self.player_status['crouch'] = False
-                    self.player_status['fall'] = False
-                    self.player_status['hurt'] = False
-                    self.player_status['idle'] = False
-                    self.player_status['jump'] = False
-                    self.player_status['run'] = False
-                    self.player_status['wall_slide'] = False
+            # Ordered by priority
+        if self.stop == False:
+            keys = pygame.key.get_pressed()
+            
+            if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+                # 1
+                if keys[pygame.K_s] and keys[pygame.K_d] or keys[pygame.K_s] and keys[pygame.K_a]:
+                    
 
-                    self.direction.x = 0.5
-                    self.facing_right = True
+                    if keys[pygame.K_s] and keys[pygame.K_d]:
 
+                        self.player_status['crouch_walk'] = True
+                        self.player_status['attack_1'] = False
+                        self.player_status['attack_crouch'] = False
+                        self.player_status['crouch'] = False
+                        self.player_status['fall'] = False
+                        self.player_status['hurt'] = False
+                        self.player_status['idle'] = False
+                        self.player_status['jump'] = False
+                        self.player_status['run'] = False
+                        self.player_status['wall_slide'] = False
+
+                        self.direction.x = 0.5
+                        self.gravity = 0.5
+                        self.facing_right = True
+
+                    else:
+
+                        self.player_status['crouch_walk'] = True
+                        self.player_status['attack_1'] = False
+                        self.player_status['attack_crouch'] = False
+                        self.player_status['crouch'] = False
+                        self.player_status['fall'] = False
+                        self.player_status['hurt'] = False
+                        self.player_status['idle'] = False
+                        self.player_status['jump'] = False
+                        self.player_status['run'] = False
+                        self.player_status['wall_slide'] = False
+
+                        self.direction.x = -0.5
+                        self.gravity = 0.5
+                        self.facing_right = False
                 else:
-
-                    self.player_status['crouch_walk'] = True
-                    self.player_status['attack_1'] = False
-                    self.player_status['attack_crouch'] = False
-                    self.player_status['crouch'] = False
-                    self.player_status['fall'] = False
-                    self.player_status['hurt'] = False
-                    self.player_status['idle'] = False
-                    self.player_status['jump'] = False
-                    self.player_status['run'] = False
-                    self.player_status['wall_slide'] = False
-
-                    self.direction.x = -0.5
-                    self.facing_right = False
-            else:
-                if (keys[pygame.K_w] and self.on_ground == True):
-                  
-                    print(self.on_ceiling)
+                    if (keys[pygame.K_w] and self.on_ground == True):
                     
-                    self.player_status['jump'] = True
-                    self.player_status['attack_crouch'] = False
-                    self.player_status['crouch'] = False
-                    self.player_status['crouch_walk'] = False
-                    self.player_status['fall'] = False
-                    self.player_status['hurt'] = False
-                    self.player_status['idle'] = False
-                    self.player_status['run'] = False
-                    self.gravity = 0.5
-                    self.direction.x = 0
-                
-                    self.jump()
-
-                elif keys[pygame.K_a]:
-
-                    if(self.on_ground == False and self.player_status['fall'] == True and self.wall_left == True and self.facing_right == False):
-
-                        self.player_status['wall_slide'] = True
-                        self.player_status['attack_1'] = False
-                        self.player_status['attack_crouch'] = False
-                        self.player_status['crouch'] = False
-                        self.player_status['crouch_walk'] = False
-                        self.player_status['hurt'] = False
-                        self.player_status['idle'] = False
-                        self.player_status['run'] = False
-
-                        self.gravity = 0.05
                         
-                        self.facing_right = False
-
-                    elif self.on_ground == False and self.player_status['jump'] == False and self.wall_left == False:
-
-                        self.player_status['fall'] = True
+                        self.player_status['jump'] = True
                         self.player_status['attack_crouch'] = False
                         self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
+                        self.player_status['fall'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
                         self.player_status['run'] = False
-                        self.player_status['wall_slide'] = False
-
-                        self.direction.x = -1
                         self.gravity = 0.5
+                        self.direction.x = 0
                     
-                        self.facing_right = False
+                        self.jump()
 
-                    else:
-                        self.player_status['run'] = True
-                        self.player_status['attack_1'] = False
-                        self.player_status['attack_crouch'] = False
-                        self.player_status['crouch'] = False
-                        self.player_status['crouch_walk'] = False
-                        self.player_status['fall'] = False
-                        self.player_status['hurt'] = False
-                        self.player_status['idle'] = False
-                        self.player_status['wall_slide'] = False
+                    elif keys[pygame.K_a]:
 
-                        if(self.wall_left):
-                            self.direction.x = 0
-                        else:
+                        if(self.on_ground == False and self.player_status['fall'] == True and self.wall_left == True and self.facing_right == False):
+
+                            self.player_status['wall_slide'] = True
+                            self.player_status['attack_1'] = False
+                            self.player_status['attack_crouch'] = False
+                            self.player_status['crouch'] = False
+                            self.player_status['crouch_walk'] = False
+                            self.player_status['hurt'] = False
+                            self.player_status['idle'] = False
+                            self.player_status['run'] = False
+
+                            self.gravity = 0.05
+                            
+                            self.facing_right = False
+
+                        elif self.on_ground == False and self.player_status['jump'] == False and self.wall_left == False:
+
+                            self.player_status['fall'] = True
+                            self.player_status['attack_crouch'] = False
+                            self.player_status['crouch'] = False
+                            self.player_status['crouch_walk'] = False
+                            self.player_status['hurt'] = False
+                            self.player_status['idle'] = False
+                            self.player_status['run'] = False
+                            self.player_status['wall_slide'] = False
+
                             self.direction.x = -1
+                            self.gravity = 0.5
+                        
+                            self.facing_right = False
 
-                        self.facing_right = False
+                        elif not self.wall_left:
+                            self.player_status['run'] = True
+                            self.player_status['attack_1'] = False
+                            self.player_status['attack_crouch'] = False
+                            self.player_status['crouch'] = False
+                            self.player_status['crouch_walk'] = False
+                            self.player_status['fall'] = False
+                            self.player_status['hurt'] = False
+                            self.player_status['idle'] = False
+                            self.player_status['wall_slide'] = False
 
-                elif keys[pygame.K_d]:
-                        # CHANGE FOR ALL
-                    if(self.on_ground == False and self.player_status['fall'] == True and self.wall_right == True and self.facing_right == True):
+                                                        
+                            self.direction.x = -1
+                            self.gravity = 0.5
+                            self.facing_right = False
 
-                        self.player_status['wall_slide'] = True
+                    elif keys[pygame.K_d] and self.stop == False:
+                            # CHANGE FOR ALL
+                        if(self.on_ground == False and self.player_status['fall'] == True and self.wall_right == True and self.facing_right == True):
+
+                            self.player_status['wall_slide'] = True
+                            self.player_status['attack_1'] = False
+                            self.player_status['attack_crouch'] = False
+                            self.player_status['crouch'] = False
+                            self.player_status['crouch_walk'] = False
+                            self.player_status['hurt'] = False
+                            self.player_status['idle'] = False
+                            self.player_status['run'] = False
+
+                            self.gravity = 0.05
+                            self.facing_right = True
+
+                        elif self.on_ground == False and self.player_status['wall_slide'] == False and self.player_status['jump'] == False and self.wall_right == False:
+
+                            self.player_status['fall'] = True
+                            self.player_status['attack_1'] = False
+                            self.player_status['attack_crouch'] = False
+                            self.player_status['crouch'] = False
+                            self.player_status['crouch_walk'] = False
+                            self.player_status['hurt'] = False
+                            self.player_status['idle'] = False
+                            self.player_status['run'] = False
+                            self.player_status['wall_slide'] = False
+
+                            self.direction.x = 1
+                            self.gravity = 0.5
+                            self.facing_right = True
+
+                        elif not self.wall_right:
+                            self.player_status['run'] = True
+                            self.player_status['attack_1'] = False
+                            self.player_status['attack_crouch'] = False
+                            self.player_status['crouch'] = False
+                            self.player_status['crouch_walk'] = False
+                            self.player_status['fall'] = False
+                            self.player_status['hurt'] = False
+                            self.player_status['idle'] = False
+                            self.player_status['wall_slide'] = False
+                            # CHANGE FOR ALL
+                            
+                            self.direction.x = 1
+                            self.gravity = 0.5
+                            self.facing_right = True
+
+                    # else:
+
+                    #     self.player_status['idle'] = True
+
+                    #     self.direction.x = 0
+
+                    if keys[pygame.K_s]:
+
+                        self.player_status['crouch'] = True
                         self.player_status['attack_1'] = False
                         self.player_status['attack_crouch'] = False
-                        self.player_status['crouch'] = False
-                        self.player_status['crouch_walk'] = False
-                        self.player_status['hurt'] = False
-                        self.player_status['idle'] = False
-                        self.player_status['run'] = False
-
-                        self.gravity = 0.05
-                        self.facing_right = True
-
-                    elif self.on_ground == False and self.player_status['wall_slide'] == False and self.player_status['jump'] == False and self.wall_right == False:
-
-                        self.player_status['fall'] = True
-                        self.player_status['attack_1'] = False
-                        self.player_status['attack_crouch'] = False
-                        self.player_status['crouch'] = False
-                        self.player_status['crouch_walk'] = False
-                        self.player_status['hurt'] = False
-                        self.player_status['idle'] = False
-                        self.player_status['run'] = False
-                        self.player_status['wall_slide'] = False
-
-                        self.direction.x = 1
-                        self.gravity = 0.5
-                        self.facing_right = True
-
-                    else:
-                        self.player_status['run'] = True
-                        self.player_status['attack_1'] = False
-                        self.player_status['attack_crouch'] = False
-                        self.player_status['crouch'] = False
                         self.player_status['crouch_walk'] = False
                         self.player_status['fall'] = False
                         self.player_status['hurt'] = False
                         self.player_status['idle'] = False
+                        self.player_status['jump'] = False
+                        self.player_status['run'] = False
                         self.player_status['wall_slide'] = False
-                        # CHANGE FOR ALL
-                        if(self.wall_right):
-                            self.direction.x = 0
-                        else:
-                            self.direction.x = 1
+                        self.direction.x = 0
+                        
 
-                        self.facing_right = True
+            elif(keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN] and self.on_ground):
+                if keys[pygame.K_LEFT] and self.on_ground:
 
-                # else:
-
-                #     self.player_status['idle'] = True
-
-                #     self.direction.x = 0
-
-                if keys[pygame.K_s]:
-
-                    self.player_status['crouch'] = True
-                    self.player_status['attack_1'] = False
+                    self.player_status['attack_1'] = True
                     self.player_status['attack_crouch'] = False
+                    self.player_status['crouch'] = False
                     self.player_status['crouch_walk'] = False
                     self.player_status['fall'] = False
                     self.player_status['hurt'] = False
@@ -558,109 +588,93 @@ class Player(pygame.sprite.Sprite):
                     self.player_status['jump'] = False
                     self.player_status['run'] = False
                     self.player_status['wall_slide'] = False
+
+                    self.facing_right = False
                     self.direction.x = 0
                     
 
-        elif(keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_DOWN] and self.on_ground):
-            if keys[pygame.K_LEFT] and self.on_ground:
+                if keys[pygame.K_RIGHT] and self.on_ground:
 
-                self.player_status['attack_1'] = True
+                    self.player_status['attack_1'] = True
+                    self.player_status['attack_crouch'] = False
+                    self.player_status['crouch'] = False
+                    self.player_status['crouch_walk'] = False
+                    self.player_status['fall'] = False
+                    self.player_status['hurt'] = False
+                    self.player_status['idle'] = False
+                    self.player_status['jump'] = False
+                    self.player_status['run'] = False
+                    self.player_status['wall_slide'] = False
+
+                    self.facing_right = True
+                    self.direction.x = 0
+
+                if keys[pygame.K_DOWN] and self.on_ground:
+
+                    self.player_status['attack_crouch'] = True
+                    self.player_status['attack_combo'] = False
+                    self.player_status['crouch'] = False
+                    self.player_status['crouch_walk'] = False
+                    self.player_status['fall'] = False
+                    self.player_status['hurt'] = False
+                    self.player_status['idle'] = False
+                    self.player_status['jump'] = False
+                    self.player_status['run'] = False
+                    self.player_status['wall_slide'] = False
+
+                    self.direction.x = 0
+            # elif(self.on_ground) and self.player_status['roll'] == False and single_press == False:
+
+            #     self.player_status['idle'] = True
+            #     self.player_status['attack_1'] = False
+            #     self.player_status['attack_combo'] = False
+            #     self.player_status['attack_crouch'] = False
+            #     self.player_status['crouch'] = False
+            #     self.player_status['fall'] = False
+            #     self.player_status['jump'] = False
+            #     self.player_status['run'] = False
+
+            #     self.direction.x = 0
+
+            if self.wall_right == False and self.wall_left == False and self.player_status['idle'] == False and self.player_status['jump'] == False and self.direction.y > 1 and self.on_ground == False:
+
+                self.player_status['fall'] = True
+                self.player_status['run'] = False
+                self.player_status['wall_slide'] = False
+                self.gravity = 0.5
+
+            if(self.on_ground == True):
+
+                self.player_status['jump'] = False
+                self.player_status['fall'] = False
+            
+            if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False:
+
+                self.player_status['idle'] = True
+                self.player_status['attack_1'] = False
                 self.player_status['attack_crouch'] = False
                 self.player_status['crouch'] = False
                 self.player_status['crouch_walk'] = False
                 self.player_status['fall'] = False
                 self.player_status['hurt'] = False
-                self.player_status['idle'] = False
-                self.player_status['jump'] = False
-                self.player_status['run'] = False
-                self.player_status['wall_slide'] = False
-
-                self.facing_right = False
-                self.direction.x = 0
-                
-
-            if keys[pygame.K_RIGHT] and self.on_ground:
-
-                self.player_status['attack_1'] = True
-                self.player_status['attack_crouch'] = False
-                self.player_status['crouch'] = False
-                self.player_status['crouch_walk'] = False
-                self.player_status['fall'] = False
-                self.player_status['hurt'] = False
-                self.player_status['idle'] = False
-                self.player_status['jump'] = False
-                self.player_status['run'] = False
-                self.player_status['wall_slide'] = False
-
-                self.facing_right = True
-                self.direction.x = 0
-
-            if keys[pygame.K_DOWN] and self.on_ground:
-
-                self.player_status['attack_crouch'] = True
-                self.player_status['attack_combo'] = False
-                self.player_status['crouch'] = False
-                self.player_status['crouch_walk'] = False
-                self.player_status['fall'] = False
-                self.player_status['hurt'] = False
-                self.player_status['idle'] = False
                 self.player_status['jump'] = False
                 self.player_status['run'] = False
                 self.player_status['wall_slide'] = False
 
                 self.direction.x = 0
-        # elif(self.on_ground) and self.player_status['roll'] == False and single_press == False:
-
-        #     self.player_status['idle'] = True
-        #     self.player_status['attack_1'] = False
-        #     self.player_status['attack_combo'] = False
-        #     self.player_status['attack_crouch'] = False
-        #     self.player_status['crouch'] = False
-        #     self.player_status['fall'] = False
-        #     self.player_status['jump'] = False
-        #     self.player_status['run'] = False
-
-        #     self.direction.x = 0
-
-        if self.wall_right == False and self.wall_left == False and self.player_status['idle'] == False and self.player_status['jump'] == False and self.direction.y > 1 and self.on_ground == False:
-
-            self.player_status['fall'] = True
-            self.player_status['run'] = False
-            self.player_status['wall_slide'] = False
-            self.gravity = 0.5
-
-        if(self.on_ground == True):
-
-            self.player_status['jump'] = False
-            self.player_status['fall'] = False
-        
-        if sum(keys) == 0 and self.player_status['fall'] == False and self.player_status['jump'] == False:
-
-            self.player_status['idle'] = True
-            self.player_status['attack_1'] = False
-            self.player_status['attack_crouch'] = False
-            self.player_status['crouch'] = False
-            self.player_status['crouch_walk'] = False
-            self.player_status['fall'] = False
-            self.player_status['hurt'] = False
-            self.player_status['jump'] = False
-            self.player_status['run'] = False
-            self.player_status['wall_slide'] = False
-
-            self.direction.x = 0
 
        
         
-        # print(self.player_status['attack_1'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
-        #       self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['run'], self.player_status["wall_slide"])
+        print(self.player_status['attack_1'], self.player_status['attack_crouch'], self.player_status['crouch'], self.player_status['crouch_walk'], self.player_status['death'],
+               self.player_status['fall'], self.player_status['hurt'], self.player_status['idle'], self.player_status['jump'], self.player_status['run'], self.player_status["wall_slide"])
         
 
     def apply_gravity(self):
-        
-        self.direction.y += self.gravity
-        self.rect.y += self.direction.y
-        self.env_rect.y += self.direction.y
-        self.hit_box.y += self.direction.y
+        if not self.player_status['death']:
+            self.direction.y += self.gravity
+            self.rect.y += self.direction.y
+            self.env_rect.y += self.direction.y
+            self.hit_box.y += self.direction.y
 
 
     def status(self):
@@ -703,27 +717,10 @@ class Player(pygame.sprite.Sprite):
   
         self.direction.y = self.jump_height     
         
-    def update(self, single_press):
+    def update(self):
             
-    
-        self.status()
-        self.input(single_press)
-        self.apply_gravity()
+        if self.player_status['death'] == False:
+            self.status()
+            self.input()
+            self.apply_gravity()
         self.animate()  
-
-        
-        
-       # print("rect height:" + str(self.rect.height))
-       # print("env rect height:" + str(self.env_rect.height))
-       # print("rect width:" + str(self.rect.width))
-       # print("env rect width:" + str(self.env_rect.width))
-       # print("rect right:" + str(self.rect.right))
-       # print("env rect right:" + str(self.env_rect.right))
-       # print("rect left:" + str(self.rect.left))
-       # print("env rect left:" + str(self.env_rect.left))
-       # print("rect x" + str(self.rect.x))
-       # print("env rect x:" + str(self.env_rect.x))
-        # print("rect y:" + str(self.rect.y))
-        # print("env rect y:" + str(self.env_rect.y))
-        # print("rect bottom:" + str(self.rect.bottom))
-        # print("env rect bottom:" + str(self.env_rect.bottom))
