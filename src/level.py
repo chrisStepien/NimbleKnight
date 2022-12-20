@@ -49,7 +49,9 @@ class Level:
         self.game_over_flag = False
         self.win_flag = False
         self.score = 0
-      
+        
+        self.boss_health_header = 0
+        self.count = 0
    
     def setup_level(self,level_layout):
 
@@ -396,8 +398,8 @@ class Level:
         self.display_surface.blit(health_header, (50, 15))
         
         
-        time_header =  self.font.render("boss hp: "+ str(boss.health), True, (255, 255, 255))
-        self.display_surface.blit(time_header, ((screen_width / 2) - 80, 15))
+        boss_header =  self.font.render("boss hp: "+ str(self.boss_health_header), True, (255, 255, 255))
+        self.display_surface.blit(boss_header, ((screen_width / 2) - 80, 15))
         
         score_header = self.font.render("score: "+str(self.score), True, (255, 192, 0))
         self.display_surface.blit(score_header, (920, 15))
@@ -422,20 +424,17 @@ class Level:
     # Win Overlay
     def win(self):
         
-        win_header = self.font.render("CASTLE LIBERATED", True, (255, 255, 255))
-        self.display_surface.blit(win_header, (screen_width / 2, screen_height / 2))
+        win_header = self.font2.render("CASTLE LIBERATED", True, (136, 8, 8))
+        self.display_surface.blit(win_header, ((screen_width / 2) - 200, (screen_height / 2) - 100))
         
         highscore_header = self.font.render("Highscore: "+ str(self.score), True, (255, 255, 255))
-        self.display_surface.blit(highscore_header, (screen_height / 2, screen_width / 2))
-        
-        time_header =  self.font.render("Time Completed: "+ str(self.time), True, (255, 255, 255))
-        self.display_surface.blit(time_header, (screen_width / 2, screen_height / 2))
+        self.display_surface.blit(highscore_header, (((screen_width / 2) - 100), (screen_height / 2)))
         
         restart_header = self.font.render("Press SPACE to Restart", True, (255, 255, 255))
-        self.display_surface.blit(restart_header, (((screen_width) - 50), screen_height / 2))  
+        self.display_surface.blit(restart_header, (((screen_width / 3) - 200), (screen_height) - 60))  
         
         quit_header = self.font.render("Press ESC to Quit", True, (255, 255, 255))
-        self.display_surface.blit(quit_header, (((screen_width) - 50), screen_height / 2))  
+        self.display_surface.blit(quit_header, (((screen_width) - 350), (screen_height) - 60)) 
            
         self.game_over_flag = True
         
@@ -672,6 +671,7 @@ class Level:
             if boss.rect.colliderect(player.rect) and player.isAttacking == True and boss.isDead == False and boss.isHurt == False and boss.isAttacking == False:               
                 
                 boss.health -= player.damage
+                self.boss_health_header = boss.health
                 
             if boss.health <= 0:
                 boss.isDead = True
@@ -740,9 +740,13 @@ class Level:
             self.game_over()    
 
         if self.win_flag == True:
-            self.win_sound.play()
             self.win()
-
+            while(self.count == 0):
+                self.win_sound.play()
+                pygame.mixer.music.load("./media/menu_music.mp3")
+                pygame.mixer.music.play(-1)
+                self.count += 1
+                
         return player, skeletons, boss, self.game_over_flag 
         
         #npc,  summoned_skeletons, necromancer

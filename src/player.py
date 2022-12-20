@@ -28,6 +28,8 @@ class Player(pygame.sprite.Sprite):
         # Sound
         self.lose_sound = pygame.mixer.Sound("./media/game_over.wav")
         self.slash = pygame.mixer.Sound("./media/player_slash.wav")
+        self.jump_sound = pygame.mixer.Sound("./media/jump.wav")
+        
 
         # Player Stats
         self.player_status = {'attack_1': False, 'attack_crouch': False, 'crouch': False, 'crouch_walk': False,
@@ -193,6 +195,8 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.animations['jump'][int(
                         self.mov_frame_index)]
 
+                    if int(self.mov_frame_index) == 2:
+                        self.jump_sound.play()
                 if self.player_status['run'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.mov_frame_index += self.run_frame_speed
@@ -333,6 +337,9 @@ class Player(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
 
+                    if int(self.mov_frame_index) == 2:
+                        self.jump_sound.play()
+                    
                 if self.player_status['run'] == True and self.player_status['idle'] == False and self.on_ground:
 
                     self.mov_frame_index += self.run_frame_speed

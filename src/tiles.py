@@ -96,11 +96,11 @@ class Tile(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft = pos)
             self.id = '|'            
         
-        elif(tile == '?'):
+        elif(tile == '#'):
             
             self.image = self.hard_tiles['ceiling_corner_left']
             self.rect = self.image.get_rect(topleft = pos)
-            self.id = '?'
+            self.id = '#'
             
         elif(tile == ':'):
             
@@ -156,10 +156,10 @@ class Tile(pygame.sprite.Sprite):
             self.image = self.soft_tiles['!']
             self.rect = self.image.get_rect(topleft = pos)
       
-        elif(tile == '#'):
+        # elif(tile == '#'):
             
-            self.image = self.soft_tiles['#']
-            self.rect = self.image.get_rect(topleft = pos)
+        #     self.image = self.soft_tiles['#']
+        #     self.rect = self.image.get_rect(topleft = pos)
             
         elif(tile == '$'):
         
