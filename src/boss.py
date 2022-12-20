@@ -6,29 +6,29 @@ class Boss(pygame.sprite.Sprite):
     def __init__(self, pos, data):
         
         super().__init__()
+        
+        #Import Assets
         self.import_boss_assets()
-
         
-        
-        # Frame indexs
+        # Frame indexes
         self.cleave_frame_index = 0
         self.death_frame_index = 0
         self.hit_frame_index = 0
         self.idle_frame_index = 0
         self.walk_frame_index = 0
         
-        self.image = self.animations['walk'][self.walk_frame_index]
-        self.rect = self.image.get_rect(topleft=pos)
-        
-        
-        # Frame speeds
+        # Frame Speeds
         self.cleave_frame_speed = 0.5
         self.death_frame_speed = 0.5
         self.hit_frame_speed = 0.5
         self.idle_frame_speed = 0.5
         self.walk_frame_speed = 0.5
-
-
+        
+        # Init Frame
+        self.image = self.animations['walk'][self.walk_frame_index]
+        self.rect = self.image.get_rect(topleft=pos)
+        
+        # Status
         self.isAnimating = False
         self.isAttacking = False
         self.isAggro = False
@@ -37,19 +37,24 @@ class Boss(pygame.sprite.Sprite):
         self.isDead = False
         self.isHurt = False
         
+        # Sound
+        self.death_sound = pygame.mixer.Sound("./media/demon_death.wav")
+        self.death_slash = pygame.mixer.Sound("./media/demon_slash.wav")
         
+        # Directional Info       
         self.facing_right = False
         self.wall_right = False
         self.wall_left = False
-        
-        self.speed = 2
         self.direction = pygame.math.Vector2(0, 0)
+        
+        # Velocities
+        self.speed = 2
         self.gravity = 0.5
         
+        # Stats
         self.health = data['health']
         self.points = data['points']
         self.damage = 10
-        
         
         #Coming Soon!
         # self.start_time = 0
@@ -92,6 +97,8 @@ class Boss(pygame.sprite.Sprite):
             self.default_path += animation
             self.animations[animation] = import_boss(self.default_path)
     
+    #Apply Gravity
+    #Not required at this point in time
     def apply_gravity(self):
         
         self.direction.y += self.gravity
@@ -123,6 +130,8 @@ class Boss(pygame.sprite.Sprite):
             #self.start_time = 0    
 
         if self.health <= 0:
+            
+            self.death_sound.play()
             self.isDead = True
             self.isAttacking = False
             self.isAggro = False
@@ -319,6 +328,9 @@ class Boss(pygame.sprite.Sprite):
                         self.image = self.animations['cleave'][int(self.cleave_frame_index)]
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
+                    if self.cleave_frame_index >= 10 and self.cleave_frame_index < 11:
+                        self.death_slash.play()
+                    
                     if self.cleave_frame_index >= 10 and self.cleave_frame_index <= 12:
                         self.isAttacking = True
                     else:
@@ -458,7 +470,15 @@ class Boss(pygame.sprite.Sprite):
                         flipped_image = pygame.transform.flip(image, True, False)
                         self.image = flipped_image
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
-                
+
+                    if self.cleave_frame_index >= 10 and self.cleave_frame_index < 11:
+                        self.death_slash.play()
+                    
+                    if self.cleave_frame_index >= 10 and self.cleave_frame_index <= 12:
+                        self.isAttacking = True
+                    else:
+                        self.isAttacking = False
+                    
                 if self.isDead:
                     self.death_frame_index += self.death_frame_speed
 
@@ -588,8 +608,7 @@ class Boss(pygame.sprite.Sprite):
                         image = self.animations['walk'][int(self.walk_frame_index)]
                         flipped_image = pygame.transform.flip(image, True, False)
                         self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft) 
-        
+                        self.rect = self.image.get_rect(topleft=self.rect.topleft)        
         
     def update(self, offset, player):        
         self.set_offset(offset)

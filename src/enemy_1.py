@@ -6,8 +6,11 @@ class Enemy_1(pygame.sprite.Sprite):
     def __init__(self, pos, data):
         
         super().__init__()
+        
+        #Import Assets
         self.import_enemy_1_assets()
         
+        # Frame Indexes
         self.attack_frame_index = 0
         self.death_frame_index = 0
         self.hurt_frame_index = 0
@@ -15,6 +18,7 @@ class Enemy_1(pygame.sprite.Sprite):
         self.react_frame_index = 0
         self.walk_frame_index = 0
         
+        # Frame Speeds
         self.attack_frame_speed = 0.5
         self.death_frame_speed = 0.7
         self.hurt_frame_speed = 0.2
@@ -22,6 +26,11 @@ class Enemy_1(pygame.sprite.Sprite):
         self.react_frame_speed = 0.2
         self.walk_frame_speed = 0.3
         
+        # Init Frame
+        self.image = self.animations['idle'][self.idle_frame_index]
+        self.rect = self.image.get_rect(topleft=pos) 
+        
+        # Status
         self.isAggro = False
         self.isAnimating = False
         self.isAttacking = False
@@ -31,24 +40,26 @@ class Enemy_1(pygame.sprite.Sprite):
         self.isDead = False
         self.isReact = False
         
+        # Sound
+        self.death_sound = pygame.mixer.Sound("./media/skeleton_death.wav")
+        self.slash_sound = pygame.mixer.Sound("./media/skeleton_slash.wav")
+        
+        #Directional Info
         self.facing_right = True
         self.wall_right = False
         self.wall_left = False
-        
-        self.speed = 2
-        #health or just one hit
         self.direction = pygame.math.Vector2(0, 0)
+        
+        # Velocities
+        self.speed = 2
         self.gravity = 0.5
         
+        # Stats
         self.health = data['health']
         self.damage = 1
         self.points = data['points']
-        self.time = data['time']
-        self.start_time = 0
         
-        self.image = self.animations['idle'][self.idle_frame_index]
-        self.rect = self.image.get_rect(topleft=pos)        
-    
+        self.start_time = 0
         
     def import_enemy_1_assets(self):
         
@@ -60,6 +71,7 @@ class Enemy_1(pygame.sprite.Sprite):
             self.default_path += animation
             self.animations[animation] = import_enemy_1(self.default_path)
     
+    #Apply Gravity
     def apply_gravity(self):
         
         self.direction.y += self.gravity
@@ -75,7 +87,7 @@ class Enemy_1(pygame.sprite.Sprite):
         
         loc_x_diff = skeleton_x - player_x
         loc_y_diff = skeleton_y - player_y
-        #Check for animation and movement
+
         if loc_x_diff < 1000 and loc_x_diff > -1000:
             self.isAnimating = True
         else:
@@ -99,6 +111,7 @@ class Enemy_1(pygame.sprite.Sprite):
                 self.isReact = True
             else:
                 self.isAggro = False                
+            
             #Check for attacking distance    
             if (loc_x_diff < 50 and loc_x_diff > -50) and (loc_y_diff < 32 and loc_y_diff > -32) or self.isAttacking:
                 self.isAttacking = True
@@ -156,8 +169,7 @@ class Enemy_1(pygame.sprite.Sprite):
               
             self.randomize_movement()
             
-            if self.isWalking:
-                
+            if self.isWalking:    
                 if self.facing_right and not self.wall_right:
                     self.walk_frame_speed = 0.3
                     self.speed = 2
@@ -171,7 +183,6 @@ class Enemy_1(pygame.sprite.Sprite):
         elif self.isReact:
             if x_diff > 0:
                 self.isWalking = False
-                #Add more maybe
             if x_diff < 0:    
                 self.isWalking = False
         else:    
@@ -197,12 +208,9 @@ class Enemy_1(pygame.sprite.Sprite):
                     self.isAttacking = True    
                     self.isWalking = False 
             else:
-                #Maybe take out when adding random movement
-                #add to put everything top false maybe
+
                 self.isWalking = False
                     
-        #Add another boolean to check for react and set false if true and check to activate if both true    
-            
     def animate(self):
         
         if not self.isAnimating:
@@ -250,10 +258,15 @@ class Enemy_1(pygame.sprite.Sprite):
 
                         self.attack_frame_index = 0
                         self.isAttacking = False 
+                    
+                    
                             
                     self.image = self.animations['attack'][int(self.attack_frame_index)]
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)   
-
+                    
+                    if int(self.attack_frame_index) == 1:
+                        self.slash_sound.play()
+                
                 if self.isHurt:
                     self.hurt_frame_index += self.hurt_frame_speed
 
@@ -274,7 +287,10 @@ class Enemy_1(pygame.sprite.Sprite):
                         
                     self.image = self.animations['death'][int(self.death_frame_index)]
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)   
-            
+
+                    if int(self.death_frame_index) == 1:
+                        self.death_sound.play()
+                    
             # Facing Left
             else:
                 
@@ -325,11 +341,15 @@ class Enemy_1(pygame.sprite.Sprite):
                         self.isAttacking = False 
                         
 
+                    
                     image = self.animations['attack'][int(self.attack_frame_index)]
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)   
-
+                    
+                    if int(self.attack_frame_index) == 1:
+                        self.slash_sound.play()
+                    
                 if self.isHurt:
                     self.hurt_frame_index += self.hurt_frame_speed
 
@@ -355,7 +375,10 @@ class Enemy_1(pygame.sprite.Sprite):
                     flipped_image = pygame.transform.flip(image, True, False)
                     self.image = flipped_image
                     self.rect = self.image.get_rect(topleft=self.rect.topleft) 
-                
+
+                    if int(self.death_frame_index) == 1:
+                        self.death_sound.play()
+                        
     def set_offset(self, offset):
         
         self.rect.x += offset.x
