@@ -4,37 +4,50 @@
 
         "1": {
 
-            "offset.x":  ,
-            "p_offset.x": ,
-            "skeleton_health": ,
-            "boss_health":
+            "offset.x": -5,
+            "p_offset.x": -2,
+            "skeletons": {
+                "health": 20,
+                "points": 10,
+                "time": 1000
+            },
+            "boss": {    
+                "health": 5000,
+                "points": 5000
+            }
+
         },
 
         "2": {
             
-            "offset.x" : ,
-            "p_offset.x": ,
-            "skeleton_health": ,
-            "boss_health":
-
+            "offset.x" : -6,
+            "p_offset.x": -3,
+            "skeletons": {
+                "health": 100,
+                "points": 25,
+                "time": 2000
+            },
+            "boss": {    
+                "health": 10000,
+                "points": 10000
+            }
 
         },
 
         "3": {
 
-            "offset.x" : ,
-            "p_offset.x": ,
-            "skeleton_health": ,
-            "boss_health":
-
-
+            "offset.x" : -8,
+            "p_offset.x": -5,
+            "skeletons": {
+                "health": 200,
+                "points": 50,
+                "time": 3000
+            },
+            "boss": {    
+                "health": 15000,
+                "points": 15000
+            }
+       
         }
-
-    },
-
-    "high_score" : {
-
-        "fastest_time": ,
-        "highest_score": 
     }
 }

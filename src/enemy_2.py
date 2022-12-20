@@ -1,6 +1,7 @@
 import pygame
 from import_assets import import_enemy_2
 
+#WORK IN PROGRESS
 class Enemy_2(pygame.sprite.Sprite):
     def __init__(self, pos):
         

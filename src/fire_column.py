@@ -1,6 +1,7 @@
 import pygame
 from import_assets import import_fire_column
 
+#WORK IN PROGRESS
 class Fire_Column(pygame.sprite.Sprite):
     def __init__(self, pos):
         

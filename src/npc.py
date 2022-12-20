@@ -1,6 +1,7 @@
 import pygame
 from import_assets import import_npc
 
+#WORK IN PROGRESS
 class NPC(pygame.sprite.Sprite):
     def __init__(self, pos):
         

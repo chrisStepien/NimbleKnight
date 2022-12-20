@@ -3,7 +3,7 @@ import random
 from import_assets import import_enemy_1
 
 class Enemy_1(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, data):
         
         super().__init__()
         self.import_enemy_1_assets()
@@ -16,7 +16,7 @@ class Enemy_1(pygame.sprite.Sprite):
         self.walk_frame_index = 0
         
         self.attack_frame_speed = 0.5
-        self.death_frame_speed = 0.2
+        self.death_frame_speed = 0.7
         self.hurt_frame_speed = 0.2
         self.idle_frame_speed = 0.2
         self.react_frame_speed = 0.2
@@ -40,6 +40,10 @@ class Enemy_1(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0, 0)
         self.gravity = 0.5
         
+        self.health = data['health']
+        self.damage = 1
+        self.points = data['points']
+        self.time = data['time']
         self.start_time = 0
         
         self.image = self.animations['idle'][self.idle_frame_index]
@@ -71,54 +75,62 @@ class Enemy_1(pygame.sprite.Sprite):
         
         loc_x_diff = skeleton_x - player_x
         loc_y_diff = skeleton_y - player_y
-        
-        
         #Check for animation and movement
         if loc_x_diff < 400 and loc_x_diff > -400:
             self.isAnimating = True
         else:
             self.isAnimating = False
             self.start_time = 0
-               
-        #Check for player aggro    
-        if (loc_x_diff < 200 and loc_x_diff > -200) and (loc_y_diff < 100 and loc_y_diff > -100) and self.isAggro:
-            self.isAggro = True
-        elif (loc_x_diff < 200 and loc_x_diff > -200) and (loc_y_diff < 100 and loc_y_diff > -100) and not self.isAggro:
-            self.isAggro = True
-            self.isReact = True
-        else:
-            self.isAggro = False                
-        #Check for attacking distance    
-        if (loc_x_diff < 50 and loc_x_diff > -50) and (loc_y_diff < 32 and loc_y_diff > -32) or self.isAttacking:
-            self.isAttacking = True
-        else:
-            self.isAttacking = False    
-        
-        self.enemy_logic(loc_x_diff, loc_y_diff)
-    
+                
+        if self.health <= 0:
+            self.isDead = True
+            self.isAttacking = False
+            self.isWalking = False
+            self.isHurt = False
+            self.isIdle = False
+            self.isReact = False
+        else:    
+            
+            #Check for player aggro    
+            if (loc_x_diff < 200 and loc_x_diff > -200) and (loc_y_diff < 100 and loc_y_diff > -100) and self.isAggro:
+                self.isAggro = True
+            elif (loc_x_diff < 200 and loc_x_diff > -200) and (loc_y_diff < 100 and loc_y_diff > -100) and not self.isAggro:
+                self.isAggro = True
+                self.isReact = True
+            else:
+                self.isAggro = False                
+            #Check for attacking distance    
+            if (loc_x_diff < 50 and loc_x_diff > -50) and (loc_y_diff < 32 and loc_y_diff > -32) or self.isAttacking:
+                self.isAttacking = True
+            else:
+                self.isAttacking = False    
+            
+            self.enemy_logic(loc_x_diff, loc_y_diff)
+            
+    #Randomizes when event occurs and what event occurs
     def randomize_movement(self):
         time = pygame.time.get_ticks() - self.start_time
         random_time = random.randint(4000, 8000)
         if(time > random_time):
             result = random.randint(1, 4)
             self.start_time = pygame.time.get_ticks()
-            #turn right and walk
+            #Turn right and walk
             if(result == 1):
                 self.facing_right = True
                 self.isWalking = True
                 
-            #turn left and walk
+            #Turn left and walk
             elif(result == 2):
                 self.facing_right = False
                 self.isWalking = True
             
-            #turn right and idle
+            #Turn right and idle
             elif(result == 3):
                 self.facing_right = True
                 self.isWalking = False
                 self.isIdle = True
                 
-            #turn left and idle 
+            #Turn left and idle 
             elif(result == 4):
                 self.isWalking = False
                 self.isIdle = True
@@ -258,7 +270,8 @@ class Enemy_1(pygame.sprite.Sprite):
                     if int(self.death_frame_index) > len(self.animations['death']) - 1:
 
                         self.death_frame_index = 0
-
+                        self.kill()
+                        
                     self.image = self.animations['death'][int(self.death_frame_index)]
                     self.rect = self.image.get_rect(topleft=self.rect.topleft)   
             
@@ -335,6 +348,8 @@ class Enemy_1(pygame.sprite.Sprite):
                     if int(self.death_frame_index) > len(self.animations['death']) - 1:
 
                         self.death_frame_index = 0
+                        self.kill()
+                        
 
                     image = self.animations['death'][int(self.death_frame_index)]
                     flipped_image = pygame.transform.flip(image, True, False)

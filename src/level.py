@@ -1,4 +1,5 @@
-import pygame, sys
+import pygame
+import json
 from level_settings import tile_size, screen_width, screen_height
 from tiles import Tile
 from player import Player
@@ -7,13 +8,17 @@ from enemy_1 import Enemy_1
 from enemy_2 import Enemy_2
 from boss import Boss
 
+config = open('config.json')
+data = json.load(config)
+
 # iterate through level_map
 
 class Level:
-    def __init__(self,level_layout,surface):
+    def __init__(self,level_layout,surface,game_state):
         super().__init__()
 
         self.display_surface = surface
+        self.font = pygame.font.Font("./fonts/Square.ttf", 24)
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
@@ -29,14 +34,20 @@ class Level:
         self.boss_current_y = 0
         #self.offset.x = self.half_width - player.rect.centerx
         #self.offset.y = self.half_height - player.rect.centery
-
+        self.game_state = game_state
         self.setup_level(level_layout)
         #self.scroll_x()
         #similar to below
         #self.x_shift = 0
         #self.y_shift = 0
-        self.xScroll_on = False
+        self.xScroll_on = True
         self.yScroll_on = False
+        
+        
+        self.game_over_flag = False
+        self.score = 0
+        self.time = 0
+        self.time_difference = 0
     # def spawn_fire(self, spawn_locations):
     #     #Seperate attacks
     #     self.fire_column = pygame.sprite.Group()
@@ -190,13 +201,13 @@ class Level:
 
                     elif cell == 'E':
 
-                        skeleton = Enemy_1((x, y))
+                        skeleton = Enemy_1((x, y), data['difficulty'][str(self.game_state)]['skeletons'])
                         self.skeletons.add(skeleton)
 
                     #SLIME BOSS
                     elif cell == 'S':
                         
-                        boss_sprite = Boss((x, y))
+                        boss_sprite = Boss((x, y), data['difficulty'][str(self.game_state)]['boss'])
                         self.boss.add(boss_sprite)
 
                     #Soft tiles
@@ -391,14 +402,80 @@ class Level:
                         npc_sprite = NPC((x, y))
                         self.npc.add(npc_sprite)
 
+
+    def HUD(self):
+        
+        player = self.player.sprite
+        
+        health_header =  self.font.render("HP: "+str(player.health), True, (255, 255, 255))
+        self.display_surface.blit(health_header, (0, 0))
+        
+        time = self.time - self.time_difference
+        
+        
+        # seconds = 
+        # milliseconds = 
+        
+        time_header =  self.font.render(self.calculate_time(time), True, (255, 255, 255))
+        self.display_surface.blit(time_header, (100, 0))
+        
+        score_header = self.font.render("Score: "+str(self.score), True, (255, 255, 255))
+        self.display_surface.blit(score_header, (200, 0))
+
+
+    def calculate_time(self, millis):
+        seconds = (millis/1000)%60
+        minutes = (millis/(1000*60))%60
+        return str(minutes + seconds)
+        
+
+    def game_over(self):
+        
+        
+        
+        game_over_header =  self.font.render("GAME OVER", True, (255, 255, 255))
+        self.display_surface.blit(game_over_header, (screen_height / 2, screen_width / 2))
+        
+        dead_header = self.font.render("You are DEAD!", True, (255, 255, 255))
+        self.display_surface.blit(dead_header, (((screen_height / 2) - 50), screen_width / 2))    
+        
+        restart_header = self.font.render("Press SPACE to Restart", True, (255, 255, 255))
+        self.display_surface.blit(restart_header, (((screen_height) - 50), screen_width / 2))  
+        
+        quit_header = self.font.render("Press ESC to Quit", True, (255, 255, 255))
+        self.display_surface.blit(quit_header, (((screen_height) - 50), screen_width / 2))  
+        
+        self.game_over_flag = True
+    
+    def win(self):
+        
+        self.display_surface.fill(0,0,0)
+        
+        win_header = self.font.render("GAME OVER", True, (255, 255, 255))
+        self.display_surface.blit(win_header, (screen_height / 2, screen_width / 2))
+        
+        highscore_header = self.font.render("Highscore: "+ str(self.score), True, (255, 255, 255))
+        self.display_surface.blit(highscore_header, (screen_height / 2, screen_width / 2))
+        
+        time_header =  self.font.render("Time Completed: "+ str(self.time), True, (255, 255, 255))
+        self.display_surface.blit(time_header, (screen_height / 2, screen_width / 2))
+        
+        restart_header = self.font.render("Press SPACE to Restart", True, (255, 255, 255))
+        self.display_surface.blit(restart_header, (((screen_height) - 50), screen_width / 2))  
+        
+        quit_header = self.font.render("Press ESC to Quit", True, (255, 255, 255))
+        self.display_surface.blit(quit_header, (((screen_height) - 50), screen_width / 2))  
+           
+        self.game_over_flag = True
+        
     # Player Camera
     #Fix climbing walls
     def scroll_x(self):
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
-        self.offset.x = -8
-        self.p_offset.x = -3 
+        self.offset.x = data['difficulty'][str(self.game_state)]['offset.x']
+        self.p_offset.x = data['difficulty'][str(self.game_state)]['p_offset.x'] 
         boss = self.boss.sprite
         # if player_x < tile_size * 1 and direction_x < 0:
         #     self.offset.x = 8
@@ -412,7 +489,7 @@ class Level:
         
         
         if player.direction.x == 0:
-            self.p_offset.x = -8       
+            self.p_offset.x = data['difficulty'][str(self.game_state)]['offset.x']       
         # else:
         #     self.offset.x = 0
         #     player.speed = 8
@@ -435,7 +512,7 @@ class Level:
                     self.current_x = player.env_rect.right
                     player.stop = True
                     player.direction.x = 0
-                    self.p_offset.x = -8       
+                    self.p_offset.x = data['difficulty'][str(self.game_state)]['offset.x']       
         
         if (boss.rect.x - player.rect.x) <= 500:
             self.yScroll_on = True
@@ -457,7 +534,7 @@ class Level:
 
         if player_y > screen_height / 2 and direction_y > 0:
 
-            self.offset.y += -2
+            self.offset.y += -2.5
             player.gravity = 0
 
         else:
@@ -629,7 +706,7 @@ class Level:
 
         for sprite in self.hard_tiles.sprites():
             if sprite.rect.colliderect(boss.rect):
-
+                
                 #issue with camera may be caused here
                 if boss.direction.x < 0:
 
@@ -643,12 +720,12 @@ class Level:
                     self.boss_current_x = boss.rect.right
 
 
-                    #
-        if(boss.wall_left and boss.rect.left < self.boss_current_x or boss.direction.x >= 0):
-            boss.wall_left = False
-        #
-        if(boss.wall_right and boss.rect.right > self.boss_current_x or boss.direction.x <= 0):
-            boss.wall_right = False
+        #             #
+        # if(boss.wall_left and boss.rect.left < self.boss_current_x or boss.direction.x >= 0):
+        #     boss.wall_left = False
+        # #
+        # if(boss.wall_right and boss.rect.right > self.boss_current_x or boss.direction.x <= 0):
+        #     boss.wall_right = False
 
         #self.player.update(False)
 
@@ -660,6 +737,16 @@ class Level:
 
         for sprite in self.hard_tiles.sprites():
             if sprite.rect.colliderect(boss.rect):
+                if sprite.id == ']' or sprite.id == '>':
+                    boss.wall_right = True
+                    boss.speed = 0
+                elif sprite.id == '[' or sprite.id == '<':
+                    boss.wall_left = True
+                    boss.speed = 0    
+                else:
+                    boss.wall_left = False
+                    boss.wall_right = False
+                        
                 if boss.direction.y > 0:
                     boss.rect.bottom = sprite.rect.top
 
@@ -684,27 +771,58 @@ class Level:
     def check_player(self):
         
         player = self.player.sprite
-
+        boss = self.boss.sprite
+        
         for sprite in self.hard_tiles.sprites():
             if sprite.rect.colliderect(player.rect):
                 if sprite.id == 'U' or sprite.id == 'D':
+                    player.health = 0
                     player.player_status['death'] = True
-
-        if player.rect.x < 0 or player.rect.y < 0 or player.rect.y > screen_height:
+        
+        if self.skeletons.sprites():
+            for skeleton in self.skeletons.sprites():
+                if skeleton.rect.colliderect(player.env_rect) and player.isAttacking == False and skeleton.isDead == False and skeleton.isHurt == False and skeleton.isAttacking == True:
+                    player.health -= skeleton.damage    
+                if skeleton.rect.colliderect(player.rect) and player.isAttacking == True and skeleton.isDead == False and skeleton.isHurt == False:
+                    skeleton.health -= player.damage
+                    if skeleton.health <= 0:
+                        self.score += skeleton.points
+                        self.time_difference += skeleton.time
+        
+        if boss:
+            if boss.rect.colliderect(player.env_rect) and player.isAttacking == False and boss.isDead == False and boss.isHurt == False and boss.isAttacking == True:               
+                player.health -= boss.damage    
+            if boss.rect.colliderect(player.rect) and player.isAttacking == True and boss.isDead == False and boss.isHurt == False and boss.isS_Hurt == False and boss.isAttacking == False:               
+                
+                boss.slime_health -= player.damage
+                
+                if boss.slime_health <= 0 and boss.isDemon:
+                    boss.health -= player.damage
+                elif boss.health <= 0 and boss.isDemon:
+                    self.score += boss.points
+                else:
+                    boss.isS_Hurt = True
+                
+                print(boss.isS_Hurt)
+            
+            
+        if player.rect.x < -40 or player.rect.y < -40 or player.rect.y > screen_height or player.health <= 0:
+            player.health = 0
             player.player_status['death'] = True
             
-
-
-
-
-
-    def run(self):
+            
+    def run(self, attacking, time):
 
         player = self.player.sprite
-        npc = self.npc.sprite
         skeletons = self.skeletons.sprites()
-        summoned_skeletons = self.summoned_skeletons.sprites()
-        necromancer = self.necromancer.sprite
+        boss = self.boss.sprite
+        
+        self.time = time
+        #COMING SOON!
+        # npc = self.npc.sprite
+        # summoned_skeletons = self.summoned_skeletons.sprites()
+        # necromancer = self.necromancer.sprite
+        
         
         # Level tiles
         self.soft_tiles.update(self.offset)
@@ -719,23 +837,20 @@ class Level:
         if self.yScroll_on == True:
             self.scroll_y()
 
-        #self.display_surface.blit(self.tiles)
-        #self.scroll_y()
-        #NPC
-        self.npc.update(self.offset)
-        self.npc.draw(self.display_surface)
+        #NPC - COMING SOON!
+        # self.npc.update(self.offset)
+        # self.npc.draw(self.display_surface)
+        
         # Player
         self.check_player()
-        self.player.update()
+        self.player.update(attacking)
         self.player_vertical_collision()
         self.player_horizontal_collision()
-        
         self.player.draw(self.display_surface)
 
         
 
         #Skeletons
-        #MIGHT SCREW UP STUFF
         self.skeletons.update(self.offset, player)
         self.enemy_vertical_collision()
         self.enemy_horizontal_collision()
@@ -748,15 +863,14 @@ class Level:
             self.boss_horizontal_collision()
         self.boss.draw(self.display_surface)
         
-        #if self.player:
-        # if player.isXScrolling:    
-        # else:
-            # self.offset.x = 0
-            # player.speed = 0
-                
-        #SummonedSkeletons?
+        self.HUD()
+        
+        if player.health == 0:
+            self.game_over()    
 
-        #Necromancer
+        if player.health != 0 and boss.health <= 0:
+            self.win()
 
-
-        return player, npc, skeletons, summoned_skeletons, necromancer
+        return player, skeletons, boss, self.game_over_flag 
+        
+        #npc,  summoned_skeletons, necromancer
