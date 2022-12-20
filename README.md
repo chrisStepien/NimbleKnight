@@ -12,7 +12,7 @@ Goals: Vanquish evil spirits and the Demon Lord to gain points and win the game!
 
 Uniqueness: Replayable level to get better at defeating more monsters to gain more points to improve all time highscore.
 
-Game Vision: I wanted to try to make a game that had more mechanics and would be more chalenging to make than just an ordinary arcade game. So I decided to create a platformer because I personally find them enjoyable. It wasn't until the last minute that I decided to make it an auto-scroller instead of a normal platformer where the camera moves with the player. I also wanted to make the gameplay more challenging by adding monsters and a final boss.
+Game Vision: I wanted to try to make a game that had more mechanics and would be more challenging to make than just an ordinary arcade game. So I decided to create a platformer because I personally find them enjoyable. It wasn't until the last minute that I decided to make it an auto-scroller instead of a normal platformer where the camera moves with the player. I also wanted to make the gameplay more challenging by adding monsters and a final boss.
 
 # Controls
 
