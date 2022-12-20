@@ -20,7 +20,7 @@ background = pygame.image.load('./assets/background/background.png')
 main_font = pygame.font.Font('./fonts/Square.ttf', 75)
 second_font = pygame.font.Font('./fonts/Square.ttf', 50)
 main_text = "NIMBLE KNIGHT"
-second_text = "(1) Easy (2) Medium (3) Hard"
+second_text = "(1) Normal (2) Hard (3) Impossible"
 
 #Welcome Screen
 menuRunning = True

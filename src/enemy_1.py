@@ -76,7 +76,7 @@ class Enemy_1(pygame.sprite.Sprite):
         loc_x_diff = skeleton_x - player_x
         loc_y_diff = skeleton_y - player_y
         #Check for animation and movement
-        if loc_x_diff < 400 and loc_x_diff > -400:
+        if loc_x_diff < 1000 and loc_x_diff > -1000:
             self.isAnimating = True
         else:
             self.isAnimating = False

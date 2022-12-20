@@ -188,7 +188,6 @@ class Level:
 
                         player_sprite = Player((x, y))
 
-                        #print(player_sprite.rect.centerx)
                         self.player.add(player_sprite)
 
                     #NECROMANCER
@@ -449,7 +448,6 @@ class Level:
     
     def win(self):
         
-        self.display_surface.fill(0,0,0)
         
         win_header = self.font.render("GAME OVER", True, (255, 255, 255))
         self.display_surface.blit(win_header, (screen_height / 2, screen_width / 2))
@@ -499,7 +497,6 @@ class Level:
             # if sprite.rect.colliderect(player.rect):
             #     if sprite.id == 'U' or sprite.id == 'D':
             #         player.player_status['death'] = True
-            #         print(player.player_status['death'] ) 
                     
             if sprite.rect.colliderect(player.env_rect):
                 #issue with camera may be caused here
@@ -790,20 +787,17 @@ class Level:
                         self.time_difference += skeleton.time
         
         if boss:
-            if boss.rect.colliderect(player.env_rect) and player.isAttacking == False and boss.isDead == False and boss.isHurt == False and boss.isAttacking == True:               
+            if boss.rect.colliderect(player.rect) and player.isAttacking == False and boss.isDead == False and boss.isHurt == False and boss.isAttacking == True:               
                 player.health -= boss.damage    
-            if boss.rect.colliderect(player.rect) and player.isAttacking == True and boss.isDead == False and boss.isHurt == False and boss.isS_Hurt == False and boss.isAttacking == False:               
+            if boss.rect.colliderect(player.rect) and player.isAttacking == True and boss.isDead == False and boss.isHurt == False and boss.isAttacking == False:               
                 
-                boss.slime_health -= player.damage
+                boss.health -= player.damage
                 
-                if boss.slime_health <= 0 and boss.isDemon:
-                    boss.health -= player.damage
-                elif boss.health <= 0 and boss.isDemon:
-                    self.score += boss.points
-                else:
-                    boss.isS_Hurt = True
+            if boss.health <= 0:
+                boss.isDead = True
+                self.score += boss.points    
                 
-                print(boss.isS_Hurt)
+                
             
             
         if player.rect.x < -40 or player.rect.y < -40 or player.rect.y > screen_height or player.health <= 0:
@@ -868,8 +862,9 @@ class Level:
         if player.health == 0:
             self.game_over()    
 
-        if player.health != 0 and boss.health <= 0:
-            self.win()
+        if boss:
+            if player.health != 0 and boss.health <= 0:
+                self.win()
 
         return player, skeletons, boss, self.game_over_flag 
         

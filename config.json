@@ -8,7 +8,7 @@
             "p_offset.x": -2,
             "skeletons": {
                 "health": 20,
-                "points": 10,
+                "points": 100,
                 "time": 1000
             },
             "boss": {    
@@ -21,10 +21,10 @@
         "2": {
             
             "offset.x" : -6,
-            "p_offset.x": -3,
+            "p_offset.x": -4,
             "skeletons": {
-                "health": 100,
-                "points": 25,
+                "health": 200,
+                "points": 250,
                 "time": 2000
             },
             "boss": {    
@@ -37,10 +37,10 @@
         "3": {
 
             "offset.x" : -8,
-            "p_offset.x": -5,
+            "p_offset.x": -7,
             "skeletons": {
-                "health": 200,
-                "points": 50,
+                "health": 400,
+                "points": 500,
                 "time": 3000
             },
             "boss": {    

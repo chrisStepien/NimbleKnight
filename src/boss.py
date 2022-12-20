@@ -17,7 +17,7 @@ class Boss(pygame.sprite.Sprite):
         self.idle_frame_index = 0
         self.walk_frame_index = 0
         
-        self.image = self.animations['slime_idle'][self.s_idle_frame_index]
+        self.image = self.animations['walk'][self.walk_frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         
         
@@ -32,7 +32,7 @@ class Boss(pygame.sprite.Sprite):
         self.isAnimating = False
         self.isAttacking = False
         self.isAggro = False
-        self.isWalking = False
+        self.isWalking = True
         self.isCleaving = False
         self.isDead = False
         self.isHurt = False
@@ -48,7 +48,7 @@ class Boss(pygame.sprite.Sprite):
         
         self.health = data['health']
         self.points = data['points']
-        self.damage = 5
+        self.damage = 10
         
         
         #Coming Soon!
@@ -83,48 +83,44 @@ class Boss(pygame.sprite.Sprite):
         # self.fire_ball = False
         
     def import_boss_assets(self):
-        
-        self.animations = {'cast_spell': [], 'cleave': [], 'death': [], 'fire_breath': [], 'hit': [], 'idle': [], 'slime_hit': [], 'slime_idle': [], 'slime_walk': [], 'smash': [], 'transform': [], 'walk': []}    
+        #Add Later: 'cast_spell': [], 'fire_breath': [], 'idle': [], 'slime_hit': [], 'slime_idle': [], 'slime_walk': [], 'smash': [], 'transform': []
+        self.animations = {'cleave': [], 'death': [], 'hit': [], 'walk': []}    
         
         for animation in self.animations.keys():
             
             self.default_path = './assets/boss/'
             self.default_path += animation
             self.animations[animation] = import_boss(self.default_path)
-
-   
-    #random attack
-    
-    #spells maybe?
     
     def apply_gravity(self):
         
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
     
+    #Adjustment for scroller
     def set_offset(self, offset):
 
         self.rect.x += offset.x
         self.rect.y += offset.y
             
-    
+    #Determine event depending on distance from player
     def calculate_distance(self, player):
         
-        boss_x = self.rect.x
-        boss_y = self.rect.y
+        boss_x = self.rect.centerx
+        boss_y = self.rect.centery
         
-        player_x = player.rect.x
-        player_y = player.rect.y
+        player_x = player.rect.centerx
+        player_y = player.rect.centery
 
         loc_x_diff = boss_x - player_x
         loc_y_diff = boss_y - player_y
         
-        if loc_x_diff < 1000 and loc_x_diff > -1000 and loc_y_diff < 1000 and loc_y_diff > -1000:
+        if loc_x_diff < 1000 and loc_x_diff > -1000 and loc_y_diff < 600 and loc_y_diff > -600:
             self.isAnimating = True
+            self.isAggro = True
         else:
             self.isAnimating = False
             #self.start_time = 0    
-        
 
         if self.health <= 0:
             self.isDead = True
@@ -140,29 +136,31 @@ class Boss(pygame.sprite.Sprite):
             #self.isS_Idle = False
             #self.isS_Walk = False
             #self.isSmash = False
-        elif self.health <= (self.health / 2) and self.isHurt == False and self.isDead == False:
-            self.isDead = False
-            self.isAttacking = False
-            self.isAggro = False
-            self.isWalking = False
+        #Issue: Need to trigger only once
+        #elif self.health < (self.health/2) and self.isHurt == False and self.isDead == False:
+            #self.isDead = False
+            #self.isAttacking = False
+            #self.isAggro = False
+            #self.isWalking = False
             #self.isCasting = False
-            self.isCleaving = False
+            #self.isCleaving = False
             #self.isBreathing = False
-            self.isHurt = True
+            #self.isHurt = True
             #self.isIdle = False
             #self.isS_Hurt = False
             #self.isS_Idle = True
             #self.isS_Walk = False
             #self.isSmash = False
-        else:    
+        else:
+            self.isHurt = False    
             self.boss_logic(loc_x_diff, loc_y_diff)
         
     def boss_logic(self, x_diff, y_diff):
          
         # Get direction
-        if x_diff > 0 and self.isAggro and not self.isAttacking:
+        if x_diff > 0 and self.isAggro and self.isCleaving == False:
             self.facing_right = False
-        elif x_diff < 0 and self.isAggro and not self.isAttacking:    
+        elif x_diff < 0 and self.isAggro and self.isCleaving == False:    
             self.facing_right = True
         
         #Coming Soon!
@@ -182,12 +180,12 @@ class Boss(pygame.sprite.Sprite):
         
         #Add later: self.isCasting, self.isBreathing, self.isSmash      
         #Check if attacking
-        if  self.isCleaving:
-            self.isAttacking = True
-            self.isWalking = False
-            #self.isIdle = False
-        else:
-            self.isAttacking = False 
+        # if  self.isCleaving:
+        #     self.isAttacking = True
+        #     self.isWalking = False
+        #     #self.isIdle = False
+        # else:
+        #     self.isAttacking = False 
             
         # if not self.isAggro and self.isAnimating and not self.isTransforming and self.isSlime:
         #     self.randomize_movement()
@@ -206,18 +204,18 @@ class Boss(pygame.sprite.Sprite):
         #             self.walk_frame_speed = 0.3
         #Add later: self.isDemon 
         if self.isAggro:    
-            if x_diff <= 10 and x_diff >= -10:
+            if x_diff <= 60 and x_diff >= -60 and self.isAttacking == False:
 
                 self.isWalking = False
                 self.isCleaving = True
                     
-            if x_diff > 10 and not self.isAttacking and not self.wall_left:
+            if x_diff > 60 and self.isCleaving== False and not self.wall_left:
                 self.isWalking = True
                 self.walk_frame_speed = 0.6
                 self.speed = 6
                 self.rect.x -= self.speed        
                     
-            if x_diff < -10 and not self.isAttacking and not self.wall_right:
+            if x_diff < -60 and self.isCleaving == False and not self.wall_right:
                 self.isWalking = True
                 self.walk_frame_speed = 0.6   
                 self.speed = 6 
@@ -290,7 +288,7 @@ class Boss(pygame.sprite.Sprite):
             elif(result == 4):
                 self.isCleaving = True
                 
-        
+    #Commented sections are work in progress    
     def animate(self):
         
         if not self.isAnimating:
@@ -299,16 +297,16 @@ class Boss(pygame.sprite.Sprite):
             
             if not self.facing_right:
             
-                if self.isCasting:
-                    self.spell_frame_index += self.spell_frame_speed
+                # if self.isCasting:
+                #     self.spell_frame_index += self.spell_frame_speed
 
-                    if int(self.spell_frame_index) > len(self.animations['cast_spell']) - 1:
+                #     if int(self.spell_frame_index) > len(self.animations['cast_spell']) - 1:
 
-                        self.spell_frame_index = 0
-                        self.isCasting = False
-                    else:
-                        self.image = self.animations['cast_spell'][int(self.spell_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.spell_frame_index = 0
+                #         self.isCasting = False
+                #     else:
+                #         self.image = self.animations['cast_spell'][int(self.spell_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
                 if self.isCleaving:
                     self.cleave_frame_index += self.cleave_frame_speed
@@ -320,7 +318,11 @@ class Boss(pygame.sprite.Sprite):
                     else:
                         self.image = self.animations['cleave'][int(self.cleave_frame_index)]
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
-                
+
+                    if self.cleave_frame_index >= 10 and self.cleave_frame_index <= 12:
+                        self.isAttacking = True
+                    else:
+                        self.isAttacking = False
                 if self.isDead:
                     self.death_frame_index += self.death_frame_speed
 
@@ -332,16 +334,16 @@ class Boss(pygame.sprite.Sprite):
                         self.image = self.animations['death'][int(self.death_frame_index)]
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isBreathing:
-                    self.breath_frame_index += self.breath_frame_speed
+                # if self.isBreathing:
+                #     self.breath_frame_index += self.breath_frame_speed
 
-                    if int(self.breath_frame_index) > len(self.animations['fire_breath']) - 1:
+                #     if int(self.breath_frame_index) > len(self.animations['fire_breath']) - 1:
 
-                        self.breath_frame_index = 0
-                        self.isBreathing = False
-                    else:
-                        self.image = self.animations['fire_breath'][int(self.breath_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.breath_frame_index = 0
+                #         self.isBreathing = False
+                #     else:
+                #         self.image = self.animations['fire_breath'][int(self.breath_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
                 if self.isHurt:
                     self.hit_frame_index += self.hit_frame_speed
@@ -354,71 +356,71 @@ class Boss(pygame.sprite.Sprite):
                         self.image = self.animations['hit'][int(self.hit_frame_index)]
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isIdle:
-                    self.idle_frame_index += self.idle_frame_speed
+                # if self.isIdle:
+                #     self.idle_frame_index += self.idle_frame_speed
 
-                    if int(self.idle_frame_index) > len(self.animations['idle']) - 1:
+                #     if int(self.idle_frame_index) > len(self.animations['idle']) - 1:
 
-                        self.idle_frame_index = 0
-                    else:
-                        self.image = self.animations['idle'][int(self.idle_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.idle_frame_index = 0
+                #     else:
+                #         self.image = self.animations['idle'][int(self.idle_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
-                if self.isS_Hurt and self.isSlime:
-                    self.s_hit_frame_index += self.s_hit_frame_speed
+                # if self.isS_Hurt and self.isSlime:
+                #     self.s_hit_frame_index += self.s_hit_frame_speed
 
-                    if int(self.s_hit_frame_index) > len(self.animations['slime_hit']) - 1:
+                #     if int(self.s_hit_frame_index) > len(self.animations['slime_hit']) - 1:
 
-                        self.s_hit_frame_index = 0
-                        self.isS_Hurt = False
+                #         self.s_hit_frame_index = 0
+                #         self.isS_Hurt = False
                         
-                    else:
-                        self.image = self.animations['slime_hit'][int(self.s_hit_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #     else:
+                #         self.image = self.animations['slime_hit'][int(self.s_hit_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isS_Idle and self.isSlime:
-                    self.s_idle_frame_index += self.s_idle_frame_speed
+                # if self.isS_Idle and self.isSlime:
+                #     self.s_idle_frame_index += self.s_idle_frame_speed
 
-                    if int(self.s_idle_frame_index) > len(self.animations['slime_idle']) - 1:
+                #     if int(self.s_idle_frame_index) > len(self.animations['slime_idle']) - 1:
 
-                        self.s_idle_frame_index = 0
-                    else:
-                        self.image = self.animations['slime_idle'][int(self.s_idle_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.s_idle_frame_index = 0
+                #     else:
+                #         self.image = self.animations['slime_idle'][int(self.s_idle_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
-                if self.isS_Walk and self.isSlime:
-                    self.s_walk_frame_index += self.s_walk_frame_speed
+                # if self.isS_Walk and self.isSlime:
+                #     self.s_walk_frame_index += self.s_walk_frame_speed
 
-                    if int(self.s_walk_frame_index) > len(self.animations['slime_walk']) - 1:
+                #     if int(self.s_walk_frame_index) > len(self.animations['slime_walk']) - 1:
 
-                        self.s_walk_frame_index = 0
-                    else:
-                        self.image = self.animations['slime_walk'][int(self.s_walk_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.s_walk_frame_index = 0
+                #     else:
+                #         self.image = self.animations['slime_walk'][int(self.s_walk_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isSmash:
-                    self.smash_frame_index += self.smash_frame_speed
+                # if self.isSmash:
+                #     self.smash_frame_index += self.smash_frame_speed
 
-                    if int(self.smash_frame_index) > len(self.animations['smash']) - 1:
+                #     if int(self.smash_frame_index) > len(self.animations['smash']) - 1:
 
-                        self.smash_frame_index = 0
-                        self.isSmash = False
-                    else:
-                        self.image = self.animations['smash'][int(self.smash_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.smash_frame_index = 0
+                #         self.isSmash = False
+                #     else:
+                #         self.image = self.animations['smash'][int(self.smash_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isTransforming:
-                    self.transform_frame_index += self.transform_frame_speed
-                    if int(self.transform_frame_index) > len(self.animations['transform']) - 1:
+                # if self.isTransforming:
+                #     self.transform_frame_index += self.transform_frame_speed
+                #     if int(self.transform_frame_index) > len(self.animations['transform']) - 1:
 
-                        self.transform_frame_index = 0
-                        self.isTransforming = False
-                        self.isDemon = True
-                        self.isAggro = True
+                #         self.transform_frame_index = 0
+                #         self.isTransforming = False
+                #         self.isDemon = True
+                #         self.isAggro = True
                     
-                    else:
-                        self.image = self.animations['transform'][int(self.transform_frame_index)]
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #     else:
+                #         self.image = self.animations['transform'][int(self.transform_frame_index)]
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
                 if self.isWalking:
                     self.walk_frame_index += self.walk_frame_speed
@@ -431,18 +433,18 @@ class Boss(pygame.sprite.Sprite):
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)                                
             # Facing Right    
             else:     
-                if self.isCasting:
-                    self.spell_frame_index += self.spell_frame_speed
+                # if self.isCasting:
+                #     self.spell_frame_index += self.spell_frame_speed
 
-                    if int(self.spell_frame_index) > len(self.animations['cast_spell']) - 1:
+                #     if int(self.spell_frame_index) > len(self.animations['cast_spell']) - 1:
 
-                        self.spell_frame_index = 0
-                        self.isCasting = False
-                    else:
-                        image = self.animations['cast_spell'][int(self.spell_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.spell_frame_index = 0
+                #         self.isCasting = False
+                #     else:
+                #         image = self.animations['cast_spell'][int(self.spell_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
                 if self.isCleaving:
                     self.cleave_frame_index += self.cleave_frame_speed
@@ -471,18 +473,18 @@ class Boss(pygame.sprite.Sprite):
                         self.image = flipped_image
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isBreathing:
-                    self.breath_frame_index += self.breath_frame_speed
+                # if self.isBreathing:
+                #     self.breath_frame_index += self.breath_frame_speed
 
-                    if int(self.breath_frame_index) > len(self.animations['fire_breath']) - 1:
+                #     if int(self.breath_frame_index) > len(self.animations['fire_breath']) - 1:
 
-                        self.breath_frame_index = 0
-                        self.isBreathing = False
-                    else:
-                        image = self.animations['fire_breath'][int(self.breath_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.breath_frame_index = 0
+                #         self.isBreathing = False
+                #     else:
+                #         image = self.animations['fire_breath'][int(self.breath_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
                 if self.isHurt:
                     self.hit_frame_index += self.hit_frame_speed
@@ -498,83 +500,83 @@ class Boss(pygame.sprite.Sprite):
                         self.image = flipped_image
                         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isIdle:
-                    self.idle_frame_index += self.idle_frame_speed
+                # if self.isIdle:
+                #     self.idle_frame_index += self.idle_frame_speed
 
-                    if int(self.idle_frame_index) > len(self.animations['idle']) - 1:
+                #     if int(self.idle_frame_index) > len(self.animations['idle']) - 1:
 
-                        self.idle_frame_index = 0
-                    else:
-                        image = self.animations['idle'][int(self.idle_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.idle_frame_index = 0
+                #     else:
+                #         image = self.animations['idle'][int(self.idle_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
-                if self.isS_Hurt and self.isSlime:
-                    self.s_hit_frame_index += self.s_hit_frame_speed
+                # if self.isS_Hurt and self.isSlime:
+                #     self.s_hit_frame_index += self.s_hit_frame_speed
 
-                    if int(self.s_hit_frame_index) > len(self.animations['slime_hit']) - 1:
+                #     if int(self.s_hit_frame_index) > len(self.animations['slime_hit']) - 1:
 
-                        self.s_hit_frame_index = 0
-                        self.isS_Hurt = False
+                #         self.s_hit_frame_index = 0
+                #         self.isS_Hurt = False
                         
-                    else:
-                        image = self.animations['slime_hit'][int(self.s_hit_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #     else:
+                #         image = self.animations['slime_hit'][int(self.s_hit_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isS_Idle and self.isSlime:
-                    self.s_idle_frame_index += self.s_idle_frame_speed
+                # if self.isS_Idle and self.isSlime:
+                #     self.s_idle_frame_index += self.s_idle_frame_speed
 
-                    if int(self.s_idle_frame_index) > len(self.animations['slime_idle']) - 1:
+                #     if int(self.s_idle_frame_index) > len(self.animations['slime_idle']) - 1:
 
-                        self.s_idle_frame_index = 0
-                    else:
-                        image = self.animations['slime_idle'][int(self.s_idle_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.s_idle_frame_index = 0
+                #     else:
+                #         image = self.animations['slime_idle'][int(self.s_idle_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
-                if self.isS_Walk and self.isSlime:
-                    self.s_walk_frame_index += self.s_walk_frame_speed
+                # if self.isS_Walk and self.isSlime:
+                #     self.s_walk_frame_index += self.s_walk_frame_speed
 
-                    if int(self.s_walk_frame_index) > len(self.animations['slime_walk']) - 1:
+                #     if int(self.s_walk_frame_index) > len(self.animations['slime_walk']) - 1:
 
-                        self.s_walk_frame_index = 0
-                    else:
-                        image = self.animations['slime_walk'][int(self.s_walk_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.s_walk_frame_index = 0
+                #     else:
+                #         image = self.animations['slime_walk'][int(self.s_walk_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isSmash:
-                    self.smash_frame_index += self.smash_frame_speed
+                # if self.isSmash:
+                #     self.smash_frame_index += self.smash_frame_speed
 
-                    if int(self.smash_frame_index) > len(self.animations['smash']) - 1:
+                #     if int(self.smash_frame_index) > len(self.animations['smash']) - 1:
 
-                        self.smash_frame_index = 0
-                        self.isSmash = False
-                    else:
-                        image = self.animations['smash'][int(self.smash_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #         self.smash_frame_index = 0
+                #         self.isSmash = False
+                #     else:
+                #         image = self.animations['smash'][int(self.smash_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
-                if self.isTransforming:
-                    self.transform_frame_index += self.transform_frame_speed
-                    if int(self.transform_frame_index) > len(self.animations['transform']) - 1:
+                # if self.isTransforming:
+                #     self.transform_frame_index += self.transform_frame_speed
+                #     if int(self.transform_frame_index) > len(self.animations['transform']) - 1:
 
-                        self.transform_frame_index = 0
-                        self.isTransforming = False
-                        self.isDemon = True
-                        self.isAggro = True
+                #         self.transform_frame_index = 0
+                #         self.isTransforming = False
+                #         self.isDemon = True
+                #         self.isAggro = True
 
-                    else:
-                        image = self.animations['transform'][int(self.transform_frame_index)]
-                        flipped_image = pygame.transform.flip(image, True, False)
-                        self.image = flipped_image
-                        self.rect = self.image.get_rect(topleft=self.rect.topleft)
+                #     else:
+                #         image = self.animations['transform'][int(self.transform_frame_index)]
+                #         flipped_image = pygame.transform.flip(image, True, False)
+                #         self.image = flipped_image
+                #         self.rect = self.image.get_rect(topleft=self.rect.topleft)
                 
                 if self.isWalking:
                     self.walk_frame_index += self.walk_frame_speed
