@@ -42,6 +42,10 @@ Spike Trap = Insta-kill
 
 # Bugs
 
+- Audio Bug: Jump sound triggers multiple times
+
+- Some tiles are missing throughout the level
+
 - Letting go of either run buttons while holding an arrow key makes the player keep running.
 
 - Jumping instead of walking off the edge to the Boss lair breaks the camera.
