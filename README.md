@@ -6,14 +6,6 @@ Liberate your King's Castle from the Hellish Demon Lord but you'll have to be qu
 
 https://user-images.githubusercontent.com/31741153/235382350-f5b7ad30-ed61-450a-89cc-fa2a0dc160d6.mp4
 
-## Screenshots
-
-![MainPage](https://user-images.githubusercontent.com/31741153/235382974-2ac43391-d944-4147-89da-db6f083d74bd.PNG)
-![LoadingScreen](https://user-images.githubusercontent.com/31741153/235382989-33d522d6-b78d-4357-868a-f4079e82b41a.PNG)
-![ActionShot](https://user-images.githubusercontent.com/31741153/235382994-7a6c47f1-c2db-4755-a76f-8ea52a299704.PNG)
-![Boss](https://user-images.githubusercontent.com/31741153/235383000-2b2e39d0-72a5-45bf-a1ba-c29d3d0e1422.PNG)
-![DeathScreen](https://user-images.githubusercontent.com/31741153/235382996-612b9778-ca51-4238-aa91-231db92f1a3f.PNG)
-
 ## Description
 
 Genre: Auto-scroller, Platformer, Hack'n Slash
@@ -71,3 +63,11 @@ Spike Trap = Insta-kill
 ## NOTE
 
 Additional frames are included that aren't implemented yet but will be expecting to implement them at a later date. (These were not in my original scope)
+
+## Screenshots
+
+![MainPage](https://user-images.githubusercontent.com/31741153/235382974-2ac43391-d944-4147-89da-db6f083d74bd.PNG)
+![LoadingScreen](https://user-images.githubusercontent.com/31741153/235382989-33d522d6-b78d-4357-868a-f4079e82b41a.PNG)
+![ActionShot](https://user-images.githubusercontent.com/31741153/235382994-7a6c47f1-c2db-4755-a76f-8ea52a299704.PNG)
+![Boss](https://user-images.githubusercontent.com/31741153/235383000-2b2e39d0-72a5-45bf-a1ba-c29d3d0e1422.PNG)
+![DeathScreen](https://user-images.githubusercontent.com/31741153/235382996-612b9778-ca51-4238-aa91-231db92f1a3f.PNG)
